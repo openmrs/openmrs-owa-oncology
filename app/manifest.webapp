@@ -1,0 +1,16 @@
+{
+  "version": "1.0.0",
+  "name": "OpenMRS OWA Oncology",
+  "description": "Oncology Module",
+  "launch_path": "index.html",
+  "developer": {
+    "name": "",
+    "url": ""
+  },
+  "default_locale": "en",
+  "activities": {
+    "openmrs": {
+      "href": "*"
+    }
+  }
+}
