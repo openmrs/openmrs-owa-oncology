@@ -1,6 +1,6 @@
 {
   "version": "1.0.0",
-  "name": "OpenMRS OWA Oncology",
+  "name": "openmrs-owa-oncology",
   "description": "Oncology Module",
   "launch_path": "index.html",
   "developer": {
