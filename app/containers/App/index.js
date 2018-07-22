@@ -16,16 +16,18 @@ import { Switch, Route } from 'react-router-dom';
 
 import HomePage from 'containers/HomePage/Loadable';
 import OrderPage from 'containers/OrderPage/Loadable';
+import SummaryPage from 'containers/SummaryPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 
 export default function App() {
   return (
     <div>
       <Switch>
-        <Route exact path="/" component={HomePage} />
-        <Route exact path="/order" component={OrderPage} />
-        <Route component={NotFoundPage} />
-      </Switch>
+        <Route exact path="/" component={HomePage} />{' '}
+        <Route exact path="/order" component={OrderPage} />{' '}
+        <Route exact path="/orderSummary" component={SummaryPage} />{' '}
+        <Route component={NotFoundPage} />{' '}
+      </Switch>{' '}
     </div>
   );
 }
