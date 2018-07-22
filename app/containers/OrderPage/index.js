@@ -12,6 +12,19 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Select from '@material-ui/core/Select';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import TextField from '@material-ui/core/TextField';
+
+import Page from 'components/Page';
+
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import makeSelectOrderPage from './selectors';
@@ -21,15 +34,121 @@ import messages from './messages';
 
 /* eslint-disable react/prefer-stateless-function */
 export class OrderPage extends React.Component {
+  state = { age: 0, value: '0' };
+
   render() {
     return (
-      <div>
+      <Page>
         <Helmet>
           <title>OrderPage</title>
           <meta name="description" content="Description of OrderPage" />
         </Helmet>
-        <FormattedMessage {...messages.header} />
-      </div>
+        <Grid container>
+          <Grid item xs={12}>
+            <Typography variant="display1" gutterBottom>
+              <FormattedMessage {...messages.selectRegimen} />
+            </Typography>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl fullWidth margin="normal">
+              <InputLabel htmlFor="age-simple">Age</InputLabel>
+              <Select
+                value={this.state.age}
+                onChange={this.handleChange}
+                inputProps={{
+                  name: 'duration',
+                  id: 'duration',
+                }}
+              >
+                <MenuItem value={0}>
+                  CHOP Protocol for Non Hodking Lymphome
+                </MenuItem>
+                <MenuItem value={1}>
+                  CHOP Protocol for Non Hodking Lymphome
+                </MenuItem>
+                <MenuItem value={2}>
+                  CHOP Protocol for Non Hodking Lymphome
+                </MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant="display1" gutterBottom>
+              <FormattedMessage {...messages.cycles} />
+            </Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <FormControl component="fieldset" required>
+              <RadioGroup
+                aria-label="Gender"
+                name="gender1"
+                value={this.state.value}
+                onChange={(e, value) => {
+                  this.setState({ value });
+                }}
+              >
+                <FormControlLabel
+                  value="0"
+                  control={<Radio color="primary" />}
+                  label={
+                    <span>
+                      Every&nbsp;&nbsp;
+                      <FormControl>
+                        <Select
+                          value={this.state.age}
+                          onChange={this.handleChange}
+                          inputProps={{
+                            name: 'age',
+                            id: 'age-simple',
+                          }}
+                        >
+                          <MenuItem value={0}>1 week</MenuItem>
+                          <MenuItem value={1}>2 weeks</MenuItem>
+                          <MenuItem value={2}>3 weeks</MenuItem>
+                        </Select>
+                      </FormControl>
+                      &nbsp;&nbsp;x&nbsp;&nbsp;
+                      <TextField
+                        style={{ width: '50px' }}
+                        id="cycles"
+                        placeholder="6"
+                      />
+                      &nbsp;&nbsp;cycles
+                    </span>
+                  }
+                />
+                <FormControlLabel
+                  value="1"
+                  control={<Radio color="primary" />}
+                  label={
+                    <span>
+                      Day&nbsp;&nbsp;
+                      <TextField
+                        style={{ width: '80px' }}
+                        id="days"
+                        placeholder="1, 8, 15"
+                      />
+                      &nbsp;&nbsp;of&nbsp;&nbsp;
+                      <TextField
+                        style={{ width: '50px' }}
+                        id="days"
+                        placeholder="28"
+                      />
+                      &nbsp;&nbsp;day cycle x&nbsp;&nbsp;
+                      <TextField
+                        style={{ width: '50px' }}
+                        id="cycles"
+                        placeholder="6"
+                      />
+                      &nbsp;&nbsp;cycles
+                    </span>
+                  }
+                />
+              </RadioGroup>
+            </FormControl>
+          </Grid>
+        </Grid>
+      </Page>
     );
   }
 }

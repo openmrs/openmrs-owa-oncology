@@ -7,8 +7,12 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
-  header: {
-    id: 'app.containers.OrderPage.header',
-    defaultMessage: 'This is OrderPage container !',
+  selectRegimen: {
+    id: 'app.containers.OrderPage.selectRegimen',
+    defaultMessage: 'Select regimen',
+  },
+  cycles: {
+    id: 'app.containers.OrderPage.cycles',
+    defaultMessage: 'Cycles',
   },
 });
