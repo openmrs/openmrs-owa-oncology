@@ -73,7 +73,9 @@ module.exports = require('./webpack.base.babel')({
       },
     ]),
 
-    new ZipPlugin(),
+    new ZipPlugin({
+      filename: 'openmrs-owa-oncology.zip',
+    }),
   ],
 
   performance: {
