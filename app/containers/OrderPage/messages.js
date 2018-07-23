@@ -23,4 +23,8 @@ export default defineMessages({
     id: 'app.containers.OrderPage.next',
     defaultMessage: 'Next',
   },
+  medications: {
+    id: 'app.containers.OrderPage.medications',
+    defaultMessage: 'Medications',
+  },
 });

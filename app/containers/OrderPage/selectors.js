@@ -15,8 +15,9 @@ const selectOrderPageDomain = state => state.get('orderPage', initialState);
  * Default selector used by OrderPage
  */
 
-const makeSelectOrderPage = () =>
-  createSelector(selectOrderPageDomain, substate => substate.toJS());
+const makeSelectRegimenList = () =>
+  createSelector(selectOrderPageDomain, substate =>
+    substate.get('regimenList'),
+  );
 
-export default makeSelectOrderPage;
-export { selectOrderPageDomain };
+export { makeSelectRegimenList };

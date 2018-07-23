@@ -5,16 +5,28 @@
  */
 
 import { fromJS } from 'immutable';
-import { DEFAULT_ACTION } from './constants';
+import {
+  LOAD_REGIMEN_LIST,
+  LOAD_REGIMEN_LIST_SUCCESS,
+  LOAD_REGIMEN_LIST_ERROR,
+} from './constants';
 
-export const initialState = fromJS({});
+export const initialState = fromJS({
+  loading: {
+    regimenList: false,
+  },
+  error: '',
+  regimenList: [],
+});
 
 function orderPageReducer(state = initialState, action) {
   switch (action.type) {
-    case DEFAULT_ACTION:
-      return state;
-    case 'FETCH_REGIMENS_DONE':
-      return action.result;
+    case LOAD_REGIMEN_LIST:
+      return state.setIn(['loading', 'regimenList'], true);
+    case LOAD_REGIMEN_LIST_SUCCESS:
+      return state.set('regimenList', action.regimenList);
+    case LOAD_REGIMEN_LIST_ERROR:
+      return state.set('error', action.error);
     default:
       return state;
   }

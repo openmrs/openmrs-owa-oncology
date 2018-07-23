@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import styled from 'styled-components';
 import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -25,12 +26,19 @@ import Page from 'components/Page';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectOrderPage from './selectors';
+
+import { loadRegimenList } from './actions';
+
+import { makeSelectRegimenList } from './selectors';
 import EditMedicationDialog from './components/EditMedicationDialog';
 import CyclesFormControl from './components/CyclesFormControl';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
+
+const Section = styled.div`
+  margin: 0 0 2rem;
+`;
 
 /* eslint-disable react/prefer-stateless-function */
 export class OrderPage extends React.Component {
@@ -43,11 +51,17 @@ export class OrderPage extends React.Component {
     'CHOP Protocol for Non Hodking Lymphome 4',
   ];
 
+  componentDidMount() {
+    this.props.loadRegimenList();
+  }
+
   handleSelect = e => {
     this.setState({ [e.target.name]: e.target.value });
   };
 
   render() {
+    console.log(this.props);
+
     return (
       <Page>
         <Helmet>
@@ -55,45 +69,49 @@ export class OrderPage extends React.Component {
           <meta name="description" content="Description of OrderPage" />
         </Helmet>
         <Grid container>
-          {/* Regimen Selection Header */}
-          <Grid item xs={12}>
-            <Typography variant="display1" gutterBottom>
-              <FormattedMessage {...messages.selectRegimen} />
-            </Typography>
-          </Grid>
-
           {/* Regimen Selection */}
           <Grid item xs={6}>
-            <FormControl fullWidth margin="normal">
-              <Select
-                value={this.state.template}
-                onChange={this.handleSelect}
-                inputProps={{
-                  name: 'template',
-                  id: 'template',
-                }}
-              >
-                {this.templates.map((name, i) => (
-                  <MenuItem value={i} key={`template-${name}`}>
-                    {name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
+            <Section>
+              <Typography variant="display1" gutterBottom>
+                <FormattedMessage {...messages.selectRegimen} />
+              </Typography>
+              <FormControl fullWidth margin="normal">
+                <Select
+                  value={this.state.template}
+                  onChange={this.handleSelect}
+                  inputProps={{
+                    name: 'template',
+                    id: 'template',
+                  }}
+                >
+                  {this.props.regimenList.results &&
+                    this.props.regimenList.results.map(({ display }, i) => (
+                      <MenuItem value={i} key={`template-${display}`}>
+                        {display}
+                      </MenuItem>
+                    ))}
+                </Select>
+              </FormControl>
+            </Section>
           </Grid>
 
           {/* Regimen Cycles Header */}
           <Grid item xs={12}>
-            <Typography variant="display1" gutterBottom>
-              <FormattedMessage {...messages.cycles} />
-            </Typography>
-          </Grid>
-          <Grid item xs={12}>
-            <CyclesFormControl />
+            <Section>
+              <Typography variant="display1" gutterBottom>
+                <FormattedMessage {...messages.cycles} />
+              </Typography>
+              <CyclesFormControl />
+            </Section>
           </Grid>
 
           <Grid item xs={12}>
-            <MedicationList />
+            <Section>
+              <Typography variant="display1" gutterBottom>
+                <FormattedMessage {...messages.medications} />
+              </Typography>
+              <MedicationList />
+            </Section>
           </Grid>
 
           <Grid item xs={12}>
@@ -133,16 +151,17 @@ export class OrderPage extends React.Component {
 }
 
 OrderPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  loadRegimenList: PropTypes.func.isRequired,
+  regimenList: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
-  orderpage: makeSelectOrderPage(),
+  regimenList: makeSelectRegimenList(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    loadRegimenList: () => dispatch(loadRegimenList()),
   };
 }
 
