@@ -11,8 +11,16 @@ export default defineMessages({
     id: 'app.containers.OrderPage.selectRegimen',
     defaultMessage: 'Select regimen',
   },
+  regimen: {
+    id: 'app.containers.OrderPage.selectedRegimen',
+    defaultMessage: 'Regimen',
+  },
   cycles: {
     id: 'app.containers.OrderPage.cycles',
     defaultMessage: 'Cycles',
+  },
+  next: {
+    id: 'app.containers.OrderPage.next',
+    defaultMessage: 'Next',
   },
 });

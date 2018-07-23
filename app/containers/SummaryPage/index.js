@@ -12,6 +12,9 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import makeSelectSummaryPage from './selectors';
@@ -25,10 +28,18 @@ export class SummaryPage extends React.Component {
     return (
       <div>
         <Helmet>
-          <title>SummaryPage</title>
+          <title>Order Summary</title>
           <meta name="description" content="Description of SummaryPage" />
         </Helmet>
-        <FormattedMessage {...messages.header} />
+
+        <Grid container>
+          {/* Regimen Selection Header */}
+          <Grid item xs={12}>
+            <Typography variant="display1" gutterBottom>
+              <FormattedMessage {...messages.header} />
+            </Typography>
+          </Grid>
+        </Grid>
       </div>
     );
   }

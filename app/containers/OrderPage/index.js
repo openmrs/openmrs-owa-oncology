@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -22,8 +23,10 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 
 import Page from 'components/Page';
+import MedicationList from 'components/MedicationList';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
@@ -34,9 +37,21 @@ import messages from './messages';
 
 /* eslint-disable react/prefer-stateless-function */
 export class OrderPage extends React.Component {
-  state = { age: 0, value: '0' };
+  state = {
+    cycles: 0,
+    value: '0',
+    regemins: [], // array of defined regimens
+    selectedRegimen: '',
+    // regeminData: {}, // data associated with selected regimen's
+  };
 
   render() {
+    const menuItems = this.state.regemins.map(item => (
+      <MenuItem key={item.uuid} value={item.detailsUri}>
+        {item.displayName}
+      </MenuItem>
+    ));
+
     return (
       <Page>
         <Helmet>
@@ -44,39 +59,41 @@ export class OrderPage extends React.Component {
           <meta name="description" content="Description of OrderPage" />
         </Helmet>
         <Grid container>
+          {/* Regimen Selection Header */}
           <Grid item xs={12}>
             <Typography variant="display1" gutterBottom>
               <FormattedMessage {...messages.selectRegimen} />
             </Typography>
           </Grid>
+
+          {/* Regimen Selection */}
           <Grid item xs={6}>
             <FormControl fullWidth margin="normal">
-              <InputLabel htmlFor="age-simple">Age</InputLabel>
+              <InputLabel htmlFor="regemin-simple">Regimen</InputLabel>
               <Select
-                value={this.state.age}
+                value={this.state.selectedRegimen}
                 onChange={this.handleChange}
                 inputProps={{
-                  name: 'duration',
-                  id: 'duration',
+                  name: 'regeminDisplayName',
+                  id: 'regemin-simple',
                 }}
               >
-                <MenuItem value={0}>
-                  CHOP Protocol for Non Hodking Lymphome
+                <MenuItem value="">
+                  <em>None</em>
                 </MenuItem>
-                <MenuItem value={1}>
-                  CHOP Protocol for Non Hodking Lymphome
-                </MenuItem>
-                <MenuItem value={2}>
-                  CHOP Protocol for Non Hodking Lymphome
-                </MenuItem>
+                {menuItems}
               </Select>
             </FormControl>
           </Grid>
+
+          {/* Regimen Cycles Header */}
           <Grid item xs={12}>
             <Typography variant="display1" gutterBottom>
               <FormattedMessage {...messages.cycles} />
             </Typography>
           </Grid>
+
+          {/* Regimen Cycles */}
           <Grid item xs={12}>
             <FormControl component="fieldset" required>
               <RadioGroup
@@ -95,11 +112,11 @@ export class OrderPage extends React.Component {
                       Every&nbsp;&nbsp;
                       <FormControl>
                         <Select
-                          value={this.state.age}
+                          value={this.state.cycles}
                           onChange={this.handleChange}
                           inputProps={{
-                            name: 'age',
-                            id: 'age-simple',
+                            name: 'cycles',
+                            id: 'cycles-simple',
                           }}
                         >
                           <MenuItem value={0}>1 week</MenuItem>
@@ -146,6 +163,32 @@ export class OrderPage extends React.Component {
                 />
               </RadioGroup>
             </FormControl>
+          </Grid>
+
+          <Grid item xs={12}>
+            <MedicationList />
+          </Grid>
+
+          <Grid item xs={12}>
+            <Grid
+              container
+              alignItems="center"
+              direction="row"
+              justify="center"
+            >
+              <Route
+                render={({ history }) => (
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+                      history.push('/orderSummary');
+                    }}
+                  >
+                    <FormattedMessage {...messages.next} />
+                  </Button>
+                )}
+              />
+            </Grid>
           </Grid>
         </Grid>
       </Page>

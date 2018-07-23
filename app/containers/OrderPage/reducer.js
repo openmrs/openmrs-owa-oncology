@@ -13,6 +13,8 @@ function orderPageReducer(state = initialState, action) {
   switch (action.type) {
     case DEFAULT_ACTION:
       return state;
+    case 'FETCH_REGIMENS_DONE':
+      return action.result;
     default:
       return state;
   }
