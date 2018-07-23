@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import styled from 'styled-components';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -16,13 +17,14 @@ import TableRow from '@material-ui/core/TableRow';
 import TableSortLabel from '@material-ui/core/TableSortLabel';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import Paper from '@material-ui/core/Paper';
 import Checkbox from '@material-ui/core/Checkbox';
 import Tooltip from '@material-ui/core/Tooltip';
 // import { lighten } from '@material-ui/core/styles/colorManipulator';
 import Button from '@material-ui/core/Button';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
+
+const Wrapper = styled.div``;
 
 let counter = 0;
 function createData(name, calories, fat, carbs, protein) {
@@ -280,7 +282,7 @@ class EnhancedTable extends React.Component {
       rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
     return (
-      <Paper className={classes.root}>
+      <Wrapper>
         <EnhancedTableToolbar numSelected={selected.length} />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
@@ -328,7 +330,7 @@ class EnhancedTable extends React.Component {
             </TableBody>
           </Table>
         </div>
-      </Paper>
+      </Wrapper>
     );
   }
 }
