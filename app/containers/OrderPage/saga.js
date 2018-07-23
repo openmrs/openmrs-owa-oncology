@@ -11,7 +11,7 @@ const baseUrl = 'https://humci-azure.pih-emr.org/mirebalais';
 /**
  * Github repos request/response handler
  */
-export function* getregimenList() {
+export function* getRegimenList() {
   const requestURL = `${baseUrl}/ws/rest/v1/orderset?v=full`;
 
   try {
@@ -32,5 +32,5 @@ export function* getregimenList() {
  * Root saga manages watcher lifecycle
  */
 export default function* order() {
-  yield takeLatest(LOAD_REGIMEN_LIST, getregimenList);
+  yield takeLatest(LOAD_REGIMEN_LIST, getRegimenList);
 }

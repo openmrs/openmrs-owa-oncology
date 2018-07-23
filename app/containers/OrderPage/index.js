@@ -45,13 +45,6 @@ const Section = styled.div`
 export class OrderPage extends React.Component {
   state = { template: 0, openEditDialog: false };
 
-  templates = [
-    'CHOP Protocol for Non Hodking Lymphome',
-    'CHOP Protocol for Non Hodking Lymphome 2',
-    'CHOP Protocol for Non Hodking Lymphome 3',
-    'CHOP Protocol for Non Hodking Lymphome 4',
-  ];
-
   componentDidMount() {
     this.props.loadRegimenList();
   }
@@ -84,11 +77,13 @@ export class OrderPage extends React.Component {
                   }}
                 >
                   {this.props.regimenList.results &&
-                    this.props.regimenList.results.map(({ display }, i) => (
-                      <MenuItem value={i} key={`template-${display}`}>
-                        {display}
-                      </MenuItem>
-                    ))}
+                    this.props.regimenList.results.map(
+                      ({ display, uuid }, i) => (
+                        <MenuItem value={i} key={`template-${uuid}`}>
+                          {display}
+                        </MenuItem>
+                      ),
+                    )}
                 </Select>
               </FormControl>
             </Section>
