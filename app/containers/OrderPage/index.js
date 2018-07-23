@@ -30,7 +30,7 @@ import injectReducer from 'utils/injectReducer';
 
 import { loadRegimenList } from './actions';
 
-import { makeSelectRegimenList } from './selectors';
+import { makeSelectRegimenList, makeSelectMedications } from './selectors';
 import EditMedicationDialog from './components/EditMedicationDialog';
 import CyclesFormControl from './components/CyclesFormControl';
 import reducer from './reducer';
@@ -54,6 +54,8 @@ export class OrderPage extends React.Component {
   };
 
   render() {
+    const { medications } = this.props;
+
     return (
       <Page>
         <Helmet>
@@ -104,7 +106,12 @@ export class OrderPage extends React.Component {
               <Typography variant="headline" gutterBottom>
                 <FormattedMessage {...messages.medications} />
               </Typography>
-              <MedicationList name="Premedications" />
+              {medications && medications.length > 0 &&
+                <MedicationList
+                  name="Premedications"
+                  medications={medications[this.state.template]}
+                />
+              }
               <MedicationList name="Chemotherapy" />
               <Typography variant="headline" gutterBottom>
                 <FormattedMessage {...messages.notes} />
@@ -158,10 +165,12 @@ export class OrderPage extends React.Component {
 OrderPage.propTypes = {
   loadRegimenList: PropTypes.func.isRequired,
   regimenList: PropTypes.object,
+  medications: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   regimenList: makeSelectRegimenList(),
+  medications: makeSelectMedications(),
 });
 
 function mapDispatchToProps(dispatch) {

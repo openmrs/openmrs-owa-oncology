@@ -20,4 +20,13 @@ const makeSelectRegimenList = () =>
     substate.get('regimenList'),
   );
 
-export { makeSelectRegimenList };
+const makeSelectMedications = () =>
+  createSelector(makeSelectRegimenList(), regimenList =>
+    (regimenList.results || []).map(regimen =>
+      (regimen.orderSetMembers || []).map(order =>
+        JSON.parse(order.orderTemplate),
+      ),
+    ),
+  );
+
+export { makeSelectRegimenList, makeSelectMedications };
