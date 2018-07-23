@@ -8,6 +8,7 @@ import styled from 'styled-components';
 
 export default styled.div`
   width: 980px;
-  padding: 2em 0;
+  background: #fff;
+  padding: 2rem;
   margin: 0 auto;
 `;

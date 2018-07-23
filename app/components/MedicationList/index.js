@@ -24,7 +24,9 @@ import Button from '@material-ui/core/Button';
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  margin-bottom: 3rem;
+`;
 
 let counter = 0;
 function createData(name, calories, fat, carbs, protein) {
@@ -151,9 +153,7 @@ let EnhancedTableToolbar = props => {
             {numSelected} selected
           </Typography>
         ) : (
-          <Typography variant="title" id="tableTitle">
-            <FormattedMessage {...messages.chemoHeader} />
-          </Typography>
+          <Typography variant="subheading">{props.title}</Typography>
         )}
       </div>
       <div className={classes.spacer} />
@@ -198,6 +198,7 @@ let EnhancedTableToolbar = props => {
 EnhancedTableToolbar.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
+  title: PropTypes.string,
 };
 
 EnhancedTableToolbar = withStyles(toolbarStyles)(EnhancedTableToolbar);
@@ -278,12 +279,13 @@ class EnhancedTable extends React.Component {
   render() {
     const { classes } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
-    const emptyRows =
-      rowsPerPage - Math.min(rowsPerPage, data.length - page * rowsPerPage);
 
     return (
       <Wrapper>
-        <EnhancedTableToolbar numSelected={selected.length} />
+        <EnhancedTableToolbar
+          title={this.props.name}
+          numSelected={selected.length}
+        />
         <div className={classes.tableWrapper}>
           <Table className={classes.table} aria-labelledby="tableTitle">
             <EnhancedTableHead
@@ -322,11 +324,6 @@ class EnhancedTable extends React.Component {
                     </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 49 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
             </TableBody>
           </Table>
         </div>
@@ -337,6 +334,7 @@ class EnhancedTable extends React.Component {
 
 EnhancedTable.propTypes = {
   classes: PropTypes.object.isRequired,
+  name: PropTypes.string,
 };
 
 export default withStyles(styles)(EnhancedTable);

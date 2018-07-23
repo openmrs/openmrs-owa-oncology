@@ -21,6 +21,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 import MedicationList from 'components/MedicationList';
+import Textarea from 'components/Textarea';
 
 import Page from 'components/Page';
 
@@ -70,7 +71,7 @@ export class OrderPage extends React.Component {
           {/* Regimen Selection */}
           <Grid item xs={6}>
             <Section>
-              <Typography variant="display1" gutterBottom>
+              <Typography variant="headline" gutterBottom>
                 <FormattedMessage {...messages.selectRegimen} />
               </Typography>
               <FormControl fullWidth margin="normal">
@@ -96,7 +97,7 @@ export class OrderPage extends React.Component {
           {/* Regimen Cycles Header */}
           <Grid item xs={12}>
             <Section>
-              <Typography variant="display1" gutterBottom>
+              <Typography variant="headline" gutterBottom>
                 <FormattedMessage {...messages.cycles} />
               </Typography>
               <CyclesFormControl />
@@ -105,10 +106,21 @@ export class OrderPage extends React.Component {
 
           <Grid item xs={12}>
             <Section>
-              <Typography variant="display1" gutterBottom>
+              <Typography variant="headline" gutterBottom>
                 <FormattedMessage {...messages.medications} />
               </Typography>
-              <MedicationList />
+              <MedicationList name="Premedications" />
+              <MedicationList name="Chemotherapy" />
+              <Typography variant="headline" gutterBottom>
+                <FormattedMessage {...messages.notes} />
+              </Typography>
+              <Textarea
+                rows="3"
+                multiid="medication"
+                type="text"
+                defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tempor mi nec suscipit mattis. Mauris ut laoreet ex. Duis varius, enim sit amet dapibus molestie, metus arcu elementum sapien"
+                fullWidth
+              />
             </Section>
           </Grid>
 

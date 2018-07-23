@@ -27,4 +27,8 @@ export default defineMessages({
     id: 'app.containers.OrderPage.medications',
     defaultMessage: 'Medications',
   },
+  notes: {
+    id: 'app.containers.OrderPage.notes',
+    defaultMessage: 'Physician Notes',
+  },
 });

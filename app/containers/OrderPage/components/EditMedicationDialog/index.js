@@ -20,6 +20,8 @@ import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
 
+import Textarea from 'components/Textarea';
+
 /* eslint-disable react/prefer-stateless-function */
 class EditMedicationDialog extends React.PureComponent {
   state = {
@@ -133,9 +135,7 @@ class EditMedicationDialog extends React.PureComponent {
               <FormLabel>Instructions</FormLabel>
             </Grid>
             <Grid item xs={8}>
-              <TextField
-                multiline
-                style={{ border: '1px solid #ced4da' }}
+              <Textarea
                 rows="3"
                 multiid="medication"
                 type="text"
