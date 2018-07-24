@@ -20,7 +20,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Button from '@material-ui/core/Button';
-import MedicationList from 'components/MedicationList';
+import MedicationTable from 'components/MedicationTable';
 import Textarea from 'components/Textarea';
 
 import Page from 'components/Page';
@@ -107,7 +107,7 @@ export class OrderPage extends React.Component {
                 <FormattedMessage {...messages.medications} />
               </Typography>
               {medications && medications.length > 0 &&
-                <MedicationList
+                <MedicationTable
                   name="Premedications"
                   medications={medications[this.state.template]}
                 />

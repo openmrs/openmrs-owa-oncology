@@ -1,26 +1,26 @@
 /*
- * MedicationList Messages
+ * MedicationTable Messages
  *
- * This contains all the text for the MedicationList component.
+ * This contains all the text for the MedicationTable component.
  */
 
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
   chemoHeader: {
-    id: 'app.components.MedicationList.chemoHeader',
+    id: 'app.components.MedicationTable.chemoHeader',
     defaultMessage: 'CHEMOTHERAPY',
   },
   changeDosage: {
-    id: 'app.components.MedicationList.changeDosage',
+    id: 'app.components.MedicationTable.changeDosage',
     defaultMessage: 'Change Dosage',
   },
   edit: {
-    id: 'app.components.MedicationList.edit',
+    id: 'app.components.MedicationTable.edit',
     defaultMessage: 'Edit',
   },
   delete: {
-    id: 'app.components.MedicationList.delete',
+    id: 'app.components.MedicationTable.delete',
     defaultMessage: 'Delete',
   },
 });
