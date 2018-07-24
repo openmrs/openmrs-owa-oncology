@@ -23,4 +23,17 @@ export default defineMessages({
     id: 'app.components.MedicationTable.delete',
     defaultMessage: 'Delete',
   },
+  deleteDialogDescriptionPlural: {
+    id: 'app.components.MedicationTable.deleteDialogDescriptionPlural',
+    defaultMessage: 'Are you sure you want to remove the selected medications?',
+  },
+  deleteDialogDescription: {
+    id: 'app.components.MedicationTable.deleteDialogDescription',
+    defaultMessage: 'Are you sure you want to remove {medication}?',
+  },
+  deleteDialogTitle: {
+    id: 'app.components.MedicationTable.deleteDialogTitle',
+    defaultMessage: 'Delete medication',
+
+  },
 });

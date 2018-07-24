@@ -42,7 +42,7 @@ const Section = styled.div`
 
 /* eslint-disable react/prefer-stateless-function */
 export class OrderPage extends React.Component {
-  state = { template: 0 };
+  state = { template: '' };
 
   componentDidMount() {
     this.props.loadRegimenList();
@@ -72,11 +72,15 @@ export class OrderPage extends React.Component {
                 <Select
                   value={this.state.template}
                   onChange={this.handleSelect}
+                  displayEmpty
                   inputProps={{
                     name: 'template',
                     id: 'template',
                   }}
                 >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
                   {this.props.regimenList.results &&
                     this.props.regimenList.results.map(
                       ({ display, uuid }, i) => (
@@ -89,62 +93,64 @@ export class OrderPage extends React.Component {
               </FormControl>
             </Section>
           </Grid>
+        </Grid>
 
-          {/* Regimen Cycles Header */}
-          <Grid item xs={12}>
-            <Section>
-              <Typography variant="headline" gutterBottom>
-                <FormattedMessage {...messages.cycles} />
-              </Typography>
-              <CyclesFormControl />
-            </Section>
-          </Grid>
+        {/* Regimen Cycles Header */}
+        {this.state.template !== "" &&
+          <Grid container>
+            <Grid item xs={12}>
+              <Section>
+                <Typography variant="headline" gutterBottom>
+                  <FormattedMessage {...messages.cycles} />
+                </Typography>
+                <CyclesFormControl />
+              </Section>
+            </Grid>
 
-          <Grid item xs={12}>
-            <Section>
-              <Typography variant="headline" gutterBottom>
-                <FormattedMessage {...messages.medications} />
-              </Typography>
-              {medications && medications.length > 0 &&
-                <MedicationTable
-                  name="Premedications"
-                  medications={medications[this.state.template]}
+            <Grid item xs={12}>
+              <Section>
+                <Typography variant="headline" gutterBottom>
+                  <FormattedMessage {...messages.medications} />
+                </Typography>
+                {medications && medications.length > 0 &&
+                  <MedicationTable
+                    name="Premedications"
+                    medications={medications[this.state.template]}
+                  />
+                }
+                <Typography variant="headline" gutterBottom>
+                  <FormattedMessage {...messages.notes} />
+                </Typography>
+                <Textarea
+                  rows="3"
+                  multiid="medication"
+                  type="text"
+                  defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tempor mi nec suscipit mattis. Mauris ut laoreet ex. Duis varius, enim sit amet dapibus molestie, metus arcu elementum sapien"
+                  fullWidth
                 />
-              }
-              <Typography variant="headline" gutterBottom>
-                <FormattedMessage {...messages.notes} />
-              </Typography>
-              <Textarea
-                rows="3"
-                multiid="medication"
-                type="text"
-                defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tempor mi nec suscipit mattis. Mauris ut laoreet ex. Duis varius, enim sit amet dapibus molestie, metus arcu elementum sapien"
-                fullWidth
-              />
-            </Section>
-          </Grid>
-
-          <Grid item xs={12}>
-            <Grid
-              container
-              alignItems="center"
-              direction="row"
-              justify="center"
-            >
-              <Route
-                render={({ history }) => (
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      history.push('/orderSummary');
-                    }}
-                  >
-                    <FormattedMessage {...messages.next} />
-                  </Button>
-                )}
-              />
+              </Section>
             </Grid>
           </Grid>
+        }
+        <Grid
+          container
+          alignItems="center"
+          direction="row"
+          justify="center"
+        >
+          <Route
+            render={({ history }) => (
+              <Button
+                variant="contained"
+                disabled={this.state.template === ""}
+                onClick={() => {
+                  history.push('/orderSummary');
+                }}
+              >
+                <FormattedMessage {...messages.next} />
+              </Button>
+            )}
+          />
         </Grid>
       </Page>
     );

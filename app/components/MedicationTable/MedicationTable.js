@@ -13,16 +13,20 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 
+import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
+
+import DeleteDialog from 'components/DeleteDialog';
+import EditMedicationDialog from './components/EditMedicationDialog';
 import MedicationTableToolbar from './components/MedicationTableToolbar';
 import MedicationTableHead from './components/MedicationTableHead';
-import EditMedicationDialog from './components/EditMedicationDialog';
+import messages from './messages';
 
 const Wrapper = styled.div`
   margin-bottom: 3rem;
 `;
 
 class MedicationTable extends React.Component {
-  state = { selected: [], openEditDialog: false };
+  state = { selected: [], openDialog: '' };
 
   handleSelectAllClick = (event, checked) => {
     if (checked) {
@@ -63,8 +67,33 @@ class MedicationTable extends React.Component {
     )
   }
 
+  getDeleteDialogDescription(selectedMedications) {
+    const { intl } = this.props;
+    let description = '';
+    if (selectedMedications.length > 1) {
+      description = intl.formatMessage({...messages.deleteDialogDescriptionPlural});
+    } else if (selectedMedications.length === 1) {
+      description = <FormattedMessage
+        {...messages.deleteDialogDescription}
+        values={{ medication: <strong>{selectedMedications[0].drug.name}</strong> }}
+      />;
+      /*
+      description = intl.formatHTMLMessage({
+        ...messages.deleteDialogDescription,
+      }, {
+        medication: selectedMedications[0].drug.name,
+      });
+      */
+    }
+    return description;
+  }
+
+  closeDialogs = () => {
+    this.setState({ openDialog: '' });
+  }
+
   render() {
-    const { medications } = this.props;
+    const { medications, intl } = this.props;
     const { selected } = this.state;
     const selectedMedications = this.getSelectedMedications();
 
@@ -73,7 +102,8 @@ class MedicationTable extends React.Component {
         <MedicationTableToolbar
           title={this.props.name}
           numSelected={selected.length}
-          onEdit={() => this.setState({ openEditDialog: true })}
+          onEdit={() => this.setState({ openDialog: 'edit' })}
+          onDelete={() => this.setState({ openDialog: 'delete' })}
         />
         <div>
           <Table aria-labelledby="tableTitle">
@@ -109,12 +139,19 @@ class MedicationTable extends React.Component {
         </div>
         {selectedMedications.length === 1 &&
           <EditMedicationDialog
-            open={this.state.openEditDialog}
-            onSave={() => this.setState({ openEditDialog: false })}
-            onClose={() => this.setState({ openEditDialog: false })}
+            open={this.state.openDialog === 'edit'}
+            onSave={this.closeDialogs}
+            onClose={this.closeDialogs}
             medication={selectedMedications[0]}
           />
         }
+        <DeleteDialog
+          open={this.state.openDialog === 'delete'}
+          onClose={this.closeDialogs}
+          onDelete={this.closeDialogs}
+          title={intl.formatMessage({...messages.deleteDialogTitle})}
+          description={this.getDeleteDialogDescription(selectedMedications)}
+        />
       </Wrapper>
     );
   }
@@ -123,6 +160,7 @@ class MedicationTable extends React.Component {
 MedicationTable.propTypes = {
   name: PropTypes.string,
   medications: PropTypes.array,
+  intl: intlShape.isRequired,
 };
 
-export default MedicationTable;
+export default injectIntl(MedicationTable);

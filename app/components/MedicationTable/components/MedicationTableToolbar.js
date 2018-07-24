@@ -51,7 +51,7 @@ function MedicationTableToolbar(props) {
         <Button
           className={classes.button}
           variant="outlined"
-          disabled={numSelected <= 1}
+          disabled={numSelected === 0}
         >
           <FormattedMessage {...messages.changeDosage} />
         </Button>
@@ -59,7 +59,7 @@ function MedicationTableToolbar(props) {
           className={classes.button}
           variant="outlined"
           onClick={props.onEdit}
-          disabled={numSelected === 0}
+          disabled={numSelected !== 1}
         >
           <FormattedMessage {...messages.edit} />
         </Button>
@@ -67,6 +67,7 @@ function MedicationTableToolbar(props) {
           className={classes.button}
           variant="outlined"
           color="secondary"
+          onClick={props.onDelete}
           disabled={numSelected === 0}
         >
           <FormattedMessage {...messages.delete} />
@@ -81,6 +82,7 @@ MedicationTableToolbar.propTypes = {
   numSelected: PropTypes.number.isRequired,
   title: PropTypes.string,
   onEdit: PropTypes.func.isRequired,
+  onDelete: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(MedicationTableToolbar);
