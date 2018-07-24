@@ -36,14 +36,6 @@ const ButtonContainer = styled.div`
   }
 `;
 
-function generate(element) {
-  return [0, 1, 2,3].map(value =>
-    React.cloneElement(element, {
-      key: value,
-    }),
-  );
-}
-
 /* eslint-disable react/prefer-stateless-function */
 export class SummaryPage extends React.Component {
   state = { regimenName: "CHOP Protocol for Non Hodking Lymphome", cycleInfo: "Every 3 weeks of 6 cycles" };
@@ -88,59 +80,55 @@ export class SummaryPage extends React.Component {
                     <SytledListHeader>
                       <ListItemText primary="PREMEDICATIONS" />
                     </SytledListHeader>
-                    {order &&
-                      generate(
-                        <div>
-                          <ListItem>
-                            <ListItemText
-                              primary='Dexamethasone'
-                              secondary='Once prior to chemotherapy'
-                            />
-                          </ListItem>
-                          <Divider/>
-                        </div>
-                      )
-                    }
+                    {order && order.preMeds && order.preMeds.map(({uuid, name, adminInstructions}) => (
+                      <div key={`drug-${uuid}`}>
+                        <ListItem >
+                          <ListItemText
+                            primary={name}
+                            secondary={adminInstructions}
+                          />
+                        </ListItem>
+                        <Divider/>
+                      </div>
+                    ))}
                   </List>  
                 </Grid>
+
                 <Grid item xs={4}>
                   <List>
                     <SytledListHeader>
                       <ListItemText primary="PREMEDICATIONS" />
                     </SytledListHeader>
-                    {order &&
-                      generate(
-                        <div>
-                          <ListItem>
-                            <ListItemText
-                              primary='Doxorubicin'
-                              secondary='IV Push over 15 mins'
-                            />
-                          </ListItem>
-                          <Divider/>
-                        </div>
-                      )
-                    }
+                    {order && order.chemoMeds && order.chemoMeds.map(({uuid, name, adminInstructions}) => (
+                      <div key={`drug-${uuid}`}>
+                        <ListItem >
+                          <ListItemText
+                            primary={name}
+                            secondary={adminInstructions}
+                          />
+                        </ListItem>
+                        <Divider/>
+                      </div>
+                    ))}
                   </List>  
                 </Grid>
+
                 <Grid item xs={4}>
                   <List>
                     <SytledListHeader>
                       <ListItemText primary="POSTMEDICATION" />
                     </SytledListHeader>
-                    {order &&
-                      generate(
-                        <div>
-                          <ListItem>
-                            <ListItemText
-                              primary='Aspirin'
-                              secondary='1 time per day'
-                            />
-                          </ListItem>
-                          <Divider/>
-                        </div>
-                      )
-                    }
+                    {order && order.postMeds && order.postMeds.map(({uuid, name, adminInstructions}) => (
+                      <div key={`drug-${uuid}`}>
+                        <ListItem >
+                          <ListItemText
+                            primary={name}
+                            secondary={adminInstructions}
+                          />
+                        </ListItem>
+                        <Divider/>
+                      </div>
+                    ))}
                   </List>  
                 </Grid>
 
@@ -185,6 +173,7 @@ export class SummaryPage extends React.Component {
                   />
 
                   <Button
+                    color="primary"
                     variant="contained"
                     onClick={() => {
 
