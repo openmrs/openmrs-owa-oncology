@@ -1,10 +1,6 @@
-/**
- *
- * SummaryPage
- *
- */
-
 import React from 'react';
+import styled from 'styled-components';
+import { Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -14,6 +10,11 @@ import { compose } from 'redux';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Textarea from 'components/Textarea';
+
+import Button from '@material-ui/core/Button';
+
+import Page from 'components/Page';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
@@ -21,26 +22,141 @@ import makeSelectSummaryPage from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
+import { ListItem, List, Divider, ListItemText } from '../../../node_modules/@material-ui/core';
+
+const Section = styled.div`
+  margin: 0 0 2rem;
+  width: 100%;
+`;
+
+const SytledListHeader = styled(ListItem)`
+  background: #f5f5f5;
+`;
+
+const ButtonContainer = styled.div`
+  >button {
+    margin: 0px 20px;
+  }
+`;
 
 /* eslint-disable react/prefer-stateless-function */
 export class SummaryPage extends React.Component {
+  state = { regimenName: "CHOP Protocol for Non Hodking Lymphome", cycleInfo: "Every 3 weeks of 6 cycles" };
+
   render() {
     return (
-      <div>
-        <Helmet>
-          <title>Order Summary</title>
-          <meta name="description" content="Description of SummaryPage" />
-        </Helmet>
+      <Page>
+        <div>
+          <Helmet>
+            <title>Order Summary</title>
+            <meta name="description" content="Description of SummaryPage" />
+          </Helmet>
 
-        <Grid container>
-          {/* Regimen Selection Header */}
-          <Grid item xs={12}>
-            <Typography variant="display1" gutterBottom>
-              <FormattedMessage {...messages.header} />
-            </Typography>
+          <Grid container>
+            <Grid item xs={12}>
+              <Section>
+                <Typography variant="headline" gutterBottom>
+                  <FormattedMessage {...messages.header} />
+                </Typography>
+              </Section>
+
+              <Typography variant="title" gutterBottom>
+                <FormattedMessage
+                  id='app.containers.SummaryPage.regimen'
+                  defaultMessage={this.state.regimenName} />
+              </Typography>
+      
+              <Typography variant="subheading" gutterBottom>
+                <FormattedMessage
+                  id='app.containers.SummaryPage.regimen'
+                  defaultMessage={this.state.cycleInfo} />
+              </Typography>
+            </Grid>
+
+            <Section>
+              <Grid container spacing={16}>
+
+                <Grid item xs={4}>
+                  <List>
+                    <SytledListHeader>
+                      <ListItemText primary="PREMEDICATIONS" />
+                    </SytledListHeader>
+                    <Divider/>
+                  </List>  
+                </Grid>
+                <Grid item xs={4}>
+                  <List>
+                    <SytledListHeader>
+                      <ListItemText primary="PREMEDICATIONS" />
+                    </SytledListHeader>
+                    <Divider/>
+                  </List>  
+                </Grid>
+                <Grid item xs={4}>
+                  <List>
+                    <SytledListHeader>
+                      <ListItemText primary="POSTMEDICATION" />
+                    </SytledListHeader>
+                    <Divider/>
+                  </List>  
+                </Grid>
+
+              </Grid>
+            </Section>
+
+            <Section>
+              <Grid item xs={12}>
+                <Typography variant="headline" gutterBottom>
+                  <FormattedMessage {...messages.notes} />
+                </Typography>
+                <Textarea
+                  rows="3"
+                  disabled
+                  multiid="medication"
+                  type="text"
+                  defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tempor mi nec suscipit mattis. Mauris ut laoreet ex. Duis varius, enim sit amet dapibus molestie, metus arcu elementum sapien"
+                  fullWidth
+                />
+              </Grid>
+            </Section>
+            
+            <Grid item xs={12}>
+              <Grid
+                container
+                alignItems="center"
+                direction="row"
+                justify="center"
+              >
+                <ButtonContainer>
+                  <Route
+                    render={({ history }) => (
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          history.push('/order');
+                        }}
+                      >
+                        <FormattedMessage {...messages.back} />
+                      </Button>
+                    )}
+                  />
+
+                  <Button
+                    variant="contained"
+                    onClick={() => {
+
+                    }}
+                  >
+                    <FormattedMessage {...messages.submit} />
+                  </Button>
+                </ButtonContainer>
+              </Grid>
+            </Grid>
+
+
           </Grid>
-        </Grid>
-      </div>
+        </div>
+      </Page>
     );
   }
 }
