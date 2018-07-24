@@ -17,6 +17,7 @@ export const initialState = fromJS({
   },
   error: '',
   regimenList: [],
+  order: {},
 });
 
 function orderPageReducer(state = initialState, action) {
@@ -24,7 +25,9 @@ function orderPageReducer(state = initialState, action) {
     case LOAD_REGIMEN_LIST:
       return state.setIn(['loading', 'regimenList'], true);
     case LOAD_REGIMEN_LIST_SUCCESS:
-      return state.set('regimenList', action.regimenList);
+      return state
+        .set('regimenList', action.regimenList)
+        .set('order', action.regimenList);
     case LOAD_REGIMEN_LIST_ERROR:
       return state.set('error', action.error);
     default:

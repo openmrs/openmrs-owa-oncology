@@ -31,7 +31,6 @@ import injectReducer from 'utils/injectReducer';
 import { loadRegimenList } from './actions';
 
 import { makeSelectRegimenList, makeSelectMedications } from './selectors';
-import EditMedicationDialog from './components/EditMedicationDialog';
 import CyclesFormControl from './components/CyclesFormControl';
 import reducer from './reducer';
 import saga from './saga';
@@ -43,7 +42,7 @@ const Section = styled.div`
 
 /* eslint-disable react/prefer-stateless-function */
 export class OrderPage extends React.Component {
-  state = { template: 0, openEditDialog: false };
+  state = { template: 0 };
 
   componentDidMount() {
     this.props.loadRegimenList();
@@ -146,15 +145,6 @@ export class OrderPage extends React.Component {
               />
             </Grid>
           </Grid>
-
-          <EditMedicationDialog
-            open={this.state.openEditDialog}
-            onSave={() => this.setState({ openEditDialog: false })}
-            onClose={() => this.setState({ openEditDialog: false })}
-          />
-          <Button onClick={() => this.setState({ openEditDialog: true })}>
-            Edit dialog
-          </Button>
         </Grid>
       </Page>
     );

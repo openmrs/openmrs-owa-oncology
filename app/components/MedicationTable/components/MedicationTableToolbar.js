@@ -14,7 +14,7 @@ import Button from '@material-ui/core/Button';
 import { FormattedMessage } from 'react-intl';
 import grey from '@material-ui/core/colors/grey';
 
-import messages from './messages';
+import messages from '../messages';
 
 const styles = theme => ({
   root: {
@@ -51,9 +51,6 @@ function MedicationTableToolbar(props) {
         <Button
           className={classes.button}
           variant="outlined"
-          onClick={() => {
-            // alert('Change Dosage Clicked');
-          }}
           disabled={numSelected <= 1}
         >
           <FormattedMessage {...messages.changeDosage} />
@@ -61,9 +58,7 @@ function MedicationTableToolbar(props) {
         <Button
           className={classes.button}
           variant="outlined"
-          onClick={() => {
-            // alert('Edit Clicked');
-          }}
+          onClick={props.onEdit}
           disabled={numSelected === 0}
         >
           <FormattedMessage {...messages.edit} />
@@ -72,9 +67,6 @@ function MedicationTableToolbar(props) {
           className={classes.button}
           variant="outlined"
           color="secondary"
-          onClick={() => {
-            // alert('Delete Clicked');
-          }}
           disabled={numSelected === 0}
         >
           <FormattedMessage {...messages.delete} />
@@ -88,6 +80,7 @@ MedicationTableToolbar.propTypes = {
   classes: PropTypes.object.isRequired,
   numSelected: PropTypes.number.isRequired,
   title: PropTypes.string,
+  onEdit: PropTypes.func.isRequired,
 };
 
 export default withStyles(styles)(MedicationTableToolbar);

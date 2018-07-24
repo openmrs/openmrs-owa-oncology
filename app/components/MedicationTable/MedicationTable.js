@@ -13,15 +13,16 @@ import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 
-import MedicationTableToolbar from './MedicationTableToolbar';
-import MedicationTableHead from './MedicationTableHead';
+import MedicationTableToolbar from './components/MedicationTableToolbar';
+import MedicationTableHead from './components/MedicationTableHead';
+import EditMedicationDialog from './components/EditMedicationDialog';
 
 const Wrapper = styled.div`
   margin-bottom: 3rem;
 `;
 
 class MedicationTable extends React.Component {
-  state = { selected: [] };
+  state = { selected: [], openEditDialog: false };
 
   handleSelectAllClick = (event, checked) => {
     if (checked) {
@@ -54,15 +55,25 @@ class MedicationTable extends React.Component {
 
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
+  getSelectedMedications() {
+    return this.state.selected.map(uuid =>
+      this.props.medications.find(medication =>
+        medication.drug.uuid === uuid
+      )
+    )
+  }
+
   render() {
     const { medications } = this.props;
     const { selected } = this.state;
+    const selectedMedications = this.getSelectedMedications();
 
     return (
       <Wrapper>
         <MedicationTableToolbar
           title={this.props.name}
           numSelected={selected.length}
+          onEdit={() => this.setState({ openEditDialog: true })}
         />
         <div>
           <Table aria-labelledby="tableTitle">
@@ -96,6 +107,14 @@ class MedicationTable extends React.Component {
             </TableBody>
           </Table>
         </div>
+        {selectedMedications.length === 1 &&
+          <EditMedicationDialog
+            open={this.state.openEditDialog}
+            onSave={() => this.setState({ openEditDialog: false })}
+            onClose={() => this.setState({ openEditDialog: false })}
+            medication={selectedMedications[0]}
+          />
+        }
       </Wrapper>
     );
   }
