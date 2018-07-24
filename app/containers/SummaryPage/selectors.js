@@ -5,7 +5,7 @@ import { initialState } from './reducer';
  * Direct selector to the summaryPage state domain
  */
 
-const selectSummaryPageDomain = state => state.get('summaryPage', initialState);
+const selectOrderPageDomain = state => state.get('orderPage', initialState);
 
 /**
  * Other specific selectors
@@ -15,8 +15,12 @@ const selectSummaryPageDomain = state => state.get('summaryPage', initialState);
  * Default selector used by SummaryPage
  */
 
-const makeSelectSummaryPage = () =>
-  createSelector(selectSummaryPageDomain, substate => substate.toJS());
+const makeSelectOrder = () =>
+  createSelector(selectOrderPageDomain, substate =>
+    substate.get('order'),
+  );
 
-export default makeSelectSummaryPage;
-export { selectSummaryPageDomain };
+// const makeSelectSummaryPage = () =>
+//   createSelector(selectSummaryPageDomain, substate => substate.toJS());
+
+export { makeSelectOrder };
