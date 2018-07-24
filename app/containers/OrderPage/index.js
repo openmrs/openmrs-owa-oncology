@@ -112,7 +112,6 @@ export class OrderPage extends React.Component {
                   medications={medications[this.state.template]}
                 />
               }
-              <MedicationList name="Chemotherapy" />
               <Typography variant="headline" gutterBottom>
                 <FormattedMessage {...messages.notes} />
               </Typography>

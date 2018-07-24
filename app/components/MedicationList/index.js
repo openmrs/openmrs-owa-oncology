@@ -277,7 +277,7 @@ class EnhancedTable extends React.Component {
   isSelected = id => this.state.selected.indexOf(id) !== -1;
 
   render() {
-    const { classes } = this.props;
+    const { classes, medications } = this.props;
     const { data, order, orderBy, selected, rowsPerPage, page } = this.state;
 
     return (
@@ -296,7 +296,7 @@ class EnhancedTable extends React.Component {
               rowCount={data.length}
             />
             <TableBody>
-              {data
+              {medications
                 .sort(getSorting(order, orderBy))
                 .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                 .map(n => {
@@ -314,13 +314,14 @@ class EnhancedTable extends React.Component {
                       <TableCell padding="checkbox">
                         <Checkbox checked={isSelected} />
                       </TableCell>
-                      <TableCell component="th" scope="row" padding="none">
-                        {n.name}
+                      <TableCell padding="none">
+                        {n.drug.name}
                       </TableCell>
-                      <TableCell numeric>{n.calories}</TableCell>
-                      <TableCell numeric>{n.fat}</TableCell>
-                      <TableCell numeric>{n.carbs}</TableCell>
-                      <TableCell numeric>{n.protein}</TableCell>
+                      <TableCell >
+                        {n.dosingInstructions.dose} {n.dosingInstructions.doseUnits}
+                      </TableCell>
+                      <TableCell>{n.dosingInstructions.route}</TableCell>
+                      <TableCell>{n.administrationInstructions}</TableCell>
                     </TableRow>
                   );
                 })}
@@ -335,6 +336,7 @@ class EnhancedTable extends React.Component {
 EnhancedTable.propTypes = {
   classes: PropTypes.object.isRequired,
   name: PropTypes.string,
+  medications: PropTypes.array,
 };
 
 export default withStyles(styles)(EnhancedTable);

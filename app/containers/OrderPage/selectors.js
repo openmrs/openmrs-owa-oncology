@@ -23,9 +23,13 @@ const makeSelectRegimenList = () =>
 const makeSelectMedications = () =>
   createSelector(makeSelectRegimenList(), regimenList =>
     (regimenList.results || []).map(regimen =>
-      (regimen.orderSetMembers || []).map(order =>
-        JSON.parse(order.orderTemplate),
-      ),
+      (regimen.orderSetMembers || []).map(order => {
+        try {
+          return JSON.parse(order.orderTemplate);
+        } catch (e) {
+          return null;
+        }
+      }),
     ),
   );
 

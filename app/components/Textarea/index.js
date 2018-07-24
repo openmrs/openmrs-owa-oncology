@@ -10,7 +10,7 @@ import TextField from '@material-ui/core/TextField';
 import { withStyles } from '@material-ui/core/styles';
 
 const styles = () => ({
-  input: {
+  root: {
     border: '1px solid #ced4da',
     padding: '0.5em',
   },
@@ -21,9 +21,6 @@ function Textarea(props) {
     <TextField
       InputProps={{
         disableUnderline: true,
-        classes: {
-          input: props.classes.input,
-        },
       }}
       multiline
       {...props}
