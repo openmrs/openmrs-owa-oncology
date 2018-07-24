@@ -125,7 +125,7 @@ export class OrderPage extends React.Component {
                   rows="3"
                   multiid="medication"
                   type="text"
-                  defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tempor mi nec suscipit mattis. Mauris ut laoreet ex. Duis varius, enim sit amet dapibus molestie, metus arcu elementum sapien"
+                  placeholder="Add your notes here..."
                   fullWidth
                 />
               </Section>

@@ -17,6 +17,7 @@ import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
 import DeleteDialog from 'components/DeleteDialog';
 import EditMedicationDialog from './components/EditMedicationDialog';
+import ChangeDosageDialog from './components/ChangeDosageDialog';
 import MedicationTableToolbar from './components/MedicationTableToolbar';
 import MedicationTableHead from './components/MedicationTableHead';
 import messages from './messages';
@@ -77,13 +78,6 @@ class MedicationTable extends React.Component {
         {...messages.deleteDialogDescription}
         values={{ medication: <strong>{selectedMedications[0].drug.name}</strong> }}
       />;
-      /*
-      description = intl.formatHTMLMessage({
-        ...messages.deleteDialogDescription,
-      }, {
-        medication: selectedMedications[0].drug.name,
-      });
-      */
     }
     return description;
   }
@@ -151,6 +145,11 @@ class MedicationTable extends React.Component {
           onDelete={this.closeDialogs}
           title={intl.formatMessage({...messages.deleteDialogTitle})}
           description={this.getDeleteDialogDescription(selectedMedications)}
+        />
+        <ChangeDosageDialog
+          open
+          onClose={this.closeDialogs}
+          onSave={this.closeDialogs}
         />
       </Wrapper>
     );
