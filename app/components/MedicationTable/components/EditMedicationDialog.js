@@ -30,7 +30,7 @@ class EditMedicationDialog extends React.PureComponent {
     doseInstructionsSign: 0,
   };
 
-  units = ['ml', 'mg', 'l'];
+  units = ['Tablet(s)', 'ml', 'mg', 'l'];
   routes = ['Oral', 'IV', 'PO'];
   doseInstructionsSigns = ['Reduce', 'Increase'];
 
@@ -39,6 +39,8 @@ class EditMedicationDialog extends React.PureComponent {
   }
 
   render() {
+    const { medication } = this.props;
+
     return (
       <Dialog
         aria-labelledby="edit-medication-dialog"
@@ -53,14 +55,14 @@ class EditMedicationDialog extends React.PureComponent {
             </Grid>
             <Grid item xs={8}>
               <Typography variant="subheading" gutterBottom>
-                Dexamethasone
+                {medication.drug.name}
               </Typography>
             </Grid>
             <Grid item xs={4}>
               <FormLabel>Dose</FormLabel>
             </Grid>
             <Grid item xs={4}>
-              <TextField id="dose" type="text" fullWidth defaultValue="1000" />
+              <TextField id="dose" type="text" fullWidth defaultValue={medication.dosingInstructions.dose} />
             </Grid>
             <Grid item xs={4}>
               <FormControl fullWidth>
@@ -139,7 +141,7 @@ class EditMedicationDialog extends React.PureComponent {
                 rows="3"
                 multiid="medication"
                 type="text"
-                defaultValue="Once prior chemotherapy"
+                defaultValue={medication.administrationInstructions}
                 fullWidth
               />
             </Grid>
@@ -162,6 +164,7 @@ EditMedicationDialog.propTypes = {
   open: PropTypes.bool.isRequired,
   onSave: PropTypes.func.isRequired,
   onClose: PropTypes.func.isRequired,
+  medication: PropTypes.object.isRequired,
 };
 
 export default EditMedicationDialog;
