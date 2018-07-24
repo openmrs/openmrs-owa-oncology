@@ -8,21 +8,18 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
-import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 import Textarea from 'components/Textarea';
 
-import Button from '@material-ui/core/Button';
+import { Grid, Typography, Button, ListItem, List, Divider, ListItemText } from '@material-ui/core';
 
 import Page from 'components/Page';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectSummaryPage from './selectors';
+import { makeSelectOrder } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import { ListItem, List, Divider, ListItemText } from '../../../node_modules/@material-ui/core';
 
 const Section = styled.div`
   margin: 0 0 2rem;
@@ -39,11 +36,21 @@ const ButtonContainer = styled.div`
   }
 `;
 
+function generate(element) {
+  return [0, 1, 2,3].map(value =>
+    React.cloneElement(element, {
+      key: value,
+    }),
+  );
+}
+
 /* eslint-disable react/prefer-stateless-function */
 export class SummaryPage extends React.Component {
   state = { regimenName: "CHOP Protocol for Non Hodking Lymphome", cycleInfo: "Every 3 weeks of 6 cycles" };
 
   render() {
+    const { order } = this.props;
+
     return (
       <Page>
         <div>
@@ -81,7 +88,19 @@ export class SummaryPage extends React.Component {
                     <SytledListHeader>
                       <ListItemText primary="PREMEDICATIONS" />
                     </SytledListHeader>
-                    <Divider/>
+                    {order &&
+                      generate(
+                        <div>
+                          <ListItem>
+                            <ListItemText
+                              primary='Dexamethasone'
+                              secondary='Once prior to chemotherapy'
+                            />
+                          </ListItem>
+                          <Divider/>
+                        </div>
+                      )
+                    }
                   </List>  
                 </Grid>
                 <Grid item xs={4}>
@@ -89,7 +108,19 @@ export class SummaryPage extends React.Component {
                     <SytledListHeader>
                       <ListItemText primary="PREMEDICATIONS" />
                     </SytledListHeader>
-                    <Divider/>
+                    {order &&
+                      generate(
+                        <div>
+                          <ListItem>
+                            <ListItemText
+                              primary='Doxorubicin'
+                              secondary='IV Push over 15 mins'
+                            />
+                          </ListItem>
+                          <Divider/>
+                        </div>
+                      )
+                    }
                   </List>  
                 </Grid>
                 <Grid item xs={4}>
@@ -97,7 +128,19 @@ export class SummaryPage extends React.Component {
                     <SytledListHeader>
                       <ListItemText primary="POSTMEDICATION" />
                     </SytledListHeader>
-                    <Divider/>
+                    {order &&
+                      generate(
+                        <div>
+                          <ListItem>
+                            <ListItemText
+                              primary='Aspirin'
+                              secondary='1 time per day'
+                            />
+                          </ListItem>
+                          <Divider/>
+                        </div>
+                      )
+                    }
                   </List>  
                 </Grid>
 
@@ -106,7 +149,7 @@ export class SummaryPage extends React.Component {
 
             <Section>
               <Grid item xs={12}>
-                <Typography variant="headline" gutterBottom>
+                <Typography variant="subheading" gutterBottom>
                   <FormattedMessage {...messages.notes} />
                 </Typography>
                 <Textarea
@@ -163,10 +206,11 @@ export class SummaryPage extends React.Component {
 
 SummaryPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
+  order: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
-  summarypage: makeSelectSummaryPage(),
+  order: makeSelectOrder(),
 });
 
 function mapDispatchToProps(dispatch) {
