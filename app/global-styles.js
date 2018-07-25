@@ -1,4 +1,6 @@
 import { injectGlobal } from 'styled-components';
+import 'rc-slider/assets/index.css';
+import 'rc-tooltip/assets/bootstrap.css';
 
 /* eslint no-unused-expressions: 0 */
 injectGlobal`
@@ -26,5 +28,9 @@ injectGlobal`
   label {
     font-family: Georgia, Times, 'Times New Roman', serif;
     line-height: 1.5em;
+  }
+
+  .rc-slider-tooltip {
+    z-index: 10000;
   }
 `;
