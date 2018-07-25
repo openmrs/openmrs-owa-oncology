@@ -31,4 +31,8 @@ export default defineMessages({
     id: 'app.containers.OrderPage.notes',
     defaultMessage: 'Physician Notes',
   },
+  noPatient: {
+    id: 'app.containers.OrderPage.noPatient',
+    defaultMessage: 'No Patient!!',
+  },
 });

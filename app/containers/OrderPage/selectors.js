@@ -25,6 +25,11 @@ const makeSelectOrders = () =>
     substate.get('orders').toJS(),
   );
 
+const makeSelectPatient = () =>
+  createSelector(selectOrderPageDomain, substate =>
+    substate.get('patient'),
+  );
+
 const makeSelectMedications = () =>
   createSelector(makeSelectRegimenList(), regimenList =>
     (regimenList.results || []).map(regimen =>
@@ -42,4 +47,5 @@ export {
   makeSelectRegimenList,
   makeSelectMedications,
   makeSelectOrders,
+  makeSelectPatient,
 };

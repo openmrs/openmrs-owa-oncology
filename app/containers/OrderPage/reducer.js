@@ -10,6 +10,9 @@ import {
   LOAD_REGIMEN_LIST_SUCCESS,
   LOAD_REGIMEN_LIST_ERROR,
   UPDATE_ORDER,
+  LOAD_PATIENT,
+  LOAD_PATIENT_SUCCESS,
+  LOAD_PATIENT_ERROR,
 } from './constants';
 
 export const initialState = fromJS({
@@ -23,6 +26,7 @@ export const initialState = fromJS({
 
 function orderPageReducer(state = initialState, action) {
   switch (action.type) {
+    // RegimenList
     case LOAD_REGIMEN_LIST:
       return state.setIn(['loading', 'regimenList'], true);
     case LOAD_REGIMEN_LIST_SUCCESS:
@@ -45,6 +49,15 @@ function orderPageReducer(state = initialState, action) {
           .get('orders')
           .update(action.index, () => action.order)
       );
+
+    // Patient
+    case LOAD_PATIENT:
+      return state.setIn(['loading', 'patientUuid'], true);
+    case LOAD_PATIENT_SUCCESS:
+      return state
+        .set('patient', action.patient);
+    case LOAD_PATIENT_ERROR:
+      return state.set('error', action.error);
     default:
       return state;
   }

@@ -28,9 +28,14 @@ import Page from 'components/Page';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
-import { loadRegimenList, updateOrder } from './actions';
+import { loadRegimenList, updateOrder, loadPatient } from './actions';
 
-import { makeSelectRegimenList, makeSelectOrders } from './selectors';
+import {
+  makeSelectRegimenList,
+  makeSelectOrders,
+  makeSelectPatient,
+} from './selectors';
+
 import CyclesFormControl from './components/CyclesFormControl';
 import reducer from './reducer';
 import saga from './saga';
@@ -42,7 +47,11 @@ const Section = styled.div`
 
 /* eslint-disable react/prefer-stateless-function */
 export class OrderPage extends React.Component {
-  state = { template: '' };
+  state = { template: ''};
+
+  componentWillMount() {
+    this.props.loadPatient();
+  }
 
   componentDidMount() {
     this.props.loadRegimenList();
@@ -57,35 +66,36 @@ export class OrderPage extends React.Component {
   };
 
   render() {
-    const { orders } = this.props;
+    const { orders, patient } = this.props;
 
     return (
-      <Page>
-        <Helmet>
-          <title>Order Page</title>
-          <meta name="description" content="Description of OrderPage" />
-        </Helmet>
-        <Grid container>
-          {/* Regimen Selection */}
-          <Grid item xs={6}>
-            <Section>
-              <Typography variant="headline" gutterBottom>
-                <FormattedMessage {...messages.selectRegimen} />
-              </Typography>
-              <FormControl fullWidth margin="normal">
-                <Select
-                  value={this.state.template}
-                  onChange={this.handleSelect}
-                  displayEmpty
-                  inputProps={{
-                    name: 'template',
-                    id: 'template',
-                  }}
-                >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
-                  {this.props.regimenList.results &&
+      patient ?
+        <Page>
+          <Helmet>
+            <title>Order Page</title>
+            <meta name="description" content="Description of OrderPage" />
+          </Helmet>
+          <Grid container>
+            {/* Regimen Selection */}
+            <Grid item xs={6}>
+              <Section>
+                <Typography variant="headline" gutterBottom>
+                  <FormattedMessage {...messages.selectRegimen} />
+                </Typography>
+                <FormControl fullWidth margin="normal">
+                  <Select
+                    value={this.state.template}
+                    onChange={this.handleSelect}
+                    displayEmpty
+                    inputProps={{
+                      name: 'template',
+                      id: 'template',
+                    }}
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    {this.props.regimenList.results &&
                     this.props.regimenList.results.map(
                       ({ display, uuid }, i) => (
                         <MenuItem value={i} key={`template-${uuid}`}>
@@ -93,14 +103,14 @@ export class OrderPage extends React.Component {
                         </MenuItem>
                       ),
                     )}
-                </Select>
-              </FormControl>
-            </Section>
+                  </Select>
+                </FormControl>
+              </Section>
+            </Grid>
           </Grid>
-        </Grid>
 
-        {/* Regimen Cycles Header */}
-        {this.state.template !== "" &&
+          {/* Regimen Cycles Header */}
+          {this.state.template !== "" &&
           <Grid container>
             <Grid item xs={12}>
               <Section>
@@ -136,48 +146,68 @@ export class OrderPage extends React.Component {
               </Section>
             </Grid>
           </Grid>
-        }
-        <Grid
-          container
-          alignItems="center"
-          direction="row"
-          justify="center"
-        >
-          <Route
-            render={({ history }) => (
-              <Button
-                variant="contained"
-                disabled={this.state.template === ""}
-                onClick={() => {
-                  history.push('/orderSummary');
-                }}
-              >
-                <FormattedMessage {...messages.next} />
-              </Button>
-            )}
-          />
-        </Grid>
-      </Page>
+          }
+          <Grid
+            container
+            alignItems="center"
+            direction="row"
+            justify="center"
+          >
+            <Route
+              render={({ history }) => (
+                <Button
+                  variant="contained"
+                  disabled={this.state.template === ""}
+                  onClick={() => {
+                    history.push('/orderSummary');
+                  }}
+                >
+                  <FormattedMessage {...messages.next} />
+                </Button>
+              )}
+            />
+          </Grid>
+        </Page>
+        :
+        <Page>
+          <Helmet>
+            <title>Order Page</title>
+            <meta name="description" content="Description of OrderPage" />
+          </Helmet>
+          <Grid container>
+            {/* Regimen Selection */}
+            <Grid item xs={12}>
+              <Typography variant="headline" gutterBottom>
+                <FormattedMessage {...messages.noPatient} />
+              </Typography>
+            </Grid>
+          </Grid>
+        </Page>
     );
   }
 }
 
 OrderPage.propTypes = {
+  location: PropTypes.shape({search: PropTypes.string}).isRequired,
   loadRegimenList: PropTypes.func.isRequired,
   updateOrder: PropTypes.func.isRequired,
   regimenList: PropTypes.object,
   orders: PropTypes.array,
+  loadPatient: PropTypes.func.isRequired,
+  patient: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   regimenList: makeSelectRegimenList(),
   orders: makeSelectOrders(),
+  patient: makeSelectPatient(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     loadRegimenList: () => dispatch(loadRegimenList()),
     updateOrder: (index, order) => dispatch(updateOrder(index, order)),
+    loadPatient: () => dispatch(loadPatient()),
   };
 }
 
