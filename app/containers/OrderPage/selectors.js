@@ -33,4 +33,9 @@ const makeSelectMedications = () =>
     ),
   );
 
-export { makeSelectRegimenList, makeSelectMedications };
+const makeSelectPatient = () =>
+  createSelector(selectOrderPageDomain, substate =>
+    substate.get('patient'),
+  );
+
+export { makeSelectRegimenList, makeSelectMedications, makeSelectPatient };
