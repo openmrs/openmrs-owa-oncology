@@ -64,7 +64,7 @@ export class SummaryPage extends React.Component {
                   id='app.containers.SummaryPage.regimen'
                   defaultMessage={this.state.regimenName} />
               </Typography>
-      
+
               <Typography variant="subheading" gutterBottom>
                 <FormattedMessage
                   id='app.containers.SummaryPage.regimen'
@@ -91,7 +91,7 @@ export class SummaryPage extends React.Component {
                         <Divider/>
                       </div>
                     ))}
-                  </List>  
+                  </List>
                 </Grid>
 
                 <Grid item xs={4}>
@@ -110,7 +110,7 @@ export class SummaryPage extends React.Component {
                         <Divider/>
                       </div>
                     ))}
-                  </List>  
+                  </List>
                 </Grid>
 
                 <Grid item xs={4}>
@@ -129,7 +129,7 @@ export class SummaryPage extends React.Component {
                         <Divider/>
                       </div>
                     ))}
-                  </List>  
+                  </List>
                 </Grid>
 
               </Grid>
@@ -150,7 +150,7 @@ export class SummaryPage extends React.Component {
                 />
               </Grid>
             </Section>
-            
+
             <Grid item xs={12}>
               <Grid
                 container

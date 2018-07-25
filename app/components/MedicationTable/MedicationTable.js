@@ -98,6 +98,7 @@ class MedicationTable extends React.Component {
           numSelected={selected.length}
           onEdit={() => this.setState({ openDialog: 'edit' })}
           onDelete={() => this.setState({ openDialog: 'delete' })}
+          onChangeDosage={() => this.setState({ openDialog: 'change-dosage' })}
         />
         <div>
           <Table aria-labelledby="tableTitle">
@@ -146,11 +147,14 @@ class MedicationTable extends React.Component {
           title={intl.formatMessage({...messages.deleteDialogTitle})}
           description={this.getDeleteDialogDescription(selectedMedications)}
         />
-        <ChangeDosageDialog
-          open
-          onClose={this.closeDialogs}
-          onSave={this.closeDialogs}
-        />
+        {selectedMedications.length >= 1 &&
+          <ChangeDosageDialog
+            medications={selectedMedications}
+            open={this.state.openDialog === 'change-dosage'}
+            onClose={this.closeDialogs}
+            onSave={this.closeDialogs}
+          />
+        }
       </Wrapper>
     );
   }
