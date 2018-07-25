@@ -30,7 +30,7 @@ export function* getRegimenList() {
 
 export function* loadPatient() {
   const query = new URLSearchParams(window.location.search);
-  const patientUuid = query.get('patientid');
+  const patientUuid = query.get('patientId');
   const requestURL = `${baseUrl}${restEndpoint}/patient/${patientUuid}?v=custom:(patientId,uuid,patientIdentifier:(uuid,identifier),person:(gender,age,birthdate,birthdateEstimated,personName,preferredAddress),attributes:(value,attributeType:(name)))`;
 
   try {
