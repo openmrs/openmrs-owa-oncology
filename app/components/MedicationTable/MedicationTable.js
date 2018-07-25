@@ -102,6 +102,13 @@ class MedicationTable extends React.Component {
     this.setState({ openDialog: '', selected: [] });
   }
 
+  deleteMedications = () => {
+    this.props.onMedicationsChange(this.props.medications.filter(medication =>
+      !this.state.selected.some(uuid => medication.drug.uuid === uuid)
+    ));
+    this.setState({ openDialog: '', selected: [] });
+  }
+
   render() {
     const { medications, intl } = this.props;
     const { selected } = this.state;
@@ -165,7 +172,7 @@ class MedicationTable extends React.Component {
         <DeleteDialog
           open={this.state.openDialog === 'delete'}
           onClose={this.closeDialogs}
-          onDelete={this.closeDialogs}
+          onDelete={this.deleteMedications}
           title={intl.formatMessage({...messages.deleteDialogTitle})}
           description={this.getDeleteDialogDescription(selectedMedications)}
         />
