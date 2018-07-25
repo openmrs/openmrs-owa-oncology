@@ -8,6 +8,7 @@ import {
   LOAD_REGIMEN_LIST,
   LOAD_REGIMEN_LIST_SUCCESS,
   LOAD_REGIMEN_LIST_ERROR,
+  UPDATE_ORDER,
 } from './constants';
 
 export function loadRegimenList() {
@@ -27,5 +28,13 @@ export function regimenListLoadingError(error) {
   return {
     type: LOAD_REGIMEN_LIST_ERROR,
     error,
+  };
+}
+
+export function updateOrder(index, order) {
+  return {
+    type: UPDATE_ORDER,
+    index,
+    order,
   };
 }

@@ -28,9 +28,9 @@ import Page from 'components/Page';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
-import { loadRegimenList } from './actions';
+import { loadRegimenList, updateOrder } from './actions';
 
-import { makeSelectRegimenList, makeSelectMedications } from './selectors';
+import { makeSelectRegimenList, makeSelectOrders } from './selectors';
 import CyclesFormControl from './components/CyclesFormControl';
 import reducer from './reducer';
 import saga from './saga';
@@ -52,8 +52,12 @@ export class OrderPage extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
+  handleMedicationsChange = (medications) => {
+    this.props.updateOrder(this.state.template, medications);
+  };
+
   render() {
-    const { medications } = this.props;
+    const { orders } = this.props;
 
     return (
       <Page>
@@ -112,10 +116,11 @@ export class OrderPage extends React.Component {
                 <Typography variant="headline" gutterBottom>
                   <FormattedMessage {...messages.medications} />
                 </Typography>
-                {medications && medications.length > 0 &&
+                {orders && orders.length > 0 &&
                   <MedicationTable
                     name="Premedications"
-                    medications={medications[this.state.template]}
+                    medications={orders[this.state.template]}
+                    onMedicationsChange={this.handleMedicationsChange}
                   />
                 }
                 <Typography variant="headline" gutterBottom>
@@ -159,18 +164,20 @@ export class OrderPage extends React.Component {
 
 OrderPage.propTypes = {
   loadRegimenList: PropTypes.func.isRequired,
+  updateOrder: PropTypes.func.isRequired,
   regimenList: PropTypes.object,
-  medications: PropTypes.array,
+  orders: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   regimenList: makeSelectRegimenList(),
-  medications: makeSelectMedications(),
+  orders: makeSelectOrders(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     loadRegimenList: () => dispatch(loadRegimenList()),
+    updateOrder: (index, order) => dispatch(updateOrder(index, order)),
   };
 }
 

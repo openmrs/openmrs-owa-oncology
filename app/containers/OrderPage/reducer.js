@@ -4,11 +4,12 @@
  *
  */
 
-import { fromJS } from 'immutable';
+import { fromJS, List } from 'immutable';
 import {
   LOAD_REGIMEN_LIST,
   LOAD_REGIMEN_LIST_SUCCESS,
   LOAD_REGIMEN_LIST_ERROR,
+  UPDATE_ORDER,
 } from './constants';
 
 export const initialState = fromJS({
@@ -17,7 +18,7 @@ export const initialState = fromJS({
   },
   error: '',
   regimenList: [],
-  order: {},
+  orders: [],
 });
 
 function orderPageReducer(state = initialState, action) {
@@ -27,9 +28,23 @@ function orderPageReducer(state = initialState, action) {
     case LOAD_REGIMEN_LIST_SUCCESS:
       return state
         .set('regimenList', action.regimenList)
-        .set('order', action.regimenList);
+        .set('orders', List((action.regimenList.results || []).map(regimen =>
+          (regimen.orderSetMembers || []).map(order => {
+            try {
+              return JSON.parse(order.orderTemplate);
+            } catch (e) {
+              return null;
+            }
+          }))));
     case LOAD_REGIMEN_LIST_ERROR:
       return state.set('error', action.error);
+    case UPDATE_ORDER:
+      return state.set(
+        'orders',
+        state
+          .get('orders')
+          .update(action.index, () => action.order)
+      );
     default:
       return state;
   }

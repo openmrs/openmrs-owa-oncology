@@ -16,6 +16,7 @@ import Checkbox from '@material-ui/core/Checkbox';
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
 import DeleteDialog from 'components/DeleteDialog';
+import Tag from 'components/Tag';
 import EditMedicationDialog from './components/EditMedicationDialog';
 import ChangeDosageDialog from './components/ChangeDosageDialog';
 import MedicationTableToolbar from './components/MedicationTableToolbar';
@@ -27,7 +28,13 @@ const Wrapper = styled.div`
 `;
 
 class MedicationTable extends React.Component {
-  state = { selected: [], openDialog: '' };
+  constructor(props) {
+    super(props);
+    this.state = {
+      selected: [],
+      openDialog: '',
+    };
+  }
 
   handleSelectAllClick = (event, checked) => {
     if (checked) {
@@ -86,11 +93,19 @@ class MedicationTable extends React.Component {
     this.setState({ openDialog: '' });
   }
 
+  saveChanges = (updatedMedications) => {
+    this.props.onMedicationsChange(this.props.medications.map(medication => {
+      const updatedMedication = updatedMedications
+        .find(m => m.drug.uuid === medication.drug.uuid);
+      return updatedMedication || medication
+    }));
+    this.setState({ openDialog: '', selected: [] });
+  }
+
   render() {
     const { medications, intl } = this.props;
     const { selected } = this.state;
     const selectedMedications = this.getSelectedMedications();
-
     return (
       <Wrapper>
         <MedicationTableToolbar
@@ -124,6 +139,13 @@ class MedicationTable extends React.Component {
                   </TableCell>
                   <TableCell >
                     {medication.dosingInstructions.dose} {medication.dosingInstructions.doseUnits}
+                    &nbsp;&nbsp;
+                    {medication.dosingModifications &&
+                      <Tag
+                        value={`${medication.dosingModifications.value}${medication.dosingModifications.units}`}
+                        sign={medication.dosingModifications.sign === 1 ? <span>&plus;</span> : <span>&minus;</span>}
+                      />
+                    }
                   </TableCell>
                   <TableCell>{medication.dosingInstructions.route}</TableCell>
                   <TableCell>{medication.administrationInstructions}</TableCell>
@@ -152,7 +174,7 @@ class MedicationTable extends React.Component {
             medications={selectedMedications}
             open={this.state.openDialog === 'change-dosage'}
             onClose={this.closeDialogs}
-            onSave={this.closeDialogs}
+            onSave={this.saveChanges}
           />
         }
       </Wrapper>
@@ -163,6 +185,7 @@ class MedicationTable extends React.Component {
 MedicationTable.propTypes = {
   name: PropTypes.string,
   medications: PropTypes.array,
+  onMedicationsChange: PropTypes.func,
   intl: intlShape.isRequired,
 };
 

@@ -54,14 +54,37 @@ const OptionalButton = styled.button`
 
 /* eslint-disable react/prefer-stateless-function */
 class ChangeDosageDialog extends React.PureComponent {
-  state = { reduce: true, percentage: '' };
+  state = { reduce: true, percentage: 0 };
 
   toggle = () => {
-    this.setState({ reduce: !this.state.reduce, percentage: '' });
+    this.setState({ reduce: !this.state.reduce, percentage: 0 });
+  }
+
+  handleSave = () => {
+    this.props.onSave(
+      this.props.medications.map(medication => ({
+        ...medication,
+        dosingModifications: {
+          sign: this.state.reduce ? -1 : 1,
+          value: this.state.percentage,
+          units: '%',
+        },
+      })),
+    );
+  }
+
+  renderDosingModifications(medication) {
+    return (
+      <span>
+        {medication.dosingModifications.sign === 1 ? <span>&plus;</span> : <span>&minus;</span>}
+        {medication.dosingModifications.value}{medication.dosingModifications.units}
+      </span>
+    );
   }
 
   render() {
     const { medications } = this.props;
+
     const { reduce } = this.state;
     return (
       <Dialog
@@ -77,19 +100,21 @@ class ChangeDosageDialog extends React.PureComponent {
                 <ListItem key={`medication-${medication.drug.uuid}`}>
                   <ListItemText
                     primary={medication.drug.name}
-                    secondary="Secondary text"
+                    secondary={medication.administrationInstructions}
                   />
                   <ListItemInfo>
-                    {this.state.percentage !== '' &&
+                    {this.state.percentage !== 0 &&
                       <Typography variant="caption">
                         {reduce ? <span>-</span> : <span>+</span>}
                         {this.state.percentage}
                         %
                       </Typography>
                     }
-                    {this.state.percentage === '' &&
+                    {this.state.percentage === 0 &&
                       <Typography variant="caption">
-                        No reduction
+                        {(medication.dosingModifications && this.renderDosingModifications(medication))
+                          || 'No reduction'
+                        }
                       </Typography>
                     }
                   </ListItemInfo>
@@ -134,7 +159,6 @@ class ChangeDosageDialog extends React.PureComponent {
                     50: '-50%',
                   }}
                   step={5}
-                  defaultValue={0}
                 />
               }
               {!reduce &&
@@ -155,7 +179,6 @@ class ChangeDosageDialog extends React.PureComponent {
                     50: '+50%',
                   }}
                   step={5}
-                  defaultValue={0}
                   railStyle={{ backgroundColor: yellow[200] }}
                 />
               }
@@ -171,7 +194,7 @@ class ChangeDosageDialog extends React.PureComponent {
           <Button onClick={this.props.onClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={this.props.onSave} color="primary">
+          <Button onClick={this.handleSave} color="primary">
             Save
           </Button>
         </DialogActions>

@@ -20,6 +20,11 @@ const makeSelectRegimenList = () =>
     substate.get('regimenList'),
   );
 
+const makeSelectOrders = () =>
+  createSelector(selectOrderPageDomain, substate =>
+    substate.get('orders').toJS(),
+  );
+
 const makeSelectMedications = () =>
   createSelector(makeSelectRegimenList(), regimenList =>
     (regimenList.results || []).map(regimen =>
@@ -33,4 +38,8 @@ const makeSelectMedications = () =>
     ),
   );
 
-export { makeSelectRegimenList, makeSelectMedications };
+export {
+  makeSelectRegimenList,
+  makeSelectMedications,
+  makeSelectOrders,
+};
