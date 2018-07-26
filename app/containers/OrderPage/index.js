@@ -159,7 +159,7 @@ export class OrderPage extends React.Component {
                   variant="contained"
                   disabled={this.state.template === ""}
                   onClick={() => {
-                    history.push('/orderSummary');
+                    history.push(`/orderSummary/${this.state.template}`);
                   }}
                 >
                   <FormattedMessage {...messages.next} />

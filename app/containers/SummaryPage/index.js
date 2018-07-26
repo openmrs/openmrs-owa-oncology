@@ -16,7 +16,7 @@ import Page from 'components/Page';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectOrder } from './selectors';
+import { makeSelectOrders } from './selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
@@ -41,7 +41,9 @@ export class SummaryPage extends React.Component {
   state = { regimenName: "CHOP Protocol for Non Hodking Lymphome", cycleInfo: "Every 3 weeks of 6 cycles" };
 
   render() {
-    const { order } = this.props;
+    const { orders, match } = this.props
+    const orderIndex = match.params.template;
+    const order = orders[orderIndex];
 
     return (
       <Page>
@@ -97,7 +99,7 @@ export class SummaryPage extends React.Component {
                 <Grid item xs={4}>
                   <List>
                     <SytledListHeader>
-                      <ListItemText primary="PREMEDICATIONS" />
+                      <ListItemText primary="CHEMOTHERAPY" />
                     </SytledListHeader>
                     {order && order.chemoMeds && order.chemoMeds.map(({uuid, name, adminInstructions}) => (
                       <div key={`drug-${uuid}`}>
@@ -195,11 +197,13 @@ export class SummaryPage extends React.Component {
 
 SummaryPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
-  order: PropTypes.object,
+  orderIndex: PropTypes.string,
+  orders: PropTypes.array,
+  match: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
-  order: makeSelectOrder(),
+  orders: makeSelectOrders(),
 });
 
 function mapDispatchToProps(dispatch) {
