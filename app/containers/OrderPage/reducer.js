@@ -35,7 +35,10 @@ function orderPageReducer(state = initialState, action) {
         .set('orders', List((action.regimenList.results || []).map(regimen =>
           (regimen.orderSetMembers || []).map(order => {
             try {
-              return JSON.parse(order.orderTemplate);
+              return {
+                uuid: order.uuid,
+                ...JSON.parse(order.orderTemplate),
+              }
             } catch (e) {
               return null;
             }

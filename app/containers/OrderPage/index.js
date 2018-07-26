@@ -35,6 +35,7 @@ import {
   makeSelectPremedications,
   makeSelectChemotherapy,
   makeSelectPatient,
+  makeSelectOrders,
 } from './selectors';
 
 import CyclesFormControl from './components/CyclesFormControl';
@@ -62,8 +63,13 @@ export class OrderPage extends React.Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  handleMedicationsChange = (medications) => {
-    this.props.updateOrder(this.state.template, medications);
+  handleMedicationsChange = (updatedMedications, orderReason) => {
+    const { orders } = this.props;
+    const { template }  = this.state;
+    this.props.updateOrder(template, orders[template].map(medication =>
+      (medication.orderReason !== orderReason && medication) ||
+        updatedMedications.find(m => m.uuid === medication.uuid)
+    ).filter(m => m));
   };
 
   render() {
@@ -130,14 +136,14 @@ export class OrderPage extends React.Component {
                   <MedicationTable
                     name="Premedications"
                     medications={premedications[this.state.template]}
-                    onMedicationsChange={this.handleMedicationsChange}
+                    onMedicationsChange={(meds) => this.handleMedicationsChange(meds, 'Premedication')}
                   />
                 }
                 {chemotherapy && chemotherapy[this.state.template].length > 0 &&
                   <MedicationTable
                     name="Chemotherapy"
                     medications={chemotherapy[this.state.template]}
-                    onMedicationsChange={this.handleMedicationsChange}
+                    onMedicationsChange={(meds) => this.handleMedicationsChange(meds, 'Chemotherapy')}
                   />
                 }
                 <Typography variant="headline" gutterBottom>
@@ -203,6 +209,7 @@ OrderPage.propTypes = {
   patient: PropTypes.object,
   premedications: PropTypes.array.isRequired,
   chemotherapy: PropTypes.array.isRequired,
+  orders: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -210,6 +217,7 @@ const mapStateToProps = createStructuredSelector({
   patient: makeSelectPatient(),
   premedications: makeSelectPremedications(),
   chemotherapy: makeSelectChemotherapy(),
+  orders: makeSelectOrders(),
 });
 
 function mapDispatchToProps(dispatch) {

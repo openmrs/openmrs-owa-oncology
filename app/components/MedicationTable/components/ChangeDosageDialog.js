@@ -34,7 +34,7 @@ const Warning = styled.div`
   padding: 0.5rem 1.5rem;
 `;
 const Content = styled.div`
-  min-width: 400px;
+  width: 600px;
 `;
 const SliderLabel = styled.div`
   margin: 1em 0 0.5em;
