@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import yellow from '@material-ui/core/colors/yellow';
 
-const Wrapper = styled.div`
+const Wrapper = styled.span`
   display: inline-block;
   border-radius: 4px;
   padding: 0.5em 1em;

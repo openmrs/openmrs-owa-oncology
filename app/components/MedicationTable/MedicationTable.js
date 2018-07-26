@@ -12,6 +12,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
+import Typography from '@material-ui/core/Typography';
 
 import { FormattedMessage, injectIntl, intlShape } from 'react-intl';
 
@@ -38,7 +39,7 @@ class MedicationTable extends React.Component {
 
   handleSelectAllClick = (event, checked) => {
     if (checked) {
-      this.setState({ selected: this.props.medications.map(({ drug }) => drug.uuid) });
+      this.setState({ selected: this.props.medications.map(({ uuid }) => uuid) });
       return;
     }
     this.setState({ selected: [] });
@@ -70,7 +71,7 @@ class MedicationTable extends React.Component {
   getSelectedMedications() {
     return this.state.selected.map(uuid =>
       this.props.medications.find(medication =>
-        medication.drug.uuid === uuid
+        medication.uuid === uuid
       )
     )
   }
@@ -96,7 +97,7 @@ class MedicationTable extends React.Component {
   saveChanges = (updatedMedications) => {
     this.props.onMedicationsChange(this.props.medications.map(medication => {
       const updatedMedication = updatedMedications
-        .find(m => m.drug.uuid === medication.drug.uuid);
+        .find(m => m.uuid === medication.uuid);
       return updatedMedication || medication
     }));
     this.setState({ openDialog: '', selected: [] });
@@ -104,7 +105,7 @@ class MedicationTable extends React.Component {
 
   deleteMedications = () => {
     this.props.onMedicationsChange(this.props.medications.filter(medication =>
-      !this.state.selected.some(uuid => medication.drug.uuid === uuid)
+      !this.state.selected.some(uuid => medication.uuid === uuid)
     ));
     this.setState({ openDialog: '', selected: [] });
   }
@@ -132,27 +133,29 @@ class MedicationTable extends React.Component {
             <TableBody>
               {medications.map(medication =>
                 <TableRow
-                  onClick={e => this.handleClick(e, medication.drug.uuid)}
+                  onClick={e => this.handleClick(e, medication.uuid)}
                   role="checkbox"
-                  aria-checked={this.isSelected(medication.drug.uuid)}
+                  aria-checked={this.isSelected(medication.uuid)}
                   tabIndex={-1}
-                  key={medication.drug.uuid}
+                  key={medication.uuid}
                 >
                   <TableCell padding="checkbox">
-                    <Checkbox color="primary" checked={this.isSelected(medication.drug.uuid)} />
+                    <Checkbox color="primary" checked={this.isSelected(medication.uuid)} />
                   </TableCell>
                   <TableCell padding="none">
                     {medication.drug.name}
                   </TableCell>
-                  <TableCell >
-                    {medication.dosingInstructions.dose} {medication.dosingInstructions.doseUnits}
-                    &nbsp;&nbsp;
-                    {medication.dosingModifications &&
-                      <Tag
-                        value={`${medication.dosingModifications.value}${medication.dosingModifications.units}`}
-                        sign={medication.dosingModifications.sign === 1 ? <span>&plus;</span> : <span>&minus;</span>}
-                      />
-                    }
+                  <TableCell>
+                    <Typography noWrap>
+                      {medication.dosingInstructions.dose} {medication.dosingInstructions.doseUnits}
+                      &nbsp;&nbsp;
+                      {medication.dosingModifications &&
+                        <Tag
+                          value={`${medication.dosingModifications.value}${medication.dosingModifications.units}`}
+                          sign={medication.dosingModifications.sign === 1 ? <span>&plus;</span> : <span>&minus;</span>}
+                        />
+                      }
+                    </Typography>
                   </TableCell>
                   <TableCell>{medication.dosingInstructions.route}</TableCell>
                   <TableCell>{medication.administrationInstructions}</TableCell>
