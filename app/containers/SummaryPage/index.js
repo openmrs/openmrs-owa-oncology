@@ -13,10 +13,11 @@ import Textarea from 'components/Textarea';
 import { Grid, Typography, Button, ListItem, List, Divider, ListItemText } from '@material-ui/core';
 
 import Page from 'components/Page';
+import Tag from 'components/Tag';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectOrders } from './selectors';
+import { makeSelectPremedications, makeSelectChemotherapy, makeSelectPostmedications} from '../OrderPage/selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
@@ -41,9 +42,8 @@ export class SummaryPage extends React.Component {
   state = { regimenName: "CHOP Protocol for Non Hodking Lymphome", cycleInfo: "Every 3 weeks of 6 cycles" };
 
   render() {
-    const { orders, match } = this.props
+    const { premedications, chemotherapy, postmedications, match } = this.props
     const orderIndex = match.params.template;
-    const order = orders[orderIndex];
 
     return (
       <Page>
@@ -80,16 +80,21 @@ export class SummaryPage extends React.Component {
                 <Grid item xs={4}>
                   <List>
                     <SytledListHeader>
-                      <ListItemText primary="PREMEDICATIONS" />
+                      <ListItemText primary="PREMEDICATION" />
                     </SytledListHeader>
-                    {order && order.preMeds && order.preMeds.map(({uuid, name, adminInstructions}) => (
-                      <div key={`drug-${uuid}`}>
+                    {premedications && premedications[orderIndex].length > 0 && premedications[orderIndex].map(({drug, administrationInstructions, dosingModifications}) => (
+                      <div key={`drug-${drug.uuid}`}>
                         <ListItem >
                           <ListItemText
-                            primary={name}
-                            secondary={adminInstructions}
+                            primary={drug.name}
+                            secondary={administrationInstructions}
                           />
                         </ListItem>
+                        {dosingModifications &&
+                        <Tag
+                          value={`${dosingModifications.value}${dosingModifications.units}`}
+                          sign={dosingModifications.sign === 1 ? <span>&plus;</span> : <span>&minus;</span>}
+                        />}
                         <Divider/>
                       </div>
                     ))}
@@ -101,14 +106,19 @@ export class SummaryPage extends React.Component {
                     <SytledListHeader>
                       <ListItemText primary="CHEMOTHERAPY" />
                     </SytledListHeader>
-                    {order && order.chemoMeds && order.chemoMeds.map(({uuid, name, adminInstructions}) => (
-                      <div key={`drug-${uuid}`}>
+                    {chemotherapy && chemotherapy[orderIndex].length > 0 && chemotherapy[orderIndex].map(({drug, administrationInstructions, dosingModifications}) => (
+                      <div key={`drug-${drug.uuid}`}>
                         <ListItem >
                           <ListItemText
-                            primary={name}
-                            secondary={adminInstructions}
+                            primary={drug.name}
+                            secondary={administrationInstructions}
                           />
                         </ListItem>
+                        {dosingModifications &&
+                        <Tag
+                          value={`${dosingModifications.value}${dosingModifications.units}`}
+                          sign={dosingModifications.sign === 1 ? <span>&plus;</span> : <span>&minus;</span>}
+                        />}
                         <Divider/>
                       </div>
                     ))}
@@ -120,14 +130,19 @@ export class SummaryPage extends React.Component {
                     <SytledListHeader>
                       <ListItemText primary="POSTMEDICATION" />
                     </SytledListHeader>
-                    {order && order.postMeds && order.postMeds.map(({uuid, name, adminInstructions}) => (
-                      <div key={`drug-${uuid}`}>
+                    {postmedications && postmedications[orderIndex].length > 0 && postmedications[orderIndex].map(({drug, administrationInstructions, dosingModifications}) => (
+                      <div key={`drug-${drug.uuid}`}>
                         <ListItem >
                           <ListItemText
-                            primary={name}
-                            secondary={adminInstructions}
+                            primary={drug.name}
+                            secondary={administrationInstructions}
                           />
                         </ListItem>
+                        {dosingModifications &&
+                        <Tag
+                          value={`${dosingModifications.value}${dosingModifications.units}`}
+                          sign={dosingModifications.sign === 1 ? <span>&plus;</span> : <span>&minus;</span>}
+                        />}
                         <Divider/>
                       </div>
                     ))}
@@ -196,14 +211,16 @@ export class SummaryPage extends React.Component {
 }
 
 SummaryPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
-  orderIndex: PropTypes.string,
-  orders: PropTypes.array,
+  premedications: PropTypes.array.isRequired,
+  chemotherapy: PropTypes.array.isRequired,
+  postmedications: PropTypes.array.isRequired,
   match: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
-  orders: makeSelectOrders(),
+  premedications: makeSelectPremedications(),
+  chemotherapy: makeSelectChemotherapy(),
+  postmedications: makeSelectPostmedications(),
 });
 
 function mapDispatchToProps(dispatch) {
