@@ -1,5 +1,5 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { LOAD_REGIMEN_LIST, LOAD_PATIENT } from 'containers/OrderPage/constants';
+import { LOAD_REGIMEN_LIST, LOAD_PATIENT} from 'containers/OrderPage/constants';
 import {
   regimenListLoaded,
   regimenListLoadingError,
@@ -22,6 +22,7 @@ export function* getRegimenList() {
         'Content-Type': 'application/json;charset=UTF-8',
       },
     });
+
     yield put(regimenListLoaded(regimenList));
   } catch (err) {
     yield put(regimenListLoadingError(err));

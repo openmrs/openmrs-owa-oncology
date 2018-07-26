@@ -21,6 +21,8 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 
+import { postChemoOrder } from './actions';
+
 import SummaryMedListControl from './components/SummaryMedListControl';
 
 const Section = styled.div`
@@ -133,9 +135,7 @@ export class SummaryPage extends React.Component {
                     <Button
                       color="primary"
                       variant="contained"
-                      onClick={() => {
-
-                      }}
+                      onClick={()=>this.props.postChemoOrder(orderIndex)}
                     >
                       <FormattedMessage {...messages.submit} />
                     </Button>
@@ -155,6 +155,7 @@ SummaryPage.propTypes = {
   postmedications: PropTypes.array.isRequired,
   match: PropTypes.object,
   location: PropTypes.object.isRequired,
+  postChemoOrder: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -165,7 +166,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    postChemoOrder: (orderIndex) => dispatch(postChemoOrder(orderIndex)),
   };
 }
 
