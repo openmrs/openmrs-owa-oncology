@@ -32,7 +32,8 @@ import { loadRegimenList, updateOrder, loadPatient } from './actions';
 
 import {
   makeSelectRegimenList,
-  makeSelectOrders,
+  makeSelectPremedications,
+  makeSelectChemotherapy,
   makeSelectPatient,
 } from './selectors';
 
@@ -66,7 +67,7 @@ export class OrderPage extends React.Component {
   };
 
   render() {
-    const { orders, patient } = this.props;
+    const { patient, premedications, chemotherapy, regimenList } = this.props;
 
     return (
       patient ?
@@ -95,8 +96,7 @@ export class OrderPage extends React.Component {
                     <MenuItem value="">
                       <em>None</em>
                     </MenuItem>
-                    {this.props.regimenList.results &&
-                    this.props.regimenList.results.map(
+                    {regimenList.results && regimenList.results.map(
                       ({ display, uuid }, i) => (
                         <MenuItem value={i} key={`template-${uuid}`}>
                           {display}
@@ -126,10 +126,17 @@ export class OrderPage extends React.Component {
                 <Typography variant="headline" gutterBottom>
                   <FormattedMessage {...messages.medications} />
                 </Typography>
-                {orders && orders.length > 0 &&
+                {premedications && premedications[this.state.template].length > 0 &&
                   <MedicationTable
                     name="Premedications"
-                    medications={orders[this.state.template]}
+                    medications={premedications[this.state.template]}
+                    onMedicationsChange={this.handleMedicationsChange}
+                  />
+                }
+                {chemotherapy && chemotherapy[this.state.template].length > 0 &&
+                  <MedicationTable
+                    name="Chemotherapy"
+                    medications={chemotherapy[this.state.template]}
                     onMedicationsChange={this.handleMedicationsChange}
                   />
                 }
@@ -192,15 +199,17 @@ OrderPage.propTypes = {
   loadRegimenList: PropTypes.func.isRequired,
   updateOrder: PropTypes.func.isRequired,
   regimenList: PropTypes.object,
-  orders: PropTypes.array,
   loadPatient: PropTypes.func.isRequired,
   patient: PropTypes.object,
+  premedications: PropTypes.array.isRequired,
+  chemotherapy: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   regimenList: makeSelectRegimenList(),
-  orders: makeSelectOrders(),
   patient: makeSelectPatient(),
+  premedications: makeSelectPremedications(),
+  chemotherapy: makeSelectChemotherapy(),
 });
 
 function mapDispatchToProps(dispatch) {

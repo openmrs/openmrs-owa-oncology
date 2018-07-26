@@ -43,9 +43,25 @@ const makeSelectMedications = () =>
     ),
   );
 
+const makeSelectPremedications = () =>
+  createSelector(makeSelectOrders(), orders =>
+    orders.map(medications =>
+      medications.filter(m => m && m.orderReason === 'Premedication')
+    )
+  );
+
+const makeSelectChemotherapy = () =>
+  createSelector(makeSelectOrders(), orders =>
+    orders.map(medications =>
+      medications.filter(m => m && m.orderReason === 'Chemotherapy')
+    )
+  );
+
 export {
   makeSelectRegimenList,
   makeSelectMedications,
+  makeSelectPremedications,
+  makeSelectChemotherapy,
   makeSelectOrders,
   makeSelectPatient,
 };

@@ -31,7 +31,7 @@ function Tag(props) {
 
 Tag.propTypes = {
   value: PropTypes.string,
-  sign: PropTypes.string,
+  sign: PropTypes.any,
 };
 
 export default Tag;
