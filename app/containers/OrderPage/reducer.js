@@ -13,6 +13,7 @@ import {
   LOAD_PATIENT,
   LOAD_PATIENT_SUCCESS,
   LOAD_PATIENT_ERROR,
+  POST_CHEMO_ORDER,
 } from './constants';
 
 export const initialState = fromJS({
@@ -68,6 +69,8 @@ function orderPageReducer(state = initialState, action) {
         .set('patient', action.patient);
     case LOAD_PATIENT_ERROR:
       return state.set('error', action.error);
+    case POST_CHEMO_ORDER:
+      return state.set('patient', action.patient);
     default:
       return state;
   }

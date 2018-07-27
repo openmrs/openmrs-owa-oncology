@@ -12,3 +12,5 @@ export const UPDATE_ORDER = 'app/OrderPage/UPDATE_ORDER';
 export const LOAD_PATIENT = 'app/OrderPage/LOAD_PATIENT';
 export const LOAD_PATIENT_SUCCESS = 'app/OrderPage/LOAD_PATIENT_SUCCESS';
 export const LOAD_PATIENT_ERROR = 'app/OrderPage/LOAD_PATIENT_ERROR';
+
+export const POST_CHEMO_ORDER = 'app/OrderPage/POST_CHEMO_ORDER';

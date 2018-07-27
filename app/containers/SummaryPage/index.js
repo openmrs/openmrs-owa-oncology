@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Route } from 'react-router-dom';
+import { Route, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -10,10 +10,9 @@ import { compose } from 'redux';
 
 import Textarea from 'components/Textarea';
 
-import { Grid, Typography, Button, ListItem, List, Divider, ListItemText } from '@material-ui/core';
+import { Grid, Typography, Button } from '@material-ui/core';
 
 import Page from 'components/Page';
-import Tag from 'components/Tag';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
@@ -22,13 +21,13 @@ import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
 
+import { postChemoOrder } from './actions';
+
+import SummaryMedListControl from './components/SummaryMedListControl';
+
 const Section = styled.div`
   margin: 0 0 2rem;
   width: 100%;
-`;
-
-const SytledListHeader = styled(ListItem)`
-  background: #f5f5f5;
 `;
 
 const ButtonContainer = styled.div`
@@ -44,168 +43,108 @@ export class SummaryPage extends React.Component {
   render() {
     const { premedications, chemotherapy, postmedications, match } = this.props
     const orderIndex = match.params.template;
+    const { from } = this.props.location.state || { from: { pathname: "/order" } };
 
     return (
-      <Page>
-        <div>
-          <Helmet>
-            <title>Order Summary</title>
-            <meta name="description" content="Description of SummaryPage" />
-          </Helmet>
+      (chemotherapy.length === 0 )?
+        <Redirect to={from}/>
+        :
+        <Page>
+          <div>
+            <Helmet>
+              <title>Order Summary</title>
+              <meta name="description" content="Description of SummaryPage" />
+            </Helmet>
 
-          <Grid container>
-            <Grid item xs={12}>
-              <Section>
-                <Typography variant="headline" gutterBottom>
-                  <FormattedMessage {...messages.header} />
+            <Grid container>
+              <Grid item xs={12}>
+                <Section>
+                  <Typography variant="headline" gutterBottom>
+                    <FormattedMessage {...messages.header} />
+                  </Typography>
+                </Section>
+
+                <Typography variant="title" gutterBottom>
+                  <FormattedMessage
+                    id='app.containers.SummaryPage.regimen'
+                    defaultMessage={this.state.regimenName} />
                 </Typography>
+
+                <Typography variant="subheading" gutterBottom>
+                  <FormattedMessage
+                    id='app.containers.SummaryPage.regimen'
+                    defaultMessage={this.state.cycleInfo} />
+                </Typography>
+              </Grid>
+
+              <Section>
+                <Grid container spacing={16}>
+
+                  <Grid item xs={4}>
+                    <SummaryMedListControl medications={premedications} orderIndex={orderIndex} label="PREMEDICATION"></SummaryMedListControl>
+                  </Grid>
+
+                  <Grid item xs={4}>
+                    <SummaryMedListControl medications={chemotherapy} orderIndex={orderIndex} label="CHEMOTHERAPY"></SummaryMedListControl>
+                  </Grid>
+
+                  <Grid item xs={4}>
+                    <SummaryMedListControl medications={postmedications} orderIndex={orderIndex} label="POSTMEDICATIONS"></SummaryMedListControl>
+                  </Grid>
+
+                </Grid>
               </Section>
 
-              <Typography variant="title" gutterBottom>
-                <FormattedMessage
-                  id='app.containers.SummaryPage.regimen'
-                  defaultMessage={this.state.regimenName} />
-              </Typography>
-
-              <Typography variant="subheading" gutterBottom>
-                <FormattedMessage
-                  id='app.containers.SummaryPage.regimen'
-                  defaultMessage={this.state.cycleInfo} />
-              </Typography>
-            </Grid>
-
-            <Section>
-              <Grid container spacing={16}>
-
-                <Grid item xs={4}>
-                  <List>
-                    <SytledListHeader>
-                      <ListItemText primary="PREMEDICATION" />
-                    </SytledListHeader>
-                    {premedications && premedications[orderIndex].length > 0 && premedications[orderIndex].map(({drug, administrationInstructions, dosingModifications}) => (
-                      <div key={`drug-${drug.uuid}`}>
-                        <ListItem >
-                          <ListItemText
-                            primary={drug.name}
-                            secondary={administrationInstructions}
-                          />
-                        </ListItem>
-                        {dosingModifications &&
-                        <Tag
-                          value={`${dosingModifications.value}${dosingModifications.units}`}
-                          sign={dosingModifications.sign === 1 ? <span>&plus;</span> : <span>&minus;</span>}
-                        />}
-                        <Divider/>
-                      </div>
-                    ))}
-                  </List>
-                </Grid>
-
-                <Grid item xs={4}>
-                  <List>
-                    <SytledListHeader>
-                      <ListItemText primary="CHEMOTHERAPY" />
-                    </SytledListHeader>
-                    {chemotherapy && chemotherapy[orderIndex].length > 0 && chemotherapy[orderIndex].map(({drug, administrationInstructions, dosingModifications}) => (
-                      <div key={`drug-${drug.uuid}`}>
-                        <ListItem >
-                          <ListItemText
-                            primary={drug.name}
-                            secondary={administrationInstructions}
-                          />
-                        </ListItem>
-                        {dosingModifications &&
-                        <Tag
-                          value={`${dosingModifications.value}${dosingModifications.units}`}
-                          sign={dosingModifications.sign === 1 ? <span>&plus;</span> : <span>&minus;</span>}
-                        />}
-                        <Divider/>
-                      </div>
-                    ))}
-                  </List>
-                </Grid>
-
-                <Grid item xs={4}>
-                  <List>
-                    <SytledListHeader>
-                      <ListItemText primary="POSTMEDICATION" />
-                    </SytledListHeader>
-                    {postmedications && postmedications[orderIndex].length > 0 && postmedications[orderIndex].map(({drug, administrationInstructions, dosingModifications}) => (
-                      <div key={`drug-${drug.uuid}`}>
-                        <ListItem >
-                          <ListItemText
-                            primary={drug.name}
-                            secondary={administrationInstructions}
-                          />
-                        </ListItem>
-                        {dosingModifications &&
-                        <Tag
-                          value={`${dosingModifications.value}${dosingModifications.units}`}
-                          sign={dosingModifications.sign === 1 ? <span>&plus;</span> : <span>&minus;</span>}
-                        />}
-                        <Divider/>
-                      </div>
-                    ))}
-                  </List>
-                </Grid>
-
-              </Grid>
-            </Section>
-
-            <Section>
-              <Grid item xs={12}>
-                <Typography variant="subheading" gutterBottom>
-                  <FormattedMessage {...messages.notes} />
-                </Typography>
-                <Textarea
-                  rows="3"
-                  disabled
-                  multiid="medication"
-                  type="text"
-                  defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tempor mi nec suscipit mattis. Mauris ut laoreet ex. Duis varius, enim sit amet dapibus molestie, metus arcu elementum sapien"
-                  fullWidth
-                />
-              </Grid>
-            </Section>
-
-            <Grid item xs={12}>
-              <Grid
-                container
-                alignItems="center"
-                direction="row"
-                justify="center"
-              >
-                <ButtonContainer>
-                  <Route
-                    render={({ history }) => (
-                      <Button
-                        variant="contained"
-                        onClick={() => {
-                          history.push('/order');
-                        }}
-                      >
-                        <FormattedMessage {...messages.back} />
-                      </Button>
-                    )}
+              <Section>
+                <Grid item xs={12}>
+                  <Typography variant="subheading" gutterBottom>
+                    <FormattedMessage {...messages.notes} />
+                  </Typography>
+                  <Textarea
+                    rows="3"
+                    disabled
+                    multiid="medication"
+                    type="text"
+                    defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tempor mi nec suscipit mattis. Mauris ut laoreet ex. Duis varius, enim sit amet dapibus molestie, metus arcu elementum sapien"
+                    fullWidth
                   />
+                </Grid>
+              </Section>
 
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    onClick={() => {
+              <Grid item xs={12}>
+                <Grid
+                  container
+                  alignItems="center"
+                  direction="row"
+                  justify="center"
+                >
+                  <ButtonContainer>
+                    <Route
+                      render={({ history }) => (
+                        <Button
+                          variant="contained"
+                          onClick={() => {
+                            history.push('/order');
+                          }}
+                        >
+                          <FormattedMessage {...messages.back} />
+                        </Button>
+                      )}
+                    />
 
-                    }}
-                  >
-                    <FormattedMessage {...messages.submit} />
-                  </Button>
-                </ButtonContainer>
+                    <Button
+                      color="primary"
+                      variant="contained"
+                      onClick={()=>this.props.postChemoOrder(orderIndex)}
+                    >
+                      <FormattedMessage {...messages.submit} />
+                    </Button>
+                  </ButtonContainer>
+                </Grid>
               </Grid>
             </Grid>
-
-
-          </Grid>
-        </div>
-      </Page>
+          </div>
+        </Page>
     );
   }
 }
@@ -215,6 +154,8 @@ SummaryPage.propTypes = {
   chemotherapy: PropTypes.array.isRequired,
   postmedications: PropTypes.array.isRequired,
   match: PropTypes.object,
+  location: PropTypes.object.isRequired,
+  postChemoOrder: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -225,7 +166,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    postChemoOrder: (orderIndex) => dispatch(postChemoOrder(orderIndex)),
   };
 }
 

@@ -1,13 +1,14 @@
+import { POST_CHEMO_ORDER } from "../OrderPage/constants";
+
 /*
  *
  * SummaryPage actions
  *
  */
 
-import { DEFAULT_ACTION } from './constants';
-
-export function defaultAction() {
+export function postChemoOrder(orderIndex) {
   return {
-    type: DEFAULT_ACTION,
-  };
+    type: POST_CHEMO_ORDER,
+    orderIndex,
+  }
 }
