@@ -148,7 +148,7 @@ export class OrderPage extends React.Component {
         </Grid>
 
         {/* Regimen Cycles Header */}
-        {orders.length > 0 &&
+        {template >= 0 && orders.length > 0 &&
           <Grid container>
             <Grid item xs={12}>
               <Section>
