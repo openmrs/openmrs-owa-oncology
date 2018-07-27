@@ -40,6 +40,7 @@ function orderPageReducer(state = initialState, action) {
             cycleDuration: 21,
             days: [1, 8, 15],
           },
+          regimenName: regimen.display,
           medications: (regimen.orderSetMembers || []).map(order => {
             try {
               return {
