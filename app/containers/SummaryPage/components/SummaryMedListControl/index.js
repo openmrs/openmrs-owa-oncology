@@ -17,7 +17,7 @@ const SytledListHeader = styled(ListItem)`
 
 /* eslint-disable react/prefer-stateless-function */
 class SummaryMedListControl extends React.PureComponent {
-  
+
 
   render() {
     const { medications, orderIndex, label } = this.props
@@ -27,19 +27,19 @@ class SummaryMedListControl extends React.PureComponent {
         <SytledListHeader>
           <ListItemText primary={label} />
         </SytledListHeader>
-        {medications && medications[orderIndex].length > 0 && medications[orderIndex].map(({drug, administrationInstructions, dosingModifications}) => (
-          <div key={`drug-${drug.uuid}`}>
+        {medications && medications[orderIndex].length > 0 && medications[orderIndex].map(({uuid, drug, administrationInstructions, dosingModifications}) => (
+          <div key={`drug-${uuid}`}>
             <ListItem >
               <ListItemText
                 primary={drug.name}
                 secondary={administrationInstructions}
               />
+              {dosingModifications &&
+              <Tag
+                value={`${dosingModifications.value}${dosingModifications.units}`}
+                sign={dosingModifications.sign === 1 ? <span>&plus;</span> : <span>&minus;</span>}
+              />}
             </ListItem>
-            {dosingModifications &&
-            <Tag
-              value={`${dosingModifications.value}${dosingModifications.units}`}
-              sign={dosingModifications.sign === 1 ? <span>&plus;</span> : <span>&minus;</span>}
-            />}
             <Divider/>
           </div>
         ))}

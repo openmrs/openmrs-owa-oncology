@@ -45,21 +45,21 @@ const makeSelectMedications = () =>
 
 const makeSelectPremedications = () =>
   createSelector(makeSelectOrders(), orders =>
-    orders.map(medications =>
+    orders.map(({ medications }) =>
       medications.filter(m => m && m.orderReason === 'Premedication')
     )
   );
 
 const makeSelectChemotherapy = () =>
   createSelector(makeSelectOrders(), orders =>
-    orders.map(medications =>
+    orders.map(({ medications }) =>
       medications.filter(m => m && m.orderReason === 'Chemotherapy')
     )
   );
 
 const makeSelectPostmedications = () =>
   createSelector(makeSelectOrders(), orders =>
-    orders.map(medications =>
+    orders.map(({ medications }) =>
       medications.filter(m => m && m.orderReason === 'Postmedication')
     )
   );

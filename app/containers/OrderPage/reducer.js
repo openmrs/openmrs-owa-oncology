@@ -33,8 +33,15 @@ function orderPageReducer(state = initialState, action) {
     case LOAD_REGIMEN_LIST_SUCCESS:
       return state
         .set('regimenList', action.regimenList)
-        .set('orders', List((action.regimenList.results || []).map(regimen =>
-          (regimen.orderSetMembers || []).map(order => {
+        .set('orders', List((action.regimenList.results || []).map(regimen => ({
+          notes: '',
+          cyclesDescription: {
+            cycles: 6,
+            cycleDuration: 21,
+            days: [1, 8, 15],
+          },
+          regimenName: regimen.display,
+          medications: (regimen.orderSetMembers || []).map(order => {
             try {
               return {
                 uuid: order.uuid,
@@ -43,7 +50,8 @@ function orderPageReducer(state = initialState, action) {
             } catch (e) {
               return null;
             }
-          }))));
+          }),
+        }))));
     case LOAD_REGIMEN_LIST_ERROR:
       return state.set('error', action.error);
     case UPDATE_ORDER:

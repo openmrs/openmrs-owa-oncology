@@ -8,15 +8,18 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
-import Textarea from 'components/Textarea';
-
 import { Grid, Typography, Button } from '@material-ui/core';
 
 import Page from 'components/Page';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import { makeSelectPremedications, makeSelectChemotherapy, makeSelectPostmedications} from '../OrderPage/selectors';
+import {
+  makeSelectPremedications,
+  makeSelectChemotherapy,
+  makeSelectPostmedications,
+  makeSelectOrders,
+} from '../OrderPage/selectors';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
@@ -38,113 +41,115 @@ const ButtonContainer = styled.div`
 
 /* eslint-disable react/prefer-stateless-function */
 export class SummaryPage extends React.Component {
-  state = { regimenName: "CHOP Protocol for Non Hodking Lymphome", cycleInfo: "Every 3 weeks of 6 cycles" };
 
   render() {
-    const { premedications, chemotherapy, postmedications, match } = this.props
-    const orderIndex = match.params.template;
+    const {
+      orders,
+      premedications,
+      chemotherapy,
+      postmedications,
+      match,
+    } = this.props
     const { from } = this.props.location.state || { from: { pathname: "/order" } };
 
+    if (chemotherapy.length === 0) {
+      return <Redirect to={from}/>;
+    }
+
+    const orderIndex = match.params.template;
+    const { regimenName, cyclesDescription } = orders[orderIndex];
+
     return (
-      (chemotherapy.length === 0 )?
-        <Redirect to={from}/>
-        :
-        <Page>
-          <div>
-            <Helmet>
-              <title>Order Summary</title>
-              <meta name="description" content="Description of SummaryPage" />
-            </Helmet>
+      <Page>
+        <div>
+          <Helmet>
+            <title>Order Summary</title>
+            <meta name="description" content="Description of SummaryPage" />
+          </Helmet>
 
-            <Grid container>
-              <Grid item xs={12}>
-                <Section>
-                  <Typography variant="headline" gutterBottom>
-                    <FormattedMessage {...messages.header} />
-                  </Typography>
-                </Section>
-
-                <Typography variant="title" gutterBottom>
-                  <FormattedMessage
-                    id='app.containers.SummaryPage.regimen'
-                    defaultMessage={this.state.regimenName} />
-                </Typography>
-
-                <Typography variant="subheading" gutterBottom>
-                  <FormattedMessage
-                    id='app.containers.SummaryPage.regimen'
-                    defaultMessage={this.state.cycleInfo} />
-                </Typography>
-              </Grid>
-
+          <Grid container>
+            <Grid item xs={12}>
               <Section>
-                <Grid container spacing={16}>
+                <Typography variant="headline" gutterBottom>
+                  <FormattedMessage {...messages.header} />
+                </Typography>
+              </Section>
 
-                  <Grid item xs={4}>
+              <Typography variant="title" gutterBottom>
+                {regimenName}
+              </Typography>
+
+              <Typography variant="subheading" gutterBottom>
+                Every {cyclesDescription.cycleDuration/7} weeks x {cyclesDescription.cycles} cycles
+              </Typography>
+            </Grid>
+
+            <Section>
+              <Grid container spacing={16}>
+                {premedications[orderIndex].length > 0 &&
+                  <Grid item xs={12}>
                     <SummaryMedListControl medications={premedications} orderIndex={orderIndex} label="PREMEDICATION"></SummaryMedListControl>
                   </Grid>
+                }
 
-                  <Grid item xs={4}>
+                {chemotherapy[orderIndex].length > 0 &&
+                  <Grid item xs={12}>
                     <SummaryMedListControl medications={chemotherapy} orderIndex={orderIndex} label="CHEMOTHERAPY"></SummaryMedListControl>
                   </Grid>
+                }
 
-                  <Grid item xs={4}>
+                {postmedications[orderIndex].length > 0 &&
+                  <Grid item xs={12}>
                     <SummaryMedListControl medications={postmedications} orderIndex={orderIndex} label="POSTMEDICATIONS"></SummaryMedListControl>
                   </Grid>
+                }
+              </Grid>
+            </Section>
 
-                </Grid>
-              </Section>
-
-              <Section>
-                <Grid item xs={12}>
-                  <Typography variant="subheading" gutterBottom>
-                    <FormattedMessage {...messages.notes} />
-                  </Typography>
-                  <Textarea
-                    rows="3"
-                    disabled
-                    multiid="medication"
-                    type="text"
-                    defaultValue="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis tempor mi nec suscipit mattis. Mauris ut laoreet ex. Duis varius, enim sit amet dapibus molestie, metus arcu elementum sapien"
-                    fullWidth
-                  />
-                </Grid>
-              </Section>
-
+            <Section>
               <Grid item xs={12}>
-                <Grid
-                  container
-                  alignItems="center"
-                  direction="row"
-                  justify="center"
-                >
-                  <ButtonContainer>
-                    <Route
-                      render={({ history }) => (
-                        <Button
-                          variant="contained"
-                          onClick={() => {
-                            history.push('/order');
-                          }}
-                        >
-                          <FormattedMessage {...messages.back} />
-                        </Button>
-                      )}
-                    />
+                <Typography variant="headline" gutterBottom>
+                  <FormattedMessage {...messages.notes} />
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  {orders[orderIndex].notes}
+                </Typography>
+              </Grid>
+            </Section>
 
-                    <Button
-                      color="primary"
-                      variant="contained"
-                      onClick={()=>this.props.postChemoOrder(orderIndex)}
-                    >
-                      <FormattedMessage {...messages.submit} />
-                    </Button>
-                  </ButtonContainer>
-                </Grid>
+            <Grid item xs={12}>
+              <Grid
+                container
+                alignItems="center"
+                direction="row"
+                justify="center"
+              >
+                <ButtonContainer>
+                  <Route
+                    render={({ history }) => (
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          history.push(`/order/${orderIndex}`);
+                        }}
+                      >
+                        <FormattedMessage {...messages.back} />
+                      </Button>
+                    )}
+                  />
+                  <Button
+                    color="primary"
+                    variant="contained"
+                    onClick={()=>this.props.postChemoOrder(orderIndex)}
+                  >
+                    <FormattedMessage {...messages.submit} />
+                  </Button>
+                </ButtonContainer>
               </Grid>
             </Grid>
-          </div>
-        </Page>
+          </Grid>
+        </div>
+      </Page>
     );
   }
 }
@@ -156,12 +161,14 @@ SummaryPage.propTypes = {
   match: PropTypes.object,
   location: PropTypes.object.isRequired,
   postChemoOrder: PropTypes.func.isRequired,
+  orders: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   premedications: makeSelectPremedications(),
   chemotherapy: makeSelectChemotherapy(),
   postmedications: makeSelectPostmedications(),
+  orders: makeSelectOrders(),
 });
 
 function mapDispatchToProps(dispatch) {
