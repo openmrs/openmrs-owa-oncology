@@ -108,7 +108,7 @@ export class SummaryPage extends React.Component {
 
             <Section>
               <Grid item xs={12}>
-                <Typography variant="subheading" gutterBottom>
+                <Typography variant="headline" gutterBottom>
                   <FormattedMessage {...messages.notes} />
                 </Typography>
                 <Typography variant="body1" gutterBottom>
@@ -137,7 +137,6 @@ export class SummaryPage extends React.Component {
                       </Button>
                     )}
                   />
-
                   <Button
                     color="primary"
                     variant="contained"
