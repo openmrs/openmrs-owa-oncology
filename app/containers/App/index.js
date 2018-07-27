@@ -24,8 +24,8 @@ export default function App() {
     <div>
       <Switch>
         <Route exact path="/" component={OrderPage} />{' '}
-        <Route exact path="/order" component={OrderPage} />{' '}
-        <Route exact path="/orderSummary/:template" component={SummaryPage} />{' '}
+        <Route exact path="/order/:template?" component={OrderPage} />{' '}
+        <Route exact path="/order/:template/summary" component={SummaryPage} />{' '}
         <Route component={NotFoundPage} />{' '}
       </Switch>{' '}
     </div>

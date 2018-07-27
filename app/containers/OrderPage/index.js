@@ -49,7 +49,6 @@ const Section = styled.div`
 
 /* eslint-disable react/prefer-stateless-function */
 export class OrderPage extends React.Component {
-  state = { template: ''};
 
   componentWillMount() {
     this.props.loadPatient();
@@ -59,71 +58,107 @@ export class OrderPage extends React.Component {
     this.props.loadRegimenList();
   }
 
-  handleSelect = e => {
-    this.setState({ [e.target.name]: e.target.value });
+  handleSelectTemplate = e => {
+    this.props.history.push(`/order/${e.target.value}`);
   };
 
   handleMedicationsChange = (updatedMedications, orderReason) => {
-    const { orders } = this.props;
-    const { template }  = this.state;
-    this.props.updateOrder(template, orders[template].map(medication =>
-      (medication.orderReason !== orderReason && medication) ||
-        updatedMedications.find(m => m.uuid === medication.uuid)
-    ).filter(m => m));
+    const { orders, match } = this.props;
+    const { template }  = match.params;
+    const newOrder = {
+      ...orders[template],
+      medications: orders[template].medications.map(medication =>
+        (medication.orderReason !== orderReason && medication) ||
+          updatedMedications.find(m => m.uuid === medication.uuid)
+      ).filter(m => m),
+    }
+    this.props.updateOrder(template, newOrder);
   };
 
+  handleNotesChange = (e) => {
+    const { orders, match } = this.props;
+    const { template }  = match.params;
+    this.props.updateOrder(template, { ...orders[template], notes: e.target.value });
+  }
+
+  handleCycleDescriptionChange = (cyclesDescription) => {
+    const { orders, match } = this.props;
+    const { template }  = match.params;
+    this.props.updateOrder(template, { ...orders[template], cyclesDescription });
+  }
+
   render() {
-    const { patient, premedications, chemotherapy, regimenList } = this.props;
+    const {
+      orders,
+      patient,
+      premedications,
+      chemotherapy,
+      regimenList,
+      match,
+    } = this.props;
+    const { template } = match.params;
+
+    if (!patient) {
+      return (
+        <Page>
+          <Typography variant="headline" gutterBottom>
+            <FormattedMessage {...messages.noPatient} />
+          </Typography>
+        </Page>
+      );
+    }
 
     return (
-      patient ?
-        <Page>
-          <Helmet>
-            <title>Order Page</title>
-            <meta name="description" content="Description of OrderPage" />
-          </Helmet>
-          <Grid container>
-            {/* Regimen Selection */}
-            <Grid item xs={6}>
-              <Section>
-                <Typography variant="headline" gutterBottom>
-                  <FormattedMessage {...messages.selectRegimen} />
-                </Typography>
-                <FormControl fullWidth margin="normal">
-                  <Select
-                    value={this.state.template}
-                    onChange={this.handleSelect}
-                    displayEmpty
-                    inputProps={{
-                      name: 'template',
-                      id: 'template',
-                    }}
-                  >
-                    <MenuItem value="">
-                      <em>None</em>
-                    </MenuItem>
-                    {regimenList.results && regimenList.results.map(
-                      ({ display, uuid }, i) => (
-                        <MenuItem value={i} key={`template-${uuid}`}>
-                          {display}
-                        </MenuItem>
-                      ),
-                    )}
-                  </Select>
-                </FormControl>
-              </Section>
-            </Grid>
+      <Page>
+        <Helmet>
+          <title>Order Page</title>
+          <meta name="description" content="Description of OrderPage" />
+        </Helmet>
+        <Grid container>
+          {/* Regimen Selection */}
+          <Grid item xs={6}>
+            <Section>
+              <Typography variant="headline" gutterBottom>
+                <FormattedMessage {...messages.selectRegimen} />
+              </Typography>
+              <FormControl fullWidth margin="normal">
+                <Select
+                  value={template >= 0 ? +template : ''}
+                  onChange={this.handleSelectTemplate}
+                  displayEmpty
+                  inputProps={{
+                    name: 'template',
+                    id: 'template',
+                  }}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  {regimenList.results && regimenList.results.map(
+                    ({ display, uuid }, i) => (
+                      <MenuItem value={i} key={`template-${uuid}`}>
+                        {display}
+                      </MenuItem>
+                    ),
+                  )}
+                </Select>
+              </FormControl>
+            </Section>
           </Grid>
+        </Grid>
 
-          {/* Regimen Cycles Header */}
-          {this.state.template !== "" &&
+        {/* Regimen Cycles Header */}
+        {orders.length > 0 &&
           <Grid container>
             <Grid item xs={12}>
               <Section>
                 <Typography variant="headline" gutterBottom>
                   <FormattedMessage {...messages.cycles} />
                 </Typography>
-                <CyclesFormControl />
+                <CyclesFormControl
+                  cyclesDescription={orders[template].cyclesDescription}
+                  onCyclesDescriptionChange={this.handleCycleDescriptionChange}
+                />
               </Section>
             </Grid>
 
@@ -132,17 +167,17 @@ export class OrderPage extends React.Component {
                 <Typography variant="headline" gutterBottom>
                   <FormattedMessage {...messages.medications} />
                 </Typography>
-                {premedications && premedications[this.state.template].length > 0 &&
+                {premedications && premedications[template].length > 0 &&
                   <MedicationTable
                     name="Premedications"
-                    medications={premedications[this.state.template]}
+                    medications={premedications[template]}
                     onMedicationsChange={(meds) => this.handleMedicationsChange(meds, 'Premedication')}
                   />
                 }
-                {chemotherapy && chemotherapy[this.state.template].length > 0 &&
+                {chemotherapy && chemotherapy[template].length > 0 &&
                   <MedicationTable
                     name="Chemotherapy"
-                    medications={chemotherapy[this.state.template]}
+                    medications={chemotherapy[template]}
                     onMedicationsChange={(meds) => this.handleMedicationsChange(meds, 'Chemotherapy')}
                   />
                 }
@@ -152,6 +187,8 @@ export class OrderPage extends React.Component {
                 <Textarea
                   rows="3"
                   multiid="medication"
+                  value={orders[template].notes}
+                  onChange={this.handleNotesChange}
                   type="text"
                   placeholder="Add your notes here..."
                   fullWidth
@@ -159,43 +196,28 @@ export class OrderPage extends React.Component {
               </Section>
             </Grid>
           </Grid>
-          }
-          <Grid
-            container
-            alignItems="center"
-            direction="row"
-            justify="center"
-          >
-            <Route
-              render={({ history }) => (
-                <Button
-                  variant="contained"
-                  disabled={this.state.template === ""}
-                  onClick={() => {
-                    history.push(`/orderSummary/${this.state.template}`);
-                  }}
-                >
-                  <FormattedMessage {...messages.next} />
-                </Button>
-              )}
-            />
-          </Grid>
-        </Page>
-        :
-        <Page>
-          <Helmet>
-            <title>Order Page</title>
-            <meta name="description" content="Description of OrderPage" />
-          </Helmet>
-          <Grid container>
-            {/* Regimen Selection */}
-            <Grid item xs={12}>
-              <Typography variant="headline" gutterBottom>
-                <FormattedMessage {...messages.noPatient} />
-              </Typography>
-            </Grid>
-          </Grid>
-        </Page>
+        }
+        <Grid
+          container
+          alignItems="center"
+          direction="row"
+          justify="center"
+        >
+          <Route
+            render={({ history }) => (
+              <Button
+                variant="contained"
+                disabled={template === ""}
+                onClick={() => {
+                  history.push(`/order/${template}/summary`);
+                }}
+              >
+                <FormattedMessage {...messages.next} />
+              </Button>
+            )}
+          />
+        </Grid>
+      </Page>
     );
   }
 }
@@ -210,6 +232,8 @@ OrderPage.propTypes = {
   premedications: PropTypes.array.isRequired,
   chemotherapy: PropTypes.array.isRequired,
   orders: PropTypes.array.isRequired,
+  history: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
