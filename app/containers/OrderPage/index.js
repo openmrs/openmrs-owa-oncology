@@ -50,12 +50,11 @@ const Section = styled.div`
 /* eslint-disable react/prefer-stateless-function */
 export class OrderPage extends React.Component {
 
-  componentWillMount() {
-    this.props.loadPatient();
-  }
-
   componentDidMount() {
-    this.props.loadRegimenList();
+    this.props.loadPatient();
+    if (!(this.props.orders.length > 0)) {
+      this.props.loadRegimenList();
+    }
   }
 
   handleSelectTemplate = e => {
@@ -97,6 +96,7 @@ export class OrderPage extends React.Component {
       match,
     } = this.props;
     const { template } = match.params;
+    console.log(orders[template]);
 
 
     if (!patient) {
