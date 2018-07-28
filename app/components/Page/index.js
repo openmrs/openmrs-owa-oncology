@@ -16,12 +16,13 @@ const PageWrapper = styled.div`
 `;
 
 const Sidebar = styled.aside`
-  position: absolute;
+  position: fixed;
   left: 0;
   top: 0;
   bottom: 0;
   background: ${grey[100]};
   width: 450px;
+  overflow: auto;
 `;
 
 const Content = styled.div`
@@ -32,6 +33,7 @@ const Content = styled.div`
   bottom: 0;
   left: 460px;
   padding: 2rem;
+  overflow: auto;
 `;
 
 const Center = styled.div`

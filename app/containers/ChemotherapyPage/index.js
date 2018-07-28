@@ -38,6 +38,78 @@ const HeadActions = styled.div`
   float: right;
 `;
 
+const regimens = [
+  {
+    id: 1,
+    title: 'CHOP Protocol for Non Hodgkin Lymphome',
+    status: 'active',
+    children: [
+      {
+        id: 11,
+        cycle: 3,
+        title: 'Cycle 3 of 6',
+        date: '08/01/18',
+        status: 'active',
+      }, {
+        id: 12,
+        cycle: 2,
+        title: 'Cycle 2 of 6',
+        date: '08/01/18',
+        status: 'completed',
+      }, {
+        id: 13,
+        cycle: 1,
+        title: 'Cycle 1 of 6',
+        date: '08/01/18',
+        status: 'completed',
+      },
+    ],
+  }, {
+    id: 2,
+    title: 'CHOP Protocol for Non Hodgkin Lymphome',
+    status: 'completed',
+    children: [
+      {
+        id: 21,
+        cycle: 6,
+        title: 'Cycle 6 of 6',
+        date: '08/01/18',
+        status: 'completed',
+      }, {
+        id: 22,
+        cycle: 5,
+        title: 'Cycle 5 of 6',
+        date: '08/01/18',
+        status: 'completed',
+      }, {
+        id: 23,
+        cycle: 4,
+        title: 'Cycle 4 of 6',
+        date: '08/01/18',
+        status: 'completed',
+      }, {
+        id: 24,
+        cycle: 3,
+        title: 'Cycle 3 of 6',
+        date: '08/01/18',
+        status: 'completed',
+      }, {
+        id: 25,
+        cycle: 2,
+        title: 'Cycle 2 of 6',
+        date: '08/01/18',
+        status: 'completed',
+      }, {
+        id: 26,
+        cycle: 1,
+        title: 'Cycle 1 of 6',
+        date: '08/01/18',
+        status: 'completed',
+      },
+    ],
+  },
+];
+
 /* eslint-disable react/prefer-stateless-function */
 export class ChemotherapyPage extends React.Component {
   render() {
@@ -55,77 +127,7 @@ export class ChemotherapyPage extends React.Component {
               </Typography>
             </SidebarTitle>
             <NaviList
-              items={[
-                {
-                  id: 1,
-                  title: 'CHOP Protocol for Non Hodgkin Lymphome',
-                  status: 'active',
-                  children: [
-                    {
-                      id: 11,
-                      cycle: 3,
-                      title: 'Cycle 3 of 6',
-                      date: '08/01/18',
-                      status: 'active',
-                    }, {
-                      id: 12,
-                      cycle: 2,
-                      title: 'Cycle 2 of 6',
-                      date: '08/01/18',
-                      status: 'completed',
-                    }, {
-                      id: 13,
-                      cycle: 1,
-                      title: 'Cycle 1 of 6',
-                      date: '08/01/18',
-                      status: 'completed',
-                    },
-                  ],
-                }, {
-                  id: 2,
-                  title: 'CHOP Protocol for Non Hodgkin Lymphome',
-                  status: 'completed',
-                  children: [
-                    {
-                      id: 21,
-                      cycle: 6,
-                      title: 'Cycle 6 of 6',
-                      date: '08/01/18',
-                      status: 'completed',
-                    }, {
-                      id: 22,
-                      cycle: 5,
-                      title: 'Cycle 5 of 6',
-                      date: '08/01/18',
-                      status: 'completed',
-                    }, {
-                      id: 23,
-                      cycle: 4,
-                      title: 'Cycle 4 of 6',
-                      date: '08/01/18',
-                      status: 'completed',
-                    }, {
-                      id: 24,
-                      cycle: 3,
-                      title: 'Cycle 3 of 6',
-                      date: '08/01/18',
-                      status: 'completed',
-                    }, {
-                      id: 25,
-                      cycle: 2,
-                      title: 'Cycle 2 of 6',
-                      date: '08/01/18',
-                      status: 'completed',
-                    }, {
-                      id: 26,
-                      cycle: 1,
-                      title: 'Cycle 1 of 6',
-                      date: '08/01/18',
-                      status: 'completed',
-                    },
-                  ],
-                },
-              ]}
+              items={regimens}
             />
           </Sidebar>
           <Content>
