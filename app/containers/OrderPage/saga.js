@@ -8,7 +8,7 @@ import {
 } from 'containers/OrderPage/actions';
 import request from 'utils/request';
 
-const baseUrl = 'https://humci-azure.pih-emr.org/mirebalais'; 
+const baseUrl = 'https://humci-azure.pih-emr.org/mirebalais';
 const restEndpoint = "/ws/rest/v1"
 
 export function* getRegimenList() {
