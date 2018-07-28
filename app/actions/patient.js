@@ -2,6 +2,7 @@ import { SET_PATIENT, SET_NOTE } from './actionTypes';
 import axiosInstance from '../config';
 
 const contextPath = window.location.href.split('/')[3];
+
 export function fetchPatientRecord(patientUuid) {
   return dispatch => axiosInstance.get(`patient/${patientUuid}?v=custom:(patientId,uuid,patientIdentifier:(uuid,identifier),person:(gender,age,birthdate,birthdateEstimated,personName,preferredAddress),attributes:(value,attributeType:(name)))`)
     .then((response) => {
