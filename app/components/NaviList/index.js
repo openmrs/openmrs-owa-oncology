@@ -8,8 +8,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
+import { withStyles } from '@material-ui/core/styles';
+import MenuList from '@material-ui/core/MenuList';
+import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import grey from '@material-ui/core/colors/grey';
@@ -28,31 +29,55 @@ const Arrow = styled.div`
 `;
 
 const Num = styled.div`
-  background: ${grey[100]};
-  color: ${grey[900]};
-  width: 40px;
-  padding-top: 0.5em;
-  height: 40px;
+  border: 2px solid ${grey[300]};
+  color: ${grey[700]};
+  width: 35px;
+  font-weight: bold;
+  height: 35px;
+  line-height: 33px;
   text-align: center;
   border-radius: 50%;
 `;
 
+const styles = theme => ({
+  root: {
+    borderLeft: `5px solid transparent`,
+    '&$selected, &$selected:hover': {
+      borderLeftColor: theme.palette.primary.main,
+      background: grey[100],
+    },
+    '&:hover': {
+      background: grey[200],
+      borderLeftColor: grey[200],
+    },
+  },
+  selected: {},
+});
+
 class NaviList extends React.Component {
-  state = { open: 0 };
+  state = { collapse: { 0: true } };
 
   toggleCollapse(index) {
-    this.setState({ open: index });
+    this.setState({
+      collapse: {
+        ...this.state.collapse,
+        [index]: !this.state.collapse[index],
+      },
+    });
+  }
+
+  isOpen(index) {
+    return this.state.collapse[index];
   }
 
   render() {
-    const { items } = this.props;
+    const { items, classes } = this.props;
     return (
-      <List>
+      <MenuList>
         {items.map((item, i) =>
           [
-            <ListItem
+            <MenuItem
               key={item.id}
-              button
               divider
               onClick={() => this.toggleCollapse(i)}
             >
@@ -61,23 +86,31 @@ class NaviList extends React.Component {
               />
               <Status type={item.status === 'completed' ? 'success' : 'info'}>{item.status}</Status>
               <Arrow>
-                {this.state.open === i ?
+                {this.isOpen(i) ?
                   <FontAwesomeIcon icon={faAngleUp} />
                   :
                   <FontAwesomeIcon icon={faAngleDown} />
                 }
               </Arrow>
-            </ListItem>,
+            </MenuItem>,
             <Collapse
               key={`sub-${item.id}`}
-              in={this.state.open === i}
+              in={this.isOpen(i)}
               timeout="auto"
               unmountOnExit
             >
-              <List disablePadding>
+              <MenuList disablePadding>
                 {item.children.map((subItem, j) =>
-                  <ListItem key={subItem.id} button divider>
-                    <Num>C{j + 1}</Num>
+                  <MenuItem
+                    classes={{
+                      root: classes.root,
+                      selected: classes.selected,
+                    }}
+                    key={subItem.id}
+                    divider
+                    selected={j===0}
+                  >
+                    <Num>C{subItem.cycle}</Num>
                     <ListItemText
                       inset
                       primary={subItem.title}
@@ -89,19 +122,20 @@ class NaviList extends React.Component {
                     >
                       {subItem.status}
                     </Status>
-                  </ListItem>
+                  </MenuItem>
                 )}
-              </List>
+              </MenuList>
             </Collapse>,
           ]
         )}
-      </List>
+      </MenuList>
     );
   }
 }
 
 NaviList.propTypes = {
   items: PropTypes.array,
+  classes: PropTypes.object.isRequired,
 };
 
-export default NaviList;
+export default withStyles(styles)(NaviList);

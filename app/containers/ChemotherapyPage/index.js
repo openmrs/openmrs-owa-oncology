@@ -46,19 +46,22 @@ export class ChemotherapyPage extends React.Component {
                     children: [
                       {
                         id: 11,
-                        title: 'Cycle 1 of 6',
+                        cycle: 3,
+                        title: 'Cycle 3 of 6',
                         date: '08/01/18',
-                        status: 'completed',
+                        status: 'current',
                       }, {
                         id: 12,
+                        cycle: 2,
                         title: 'Cycle 2 of 6',
                         date: '08/01/18',
                         status: 'completed',
                       }, {
                         id: 13,
-                        title: 'Cycle 3 of 6',
+                        cycle: 1,
+                        title: 'Cycle 1 of 6',
                         date: '08/01/18',
-                        status: 'current',
+                        status: 'completed',
                       },
                     ],
                   }, {
@@ -68,17 +71,38 @@ export class ChemotherapyPage extends React.Component {
                     children: [
                       {
                         id: 21,
-                        title: 'Cycle 1 of 6',
+                        cycle: 6,
+                        title: 'Cycle 6 of 6',
                         date: '08/01/18',
                         status: 'completed',
                       }, {
                         id: 22,
-                        title: 'Cycle 2 of 6',
+                        cycle: 5,
+                        title: 'Cycle 5 of 6',
                         date: '08/01/18',
                         status: 'completed',
                       }, {
                         id: 23,
+                        cycle: 4,
+                        title: 'Cycle 4 of 6',
+                        date: '08/01/18',
+                        status: 'completed',
+                      }, {
+                        id: 24,
+                        cycle: 3,
                         title: 'Cycle 3 of 6',
+                        date: '08/01/18',
+                        status: 'completed',
+                      }, {
+                        id: 25,
+                        cycle: 2,
+                        title: 'Cycle 2 of 6',
+                        date: '08/01/18',
+                        status: 'completed',
+                      }, {
+                        id: 26,
+                        cycle: 1,
+                        title: 'Cycle 1 of 6',
                         date: '08/01/18',
                         status: 'completed',
                       },
