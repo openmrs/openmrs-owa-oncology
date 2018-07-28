@@ -1,11 +1,13 @@
-import { createSelector } from 'reselect';
-import { initialState } from './reducer';
+// import { createSelector } from 'reselect';
+import initialState from './reducers/initialState';
 
 /**
  * Direct selector to the header state domain
  */
 
-const selectHeaderDomain = state => state.get('header', initialState);
+const selectCurrentSessionDomain = state => state.get('currentSession', initialState);
+const selectDefaultSettingEncounterTypeDomain = state => state.get('defaultSettingEncounterType', initialState);
+const selectDefaultSettingEncounterRoleDomain = state => state.get('defaultSettingEncounterRole', initialState);
 
 /**
  * Other specific selectors
@@ -15,11 +17,14 @@ const selectHeaderDomain = state => state.get('header', initialState);
  * Default selector used by Header
  */
 
-const makeSelectHeader = () => createSelector(selectHeaderDomain, substate => substate.toJS());
-
 const makeSelectCurrentSession = () =>
-  createSelector(selectHeaderDomain, substate => substate.get('currentSession'),
-  );
+  selectCurrentSessionDomain;
+
+const makeSelectDefaultEncounterRole = () =>
+  selectDefaultSettingEncounterTypeDomain;
+
+const makeSelectDefaultEncounterType = () =>
+  selectDefaultSettingEncounterRoleDomain;
 	
-export default makeSelectHeader;
-export { selectHeaderDomain, makeSelectCurrentSession };
+export default makeSelectCurrentSession;
+export { makeSelectCurrentSession, makeSelectDefaultEncounterRole, makeSelectDefaultEncounterType };
