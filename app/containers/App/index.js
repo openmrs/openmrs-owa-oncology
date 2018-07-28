@@ -14,22 +14,35 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-// import HomePage from 'containers/HomePage/Loadable';
 import OrderPage from 'containers/OrderPage/Loadable';
+import DashboardPage from 'containers/DashboardPage/Loadable';
 import SummaryPage from 'containers/SummaryPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'containers/Header/Loadable';
 
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#734a63',
+      main: '#501D3D',
+      dark: '#38142a',
+      contrastText: '#fff',
+    },
+  },
+});
+
 export default function App() {
   return (
-    <div>
+    <MuiThemeProvider theme={theme}>
       <Header/>
       <Switch>
-        <Route exact path="/" component={OrderPage} />
+        <Route exact path="/" component={DashboardPage} />
         <Route exact path="/order/:template?" component={OrderPage} />
         <Route exact path="/order/:template/summary" component={SummaryPage} />
         <Route component={NotFoundPage} />
       </Switch>
-    </div>
+    </MuiThemeProvider>
   );
 }

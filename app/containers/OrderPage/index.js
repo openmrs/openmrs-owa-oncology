@@ -96,8 +96,6 @@ export class OrderPage extends React.Component {
       match,
     } = this.props;
     const { template } = match.params;
-    console.log(orders[template]);
-
 
     if (!patient) {
       return (
