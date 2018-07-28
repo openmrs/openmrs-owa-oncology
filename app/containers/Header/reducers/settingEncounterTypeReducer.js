@@ -3,7 +3,7 @@ import {
   SETTING_ENCOUNTER_TYPE_SUCCESS,
   SETTING_ENCOUNTER_TYPE_FAILURE,
   SETTING_ENCOUNTER_TYPE_LOADING,
-} from '../actions/actionTypes';
+} from '../constants'
 
 const settingEncounterTypeReducer = (
   state = initialState.defaultSettingEncounterType,

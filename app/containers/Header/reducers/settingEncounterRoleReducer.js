@@ -1,9 +1,9 @@
+import initialState from './initialState';
 import {
   SETTING_ENCOUNTER_ROLE_SUCCESS,
   SETTING_ENCOUNTER_ROLE_FAILURE,
   SETTING_ENCOUNTER_ROLE_LOADING,
-} from '../actions/actionTypes';
-import initialState from './initialState';
+} from '../constants';
 
 const settingEncounterRoleReducer = (
   state = initialState.defaultSettingEncounterRole,

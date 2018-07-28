@@ -14,21 +14,33 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectHeader from './selectors';
-import reducer from './reducer';
+import {makeSelectCurrentSession, makeSelectDefaultEncounterRole, makeSelectDefaultEncounterType} from './selectors';
+import reducer from './reducers';
 import saga from './saga';
 // import messages from './messages';
 
-import { loadCurrentSession } from './actions';
+import { fetchCurrentSession, fetchEncounterRole, fetchEncounterType } from './actions';
 
 /* eslint-disable react/prefer-stateless-function */
 export class Header extends React.Component {
 
   componentDidMount() {
     this.props.loadCurrentSession();
+    this.props.loadEncounterRole();
+    this.props.loadEncounterType();
   }
 
   render() {
+    const {
+      currentSession,
+      encounterRole,
+      encounterType,
+    } = this.props;
+
+    console.log(currentSession);
+    console.log(encounterRole);
+    console.log(encounterType);
+
     return (
       <div>
         {/* <Helmet>
@@ -43,17 +55,26 @@ export class Header extends React.Component {
 
 Header.propTypes = {
   // dispatch: PropTypes.func.isRequired,
+  currentSession: PropTypes.object,
+  encounterRole: PropTypes.object,
+  encounterType: PropTypes.object,
   loadCurrentSession: PropTypes.func.isRequired,
+  loadEncounterRole: PropTypes.func.isRequired,
+  loadEncounterType: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  header: makeSelectHeader(),
+  currentSession: makeSelectCurrentSession(),
+  encounterRole: makeSelectDefaultEncounterRole(),
+  encounterType: makeSelectDefaultEncounterType(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
-    loadCurrentSession: () => dispatch(loadCurrentSession()),
+    loadCurrentSession: () => dispatch(fetchCurrentSession()),
+    loadEncounterRole: () => dispatch(fetchEncounterRole()),
+    loadEncounterType: () => dispatch(fetchEncounterType()),
   };
 }
 
