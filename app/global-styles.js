@@ -1,6 +1,7 @@
 import { injectGlobal } from 'styled-components';
 import 'rc-slider/assets/index.css';
 import 'rc-tooltip/assets/bootstrap.css';
+import grey from '@material-ui/core/colors/grey';
 
 /* eslint no-unused-expressions: 0 */
 injectGlobal`
@@ -19,7 +20,7 @@ injectGlobal`
   }
 
   #app {
-    background-color: #fafafa;
+    background-color: ${grey[200]};
     min-height: 100%;
     min-width: 100%;
   }

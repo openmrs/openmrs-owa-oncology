@@ -15,7 +15,7 @@ const columnData = [
   {
     id: 'medication',
     numeric: false,
-    disablePadding: true,
+    disablePadding: false,
     label: 'MEDICATION',
   },
   { id: 'dose', numeric: false, disablePadding: false, label: 'DOSE' },
@@ -29,19 +29,21 @@ const columnData = [
 ];
 
 function MedicationTableHead(props) {
-  const { onSelectAllClick, numSelected, rowCount } = props;
+  const { onSelectAllClick, numSelected, rowCount, readOnly } = props;
 
   return (
     <TableHead>
       <TableRow>
-        <TableCell padding="checkbox">
-          <Checkbox
-            color="primary"
-            indeterminate={numSelected > 0 && numSelected < rowCount}
-            checked={numSelected === rowCount}
-            onChange={onSelectAllClick}
-          />
-        </TableCell>
+        {!readOnly &&
+          <TableCell padding="checkbox">
+            <Checkbox
+              color="primary"
+              indeterminate={numSelected > 0 && numSelected < rowCount}
+              checked={numSelected === rowCount}
+              onChange={onSelectAllClick}
+            />
+          </TableCell>
+        }
         {columnData.map(
           column => (
             <TableCell
@@ -62,6 +64,7 @@ MedicationTableHead.propTypes = {
   numSelected: PropTypes.number.isRequired,
   onSelectAllClick: PropTypes.func.isRequired,
   rowCount: PropTypes.number.isRequired,
+  readOnly: PropTypes.bool.isRequired,
 };
 
 

@@ -13,6 +13,7 @@ import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
+import Divider from '@material-ui/core/Divider';
 import grey from '@material-ui/core/colors/grey';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -74,6 +75,7 @@ class NaviList extends React.Component {
     const { items, classes } = this.props;
     return (
       <MenuList>
+        <Divider />
         {items.map((item, i) =>
           [
             <MenuItem

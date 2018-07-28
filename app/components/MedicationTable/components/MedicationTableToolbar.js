@@ -33,7 +33,7 @@ const ToolbarActions = styled.div`
 `;
 
 function MedicationTableToolbar(props) {
-  const { numSelected, classes } = props;
+  const { numSelected, classes, readOnly } = props;
 
   return (
     <Toolbar className={classes.root}>
@@ -47,33 +47,35 @@ function MedicationTableToolbar(props) {
         )}
       </ToolbarTitle>
 
-      <ToolbarActions>
-        <Button
-          className={classes.button}
-          variant="outlined"
-          onClick={props.onChangeDosage}
-          disabled={numSelected === 0}
-        >
-          <FormattedMessage {...messages.changeDosage} />
-        </Button>
-        <Button
-          className={classes.button}
-          variant="outlined"
-          onClick={props.onEdit}
-          disabled={numSelected !== 1}
-        >
-          <FormattedMessage {...messages.edit} />
-        </Button>
-        <Button
-          className={classes.button}
-          variant="outlined"
-          color="secondary"
-          onClick={props.onDelete}
-          disabled={numSelected === 0}
-        >
-          <FormattedMessage {...messages.delete} />
-        </Button>
-      </ToolbarActions>
+      {!readOnly &&
+        <ToolbarActions>
+          <Button
+            className={classes.button}
+            variant="outlined"
+            onClick={props.onChangeDosage}
+            disabled={numSelected === 0}
+          >
+            <FormattedMessage {...messages.changeDosage} />
+          </Button>
+          <Button
+            className={classes.button}
+            variant="outlined"
+            onClick={props.onEdit}
+            disabled={numSelected !== 1}
+          >
+            <FormattedMessage {...messages.edit} />
+          </Button>
+          <Button
+            className={classes.button}
+            variant="outlined"
+            color="secondary"
+            onClick={props.onDelete}
+            disabled={numSelected === 0}
+          >
+            <FormattedMessage {...messages.delete} />
+          </Button>
+        </ToolbarActions>
+      }
     </Toolbar>
   );
 }
@@ -85,6 +87,7 @@ MedicationTableToolbar.propTypes = {
   onEdit: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   onChangeDosage: PropTypes.func.isRequired,
+  readOnly: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(MedicationTableToolbar);

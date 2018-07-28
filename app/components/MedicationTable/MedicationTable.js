@@ -111,14 +111,16 @@ class MedicationTable extends React.Component {
   }
 
   render() {
-    const { medications, intl } = this.props;
+    const { medications, intl, readOnly } = this.props;
     const { selected } = this.state;
     const selectedMedications = this.getSelectedMedications();
+
     return (
       <Wrapper>
         <MedicationTableToolbar
           title={this.props.name}
           numSelected={selected.length}
+          readOnly={readOnly}
           onEdit={() => this.setState({ openDialog: 'edit' })}
           onDelete={() => this.setState({ openDialog: 'delete' })}
           onChangeDosage={() => this.setState({ openDialog: 'change-dosage' })}
@@ -126,6 +128,7 @@ class MedicationTable extends React.Component {
         <div>
           <Table aria-labelledby="tableTitle">
             <MedicationTableHead
+              readOnly={readOnly}
               numSelected={selected.length}
               onSelectAllClick={this.handleSelectAllClick}
               rowCount={medications.length}
@@ -139,10 +142,12 @@ class MedicationTable extends React.Component {
                   tabIndex={-1}
                   key={medication.uuid}
                 >
-                  <TableCell padding="checkbox">
-                    <Checkbox color="primary" checked={this.isSelected(medication.uuid)} />
-                  </TableCell>
-                  <TableCell padding="none">
+                  {!readOnly &&
+                    <TableCell padding="checkbox">
+                      <Checkbox color="primary" checked={this.isSelected(medication.uuid)} />
+                    </TableCell>
+                  }
+                  <TableCell>
                     {medication.drug.name}
                   </TableCell>
                   <TableCell>
@@ -197,6 +202,11 @@ MedicationTable.propTypes = {
   medications: PropTypes.array,
   onMedicationsChange: PropTypes.func,
   intl: intlShape.isRequired,
+  readOnly: PropTypes.bool,
 };
+
+MedicationTable.defaultProps = {
+  readOnly: false,
+}
 
 export default injectIntl(MedicationTable);
