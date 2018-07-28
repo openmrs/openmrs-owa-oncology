@@ -59,14 +59,14 @@ export class ChemotherapyPage extends React.Component {
                 {
                   id: 1,
                   title: 'CHOP Protocol for Non Hodgkin Lymphome',
-                  status: 'current',
+                  status: 'active',
                   children: [
                     {
                       id: 11,
                       cycle: 3,
                       title: 'Cycle 3 of 6',
                       date: '08/01/18',
-                      status: 'current',
+                      status: 'active',
                     }, {
                       id: 12,
                       cycle: 2,

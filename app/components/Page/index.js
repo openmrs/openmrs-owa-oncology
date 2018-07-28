@@ -8,6 +8,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import grey from '@material-ui/core/colors/grey';
+
 const PageWrapper = styled.div`
   background: #FFFFFF;
   margin: 0 0.5em;
@@ -18,7 +20,7 @@ const Sidebar = styled.aside`
   left: 0;
   top: 0;
   bottom: 0;
-  background: #FFFFFF;
+  background: ${grey[100]};
   width: 450px;
 `;
 

@@ -13,9 +13,10 @@ import green from '@material-ui/core/colors/green';
 
 const Wrapper = styled.span`
   background: ${props => props.color[100]};
-  padding: 0 0.5em;
+  padding: 0em 0.5em;
   border-radius: 4px;
   font-size: 0.7rem;
+  display: inline-block;
 `;
 
 function Status(props) {

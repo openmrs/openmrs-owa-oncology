@@ -14,6 +14,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
 import Divider from '@material-ui/core/Divider';
+import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -42,6 +43,7 @@ const Num = styled.div`
 
 const styles = theme => ({
   root: {
+    background: '#FFFFFF',
     borderLeft: `5px solid transparent`,
     '&$selected, &$selected:hover': {
       borderLeftColor: theme.palette.primary.main,
@@ -53,6 +55,13 @@ const styles = theme => ({
     },
   },
   selected: {},
+  disabledMenuItem: {
+    background: grey[100],
+    padding: '0.1em 1.75em',
+    fontSize: '0.75rem',
+    textTransform: 'uppercase',
+    pointerEvents: 'none',
+  },
 });
 
 class NaviList extends React.Component {
@@ -81,12 +90,14 @@ class NaviList extends React.Component {
             <MenuItem
               key={item.id}
               divider
+              classes={{
+                root: classes.root,
+              }}
               onClick={() => this.toggleCollapse(i)}
             >
               <ListItemText
                 secondary={item.title}
               />
-              <Status type={item.status === 'completed' ? 'success' : 'info'}>{item.status}</Status>
               <Arrow>
                 {this.isOpen(i) ?
                   <FontAwesomeIcon icon={faAngleUp} />
@@ -110,25 +121,40 @@ class NaviList extends React.Component {
                     }}
                     key={subItem.id}
                     divider
-                    selected={j===0}
+                    selected={j === 0 && i === 0}
                   >
                     <Num>C{subItem.cycle}</Num>
                     <ListItemText
                       inset
                       primary={subItem.title}
-                      secondary={subItem.date}
                     />
-                    <Status
-                      type={subItem.status === 'completed' ? 'success' : 'info'}
-                      style={{ marginRight: '1.5em' }}
-                    >
-                      {subItem.status}
-                    </Status>
+                    {subItem.status === 'active' &&
+                      <Status
+                        type="info"
+                        style={{ marginLeft: '0.5em' }}
+                      >
+                        {subItem.status}
+                      </Status>
+                    }
+                    {subItem.status !== 'active' &&
+                      <Typography variant="caption">
+                        {subItem.date}
+                      </Typography>
+                    }
                   </MenuItem>
                 )}
               </MenuList>
             </Collapse>,
-          ]
+            i === 0 ? (
+              <MenuItem
+                classes={{
+                  root: classes.disabledMenuItem,
+                }}
+              >
+                Previous regimens
+              </MenuItem>
+            ) : '',
+          ].filter(el => el)
         )}
       </MenuList>
     );

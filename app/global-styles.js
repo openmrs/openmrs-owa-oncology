@@ -20,7 +20,7 @@ injectGlobal`
   }
 
   #app {
-    background-color: ${grey[200]};
+    background-color: ${grey[300]};
     min-height: 100%;
     min-width: 100%;
   }
