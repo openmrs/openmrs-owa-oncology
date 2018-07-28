@@ -16,6 +16,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import OrderPage from 'containers/OrderPage/Loadable';
 import DashboardPage from 'containers/DashboardPage/Loadable';
+import ChemotherapyPage from 'containers/ChemotherapyPage/Loadable';
 import SummaryPage from 'containers/SummaryPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
 import Header from 'containers/Header/Loadable';
@@ -39,6 +40,7 @@ export default function App() {
       <Header/>
       <Switch>
         <Route exact path="/" component={DashboardPage} />
+        <Route exact path="/chemotherapy" component={ChemotherapyPage} />
         <Route exact path="/order/:template?" component={OrderPage} />
         <Route exact path="/order/:template/summary" component={SummaryPage} />
         <Route component={NotFoundPage} />
