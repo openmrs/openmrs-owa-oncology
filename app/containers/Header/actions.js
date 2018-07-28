@@ -15,6 +15,12 @@ import {
   SETTING_ENCOUNTER_TYPE_SUCCESS,
   SETTING_ENCOUNTER_TYPE_FAILURE,
   SETTING_ENCOUNTER_TYPE_LOADING,
+  FETCH_ENCOUNTER_TYPE_LOADING,
+  FETCH_ENCOUNTER_TYPE_SUCCESS,
+  FETCH_ENCOUNTER_TYPE_FAILURE,
+  FETCH_ENCOUNTER_ROLE_LOADING,
+  FETCH_ENCOUNTER_ROLE_SUCCESS,
+  FETCH_ENCOUNTER_ROLE_FAILURE,
 } from './constants';
 
 export function defaultAction() {
@@ -43,42 +49,82 @@ export function fetchCurrentSesionError(error) {
   };
 }
 
-export function fetchEncounterType() {
+export function fetchDefaultEncounterType() {
   return {
     type: SETTING_ENCOUNTER_TYPE_LOADING,
   };
 }
 
-export function fetchEncounterTypeSuccess(configuration) {
+export function fetchDefaultEncounterTypeSuccess(configuration) {
   return {
     type: SETTING_ENCOUNTER_TYPE_SUCCESS,
     configuration,
   };
 }
 
-export function fetchEncounterTypeError(error) {
+export function fetchDefaultEncounterTypeError(error) {
   return {
     type: SETTING_ENCOUNTER_TYPE_FAILURE,
     error,
   };
 }
 
-export function fetchEncounterRole() {
+export function fetchDefaultEncounterRole() {
   return {
     type: SETTING_ENCOUNTER_ROLE_LOADING,
   };
 }
 
-export function fetchEncounterRoleSuccess(configuration) {
+export function fetchDefaultEncounterRoleSuccess(configuration) {
   return {
     type: SETTING_ENCOUNTER_ROLE_SUCCESS,
     configuration,
   };
 }
 
-export function fetchEncounterRoleError(error) {
+export function fetchDefaultEncounterRoleError(error) {
   return {
     type: SETTING_ENCOUNTER_ROLE_FAILURE,
+    error,
+  };
+}
+
+export function fetchEncounterType() {
+  return {
+    type: FETCH_ENCOUNTER_TYPE_LOADING,
+  };
+}
+
+export function fetchEncounterTypeSuccess(configuration) {
+  return {
+    type: FETCH_ENCOUNTER_TYPE_SUCCESS,
+    configuration,
+  };
+}
+
+export function fetchEncounterTypeError(error) {
+  return {
+    type: FETCH_ENCOUNTER_TYPE_FAILURE,
+    error,
+  };
+}
+
+export function fetchEncounterRole() {
+  return {
+    type: FETCH_ENCOUNTER_ROLE_LOADING,
+  };
+}
+
+export function fetchEncounterRoleSuccess(configuration) {
+  return {
+    type: FETCH_ENCOUNTER_ROLE_SUCCESS,
+    configuration,
+  };
+}
+
+export function fetchEncounterRoleError(error) {
+  return {
+    type: FETCH_ENCOUNTER_ROLE_FAILURE,
     error,
   };
 }
