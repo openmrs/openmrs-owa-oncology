@@ -13,6 +13,7 @@ import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
 
+import { Link } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
@@ -64,7 +65,14 @@ export class DashboardPage extends React.Component {
               <DashboardCard
                 title="REGIMEN"
                 footer={
-                  <Button color="primary" variant="contained">Open</Button>
+                  <Button
+                    component={Link}
+                    color="primary"
+                    variant="contained"
+                    to="/chemotherapy"
+                  >
+                    Open
+                  </Button>
                 }
               >
                 <List>
