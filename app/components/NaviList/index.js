@@ -120,7 +120,6 @@ class NaviList extends React.Component {
                       selected: classes.selected,
                     }}
                     key={subItem.id}
-                    divider
                     selected={j === 0 && i === 0}
                   >
                     <Num>C{subItem.cycle}</Num>
