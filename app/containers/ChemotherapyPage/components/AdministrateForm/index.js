@@ -59,7 +59,7 @@ function AdministrateForm() {
       </Head>
       <Grid container spacing={16}>
         <Grid item md={10} sm={12} lg={8}>
-          <Typography variant="body1">Please record the dosage given to the patient.</Typography>
+          <Typography variant="subheading">Please record the dosage given to the patient.</Typography>
           <ListWrapper>
             <List>
               {items.map(item =>
@@ -89,7 +89,7 @@ function AdministrateForm() {
               )}
             </List>
           </ListWrapper>
-          <Typography variant="body1">Cycle summary notes</Typography>
+          <Typography variant="subheading">Cycle summary notes</Typography>
           <Textarea
             rows="3"
             fullWidth
