@@ -6,18 +6,23 @@
 
 import { 
   DEFAULT_ACTION, 
+  
   SET_CURRENT_SESSION_LOADING,
   SET_CURRENT_SESSION_SUCCESS,
-  SET_CURRENT_SESSION_ERROR,
+  SET_CURRENT_SESSION_FAILURE,
+
   SETTING_ENCOUNTER_ROLE_SUCCESS,
   SETTING_ENCOUNTER_ROLE_FAILURE,
   SETTING_ENCOUNTER_ROLE_LOADING,
+
   SETTING_ENCOUNTER_TYPE_SUCCESS,
   SETTING_ENCOUNTER_TYPE_FAILURE,
   SETTING_ENCOUNTER_TYPE_LOADING,
+
   FETCH_ENCOUNTER_TYPE_LOADING,
   FETCH_ENCOUNTER_TYPE_SUCCESS,
   FETCH_ENCOUNTER_TYPE_FAILURE,
+
   FETCH_ENCOUNTER_ROLE_LOADING,
   FETCH_ENCOUNTER_ROLE_SUCCESS,
   FETCH_ENCOUNTER_ROLE_FAILURE,
@@ -29,100 +34,100 @@ export function defaultAction() {
   };
 }
 
-export function fetchCurrentSession() {
+export function fetchCurrentSessionAction() {
   return {
     type: SET_CURRENT_SESSION_LOADING,
   };
 }
 
-export function fetchCurrentSesionSuccess(currentSession) {
+export function fetchCurrentSessionSuccessAction(currentSession) {
   return {
     type: SET_CURRENT_SESSION_SUCCESS,
     currentSession,
   };
 }
 
-export function fetchCurrentSesionError(error) {
+export function fetchCurrentSessionErrorAction(error) {
   return {
-    type: SET_CURRENT_SESSION_ERROR,
+    type: SET_CURRENT_SESSION_FAILURE,
     error,
   };
 }
 
-export function fetchDefaultEncounterType() {
+export function fetchDefaultEncounterTypeAction() {
   return {
     type: SETTING_ENCOUNTER_TYPE_LOADING,
   };
 }
 
-export function fetchDefaultEncounterTypeSuccess(configuration) {
+export function fetchDefaultEncounterTypeSuccessAction(configuration) {
   return {
     type: SETTING_ENCOUNTER_TYPE_SUCCESS,
     configuration,
   };
 }
 
-export function fetchDefaultEncounterTypeError(error) {
+export function fetchDefaultEncounterTypeErrorAction(error) {
   return {
     type: SETTING_ENCOUNTER_TYPE_FAILURE,
     error,
   };
 }
 
-export function fetchDefaultEncounterRole() {
+export function fetchDefaultEncounterRoleAction() {
   return {
     type: SETTING_ENCOUNTER_ROLE_LOADING,
   };
 }
 
-export function fetchDefaultEncounterRoleSuccess(configuration) {
+export function fetchDefaultEncounterRoleSuccessAction(configuration) {
   return {
     type: SETTING_ENCOUNTER_ROLE_SUCCESS,
     configuration,
   };
 }
 
-export function fetchDefaultEncounterRoleError(error) {
+export function fetchDefaultEncounterRoleErrorAction(error) {
   return {
     type: SETTING_ENCOUNTER_ROLE_FAILURE,
     error,
   };
 }
 
-export function fetchEncounterType() {
+export function fetchEncounterTypeAction() {
   return {
     type: FETCH_ENCOUNTER_TYPE_LOADING,
   };
 }
 
-export function fetchEncounterTypeSuccess(configuration) {
+export function fetchEncounterTypeSuccessAction(configuration) {
   return {
     type: FETCH_ENCOUNTER_TYPE_SUCCESS,
     configuration,
   };
 }
 
-export function fetchEncounterTypeError(error) {
+export function fetchEncounterTypeErrorAction(error) {
   return {
     type: FETCH_ENCOUNTER_TYPE_FAILURE,
     error,
   };
 }
 
-export function fetchEncounterRole() {
+export function fetchEncounterRoleAction() {
   return {
     type: FETCH_ENCOUNTER_ROLE_LOADING,
   };
 }
 
-export function fetchEncounterRoleSuccess(configuration) {
+export function fetchEncounterRoleSuccessAction(configuration) {
   return {
     type: FETCH_ENCOUNTER_ROLE_SUCCESS,
     configuration,
   };
 }
 
-export function fetchEncounterRoleError(error) {
+export function fetchEncounterRoleErrorAction(error) {
   return {
     type: FETCH_ENCOUNTER_ROLE_FAILURE,
     error,

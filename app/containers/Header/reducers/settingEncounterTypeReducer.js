@@ -6,16 +6,22 @@ import {
 } from '../constants'
 
 const settingEncounterTypeReducer = (
-  state = initialState.defaultSettingEncounterType,
+  state = initialState.get('defaultSettingEncounterType'),
   action,
 ) => {
   switch (action.type) {
-    case SETTING_ENCOUNTER_TYPE_SUCCESS:
-      return { ...state, settingEncounterType: action.configuration };
     case SETTING_ENCOUNTER_TYPE_LOADING:
-      return { ...state, isLoading: action.status };
+      return state  
+        .set('isLoading',true);
+    case SETTING_ENCOUNTER_TYPE_SUCCESS:
+      return state
+        .set('settingEncounterType', action.configuration)
+        .set('error', null)
+        .set('isLoading', false)
     case SETTING_ENCOUNTER_TYPE_FAILURE:
-      return { ...state, error: action.error };
+      return state
+        .set('error', action.error)
+        .set('isLoading', false)
     default:
       return state;
   }

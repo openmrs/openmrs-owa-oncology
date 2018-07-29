@@ -5,27 +5,21 @@ import {
 } from '../constants';
 import initialState from './initialState';
 
-const encounterType = (state = initialState.encounterReducer, action) => {
+const encounterType = (state = initialState.get('encounterReducer'), action) => {
   switch (action.type) {
     case FETCH_ENCOUNTER_TYPE_LOADING:
-      return {
-        ...state,
-        isLoading: action.status,
-      };
+      return state
+        .set('isLoading', action.status);
     case FETCH_ENCOUNTER_TYPE_SUCCESS:
-      return {
-        ...state,
-        isLoading: false,
-        encounterType: action.encounterType,
-        error: null,
-      };
+      return state
+        .set('encounterType', action.encounterType)
+        .set('error', null)
+        .set('isLoading', false)
     case FETCH_ENCOUNTER_TYPE_FAILURE:
-      return {
-        ...state,
-        isLoading: false,
-        encounterType: {},
-        error: action.error,
-      };
+      return state
+        .set('error', action.error)
+        .set('encounterType', {})
+        .set('isLoading', false)
     default:
       return state;
   }

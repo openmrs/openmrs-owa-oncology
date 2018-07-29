@@ -6,16 +6,22 @@ import {
 } from '../constants';
 
 const settingEncounterRoleReducer = (
-  state = initialState.defaultSettingEncounterRole,
+  state = initialState.get('defaultSettingEncounterRole'),
   action,
 ) => {
   switch (action.type) {
-    case SETTING_ENCOUNTER_ROLE_SUCCESS:
-      return { ...state, settingEncounterRole: action.configuration };
     case SETTING_ENCOUNTER_ROLE_LOADING:
-      return { ...state, isLoading: action.status };
+      return state
+        .set('isLoading', true);
+    case SETTING_ENCOUNTER_ROLE_SUCCESS:
+      return state
+        .set('settingEncounterRole', action.configuration)
+        .set('error', null)
+        .set('isLoading', false)
     case SETTING_ENCOUNTER_ROLE_FAILURE:
-      return { ...state, roleError: action.error };
+      return state
+        .set('error', action.error)
+        .set('isLoading', false)
     default:
       return state;
   }

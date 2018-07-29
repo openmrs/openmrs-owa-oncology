@@ -14,39 +14,23 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import {makeSelectCurrentSession, makeSelectEncounterRole, makeSelectEncounterType} from './selectors';
+import {makeSelectCurrentSession} from './selectors';
 import reducer from './reducers';
 import saga from './saga';
 // import messages from './messages';
 
-import { fetchCurrentSession, fetchEncounterRole, fetchEncounterType } from './actions';
+import { fetchCurrentSessionAction, fetchEncounterRoleAction, fetchEncounterTypeAction } from './actions';
 
 /* eslint-disable react/prefer-stateless-function */
 export class Header extends React.Component {
 
   componentDidMount() {
     this.props.loadCurrentSession();
-    // this.props.loadDefaultEncounterRole();
-    // this.props.loadDefaultEncounterType();
     this.props.loadEncounterRole();
     this.props.loadEncounterType();
   }
 
   render() {
-    const {
-      currentSession,
-      // defaultEncounterRole,
-      // defaultEncounterType,
-      encounterRole,
-      encounterType,
-    } = this.props;
-
-    console.log(currentSession);
-    // console.log(defaultEncounterRole);
-    // console.log(defaultEncounterType);
-    console.log(encounterRole);
-    console.log(encounterType);
-
     return (
       <div>
         {/* <Helmet>
@@ -60,34 +44,21 @@ export class Header extends React.Component {
 }
 
 Header.propTypes = {
-  currentSession: PropTypes.object,
-  // defaultEncounterRole: PropTypes.object,
-  // defaultEncounterType: PropTypes.object,
-  encounterRole: PropTypes.object,
-  encounterType: PropTypes.object,
   loadCurrentSession: PropTypes.func.isRequired,
-  // loadDefaultEncounterRole: PropTypes.func.isRequired,
-  // loadDefaultEncounterType: PropTypes.func.isRequired,
   loadEncounterRole: PropTypes.func.isRequired,
   loadEncounterType: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   currentSession: makeSelectCurrentSession(),
-  // defaultEncounterRole: makeSelectDefaultEncounterRole(),
-  // defaultEncounterType: makeSelectDefaultEncounterType(),
-  encounterRole: makeSelectEncounterRole(),
-  encounterType: makeSelectEncounterType(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     dispatch,
-    loadCurrentSession: () => dispatch(fetchCurrentSession()),
-    // loadDefaultEncounterRole: () => dispatch(fetchDefaultEncounterRole()),
-    // loadDefaultEncounterType: () => dispatch(fetchDefaultEncounterType()),
-    loadEncounterRole: () => dispatch(fetchEncounterRole()),
-    loadEncounterType: () => dispatch(fetchEncounterType()),
+    loadCurrentSession: () => dispatch(fetchCurrentSessionAction()),
+    loadEncounterRole: () => dispatch(fetchEncounterRoleAction()),
+    loadEncounterType: () => dispatch(fetchEncounterTypeAction()),
   };
 }
 

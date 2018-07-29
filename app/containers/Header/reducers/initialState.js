@@ -1,4 +1,6 @@
-export default {
+import { fromJS } from "immutable";
+
+export default fromJS({
   defaultLocations: {
     results: {
       locationTags: [],
@@ -108,4 +110,4 @@ export default {
     dateFormat: '',
     error: null,
   },
-};
+});

@@ -19,7 +19,7 @@ import DashboardPage from 'containers/DashboardPage/Loadable';
 import ChemotherapyPage from 'containers/ChemotherapyPage/Loadable';
 import SummaryPage from 'containers/SummaryPage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
-import Header from 'containers/Header/Loadable';
+import Header from 'containers/Header';
 
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 

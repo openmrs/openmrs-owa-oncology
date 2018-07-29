@@ -1,4 +1,4 @@
-// import { createSelector } from 'reselect';
+import { createSelector } from 'reselect';
 import initialState from './reducers/initialState';
 
 /**
@@ -8,11 +8,14 @@ import initialState from './reducers/initialState';
 const selectCurrentSessionDomain = state => state.get('currentSession', initialState);
 const selectDefaultSettingEncounterTypeDomain = state => state.get('defaultSettingEncounterType', initialState);
 const selectDefaultSettingEncounterRoleDomain = state => state.get('defaultSettingEncounterRole', initialState);
-// const selectSettingEncounterTypeDomain = state => state.get('settingEncounterTypeReducer', initialState);
-const selectSettingEncounterRoleDomain = state => state.get('settingEncounterRoleReducer', initialState);
 
 const selectHeaderDomain = state => state.get('header', initialState);
 
+const selectSettingEncounterTypeReducer = () =>
+  createSelector(selectHeaderDomain, substate => substate.settingEncounterTypeReducer)
+
+const selectSettingEncounterRoleReducer = () =>
+  createSelector(selectHeaderDomain, substate => substate.settingEncounterRoleReducer)
 
 /**
  * Other specific selectors
@@ -31,15 +34,15 @@ const makeSelectDefaultEncounterRole = () =>
 const makeSelectDefaultEncounterType = () =>
   selectDefaultSettingEncounterRoleDomain;
 
-const makeSelectEncounterRole = () =>
-  selectSettingEncounterRoleDomain;
-
 const makeSelectEncounterType = () =>
-  selectHeaderDomain;
-  // createSelector(selectHeaderDomain, substate =>
-  //   substate.get('settingEncounterTypeReducer'),
-  // );
+  createSelector(selectSettingEncounterTypeReducer(), substate =>
+    substate.getIn(['settingEncounterType']).results[0].value
+  );
 
+const makeSelectEncounterRole = () =>
+  createSelector(selectSettingEncounterRoleReducer(), substate =>
+    substate.getIn(['settingEncounterRole']).results[0].value
+  );
 	
 export default makeSelectCurrentSession;
 export { makeSelectCurrentSession, makeSelectDefaultEncounterRole, makeSelectDefaultEncounterType, makeSelectEncounterRole, makeSelectEncounterType };
