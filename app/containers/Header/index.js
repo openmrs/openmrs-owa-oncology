@@ -15,13 +15,15 @@ import { compose } from 'redux';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-// import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faSignOutAlt, faUser, faCaretDown, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
+import { faHome, faSignOutAlt, faUser, faCaretDown, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
+
+import Breadcrumb from 'components/Breadcrumb';
+import PatientCard from 'components/PatientCard';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
@@ -39,6 +41,10 @@ const Logo = styled.img`
 `;
 
 const Navigation = styled.div`
+`;
+
+const Wrapper = styled.div`
+  padding-top: 48px;
 `;
 
 const ButtonText = styled.span`
@@ -73,53 +79,76 @@ export class Header extends React.Component {
     const open = Boolean(anchorEl);
 
     return (
-      <AppBar position="static" color="secondary">
-        <Toolbar style={{ justifyContent: 'space-between' }}>
-          <Logo src={logoImg} alt="openMRS logo"/>
-          <Navigation>
-            <Button
-              color="inherit"
-              onClick={this.handleMenu}
-            >
-              <FontAwesomeIcon icon={faUser} />
-              <ButtonText>
-                demo1
-              </ButtonText>
-              <FontAwesomeIcon icon={faCaretDown} />
-            </Button>
-            <Menu
-              id="menu-appbar"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={this.handleClose}
-              anchorOrigin={{
-                vertical: 'bottom',
-                horizontal: 'right',
-              }}
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              getContentAnchorEl={null}
-            >
-              <MenuItem>Account</MenuItem>
-            </Menu>
-            <Button color="inherit">
-              <FontAwesomeIcon icon={faMapMarkerAlt} />
-              <ButtonText>
-                Biwo Resepsyon
-              </ButtonText>
-              <FontAwesomeIcon icon={faCaretDown} />
-            </Button>
-            <Button color="inherit">
-              <ButtonText>
-                Logout
-              </ButtonText>
-              <FontAwesomeIcon icon={faSignOutAlt} />
-            </Button>
-          </Navigation>
-        </Toolbar>
-      </AppBar>
+      <Wrapper>
+        <AppBar color="secondary">
+          <Toolbar variant="dense" style={{ justifyContent: 'space-between' }}>
+            <Logo src={logoImg} alt="openMRS logo"/>
+            <Navigation>
+              <Button
+                color="inherit"
+                onClick={this.handleMenu}
+              >
+                <FontAwesomeIcon icon={faUser} />
+                <ButtonText>
+                  demo1
+                </ButtonText>
+                <FontAwesomeIcon icon={faCaretDown} />
+              </Button>
+              <Menu
+                id="menu-appbar"
+                anchorEl={anchorEl}
+                open={open}
+                onClose={this.handleClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                getContentAnchorEl={null}
+              >
+                <MenuItem>Account</MenuItem>
+              </Menu>
+              <Button color="inherit">
+                <FontAwesomeIcon icon={faMapMarkerAlt} />
+                <ButtonText>
+                  Biwo Resepsyon
+                </ButtonText>
+                <FontAwesomeIcon icon={faCaretDown} />
+              </Button>
+              <Button color="inherit">
+                <ButtonText>
+                  Logout
+                </ButtonText>
+                <FontAwesomeIcon icon={faSignOutAlt} />
+              </Button>
+            </Navigation>
+          </Toolbar>
+        </AppBar>
+        <Breadcrumb
+          items={[
+            {
+              label: <FontAwesomeIcon icon={faHome} />,
+              link: '/',
+            }, {
+              label: 'Sibling. Dave',
+              link: '/',
+            }, {
+              label: 'Drug Orders',
+            },
+          ]}
+        />
+        <PatientCard
+          patient={{
+            firstName: 'Dave',
+            lastName: 'Sibling',
+            sex: 'Female 25 year(s) (01.Jan.1993)',
+            id: 'Y3X4X0',
+          }}
+        />
+      </Wrapper>
     );
   }
 }

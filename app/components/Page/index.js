@@ -17,7 +17,7 @@ const PageWrapper = styled.div`
 const Sidebar = styled.aside`
   position: fixed;
   left: 0;
-  top: 65px;
+  top: 155px;
   bottom: 0;
   background: ${grey[100]};
   width: 350px;
@@ -27,7 +27,7 @@ const Sidebar = styled.aside`
 const Content = styled.div`
   background: #FFFFFF;
   position: absolute;
-  top: 65px;
+  top: 155px;
   right: 0;
   bottom: 0;
   left: 360px;
