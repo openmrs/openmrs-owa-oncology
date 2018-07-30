@@ -30,6 +30,14 @@ const TitleWrapper = styled.div`
   margin: 0 1em 1em 0;
 `;
 
+const PatientDetailsWrapper = styled.div`
+  display: inline-flex;
+  margin: 1em;
+  >p {
+    margin: 0 5px;
+  }
+`;
+
 const TitlePart = styled.span`
   display: inline-block;
   margin-right: 0.75em;
@@ -85,15 +93,23 @@ function PatientCard(props) {
           </TitlePartLabel>
         </TitlePart>
       </TitleWrapper>
-      <Typography variant="body1">
-        {patient.sex}
-      </Typography>
+      <PatientDetailsWrapper>
+        <Typography variant="body1">
+          {patient.genderStr}
+        </Typography>
+        <Typography variant="body1">
+          {patient.age} year(s)
+        </Typography>
+        <Typography variant="body1">
+          ({patient.birthdate})
+        </Typography>
+      </PatientDetailsWrapper>
       <Aside>
         <Typography variant="caption">
           Patient ID
         </Typography>
         <Label>
-          {patient.id}
+          {patient.identifier}
         </Label>
       </Aside>
 

@@ -19,6 +19,8 @@ import Button from '@material-ui/core/Button';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 
+import dateFns from 'date-fns';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHome, faSignOutAlt, faUser, faCaretDown, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons'
 
@@ -27,7 +29,8 @@ import PatientCard from 'components/PatientCard';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import {makeSelectCurrentSession } from './selectors';
+import {makeSelectCurrentSession} from './selectors';
+import {makeSelectPatient} from '../OrderPage/selectors';
 import reducer from './reducers';
 import saga from './saga';
 // import messages from './messages';
@@ -75,8 +78,20 @@ export class Header extends React.Component {
   };
 
   render() {
-    const { anchorEl } = this.state;
+    const { patient } = this.props;
+    if (!patient) {
+      return(<div></div>);
+    }
+
+    const { anchorEl} = this.state;
     const open = Boolean(anchorEl);
+
+
+    const {givenName, familyName} = patient.person.personName;
+    const {age, gender, birthdate} = patient.person;
+    const {identifier} = patient.patientIdentifier;
+    const genderStr = (gender === 'M') ? 'Male' : 'Female';
+    const formattedBirthdate = dateFns.format(new Date(birthdate), 'DD MMM YYYY')
 
     return (
       <Wrapper>
@@ -133,19 +148,21 @@ export class Header extends React.Component {
               label: <FontAwesomeIcon icon={faHome} />,
               link: '/',
             }, {
-              label: 'Sibling. Dave',
+              label: `${familyName}, ${givenName}`,
               link: '/',
             }, {
-              label: 'Drug Orders',
+              label: 'Chemo Orders',
             },
           ]}
         />
         <PatientCard
           patient={{
-            firstName: 'Dave',
-            lastName: 'Sibling',
-            sex: 'Female 25 year(s) (01.Jan.1993)',
-            id: 'Y3X4X0',
+            firstName: givenName,
+            lastName: familyName,
+            genderStr,
+            age,
+            birthdate: formattedBirthdate,
+            identifier,
           }}
         />
       </Wrapper>
@@ -157,10 +174,12 @@ Header.propTypes = {
   loadCurrentSession: PropTypes.func.isRequired,
   loadEncounterRole: PropTypes.func.isRequired,
   loadEncounterType: PropTypes.func.isRequired,
+  patient: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   currentSession: makeSelectCurrentSession(),
+  patient: makeSelectPatient(),
   // currentSession: makeSelectDefaultEncounterRole(),
   // currentSession: makeSelectDefaultEncounterType(),
 });
