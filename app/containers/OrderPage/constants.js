@@ -13,6 +13,10 @@ export const LOAD_PATIENT = 'app/OrderPage/LOAD_PATIENT';
 export const LOAD_PATIENT_SUCCESS = 'app/OrderPage/LOAD_PATIENT_SUCCESS';
 export const LOAD_PATIENT_ERROR = 'app/OrderPage/LOAD_PATIENT_ERROR';
 
+export const POST_ENCOUNTER = 'app/OrderPage/POST_ENCOUNTER';
+export const POST_ENCOUNTER_SUCCESS = 'app/OrderPage/POST_ENCOUNTER_SUCCESS';
+export const POST_ENCOUNTER_ERROR = 'app/OrderPage/POST_ENCOUNTER_ERROR';
+
 export const POST_CHEMO_ORDER = 'app/OrderPage/POST_CHEMO_ORDER';
 export const POST_CHEMO_ORDER_SUCCESS = 'app/OrderPage/POST_CHEMO_ORDER_SUCCESS';
 export const POST_CHEMO_ORDER_ERROR = 'app/OrderPage/POST_CHEMO_ORDER_ERROR';

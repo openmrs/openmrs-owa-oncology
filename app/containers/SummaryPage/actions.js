@@ -1,4 +1,4 @@
-import { POST_CHEMO_ORDER, POST_CHEMO_ORDER_SUCCESS, POST_CHEMO_ORDER_ERROR } from "../OrderPage/constants";
+import { POST_CHEMO_ORDER, POST_ENCOUNTER_SUCCESS, POST_ENCOUNTER_ERROR, POST_CHEMO_ORDER_SUCCESS, POST_CHEMO_ORDER_ERROR } from "../OrderPage/constants";
 
 /*
  *
@@ -6,9 +6,23 @@ import { POST_CHEMO_ORDER, POST_CHEMO_ORDER_SUCCESS, POST_CHEMO_ORDER_ERROR } fr
  *
  */
 
-export function postChemoOrderAction(order) {
+export function postEncounterSuccessAction(encoutner) {
+  return {
+    type: POST_ENCOUNTER_SUCCESS,
+    encoutner,
+  }
+}
+
+export function postEncounterFailureAction() {
+  return {
+    type: POST_ENCOUNTER_ERROR,
+  }
+}
+
+export function postChemoOrderAction(encounter, order) {
   return {
     type: POST_CHEMO_ORDER,
+    encounter,
     order,
   }
 }
