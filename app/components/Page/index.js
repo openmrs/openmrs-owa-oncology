@@ -12,26 +12,25 @@ import grey from '@material-ui/core/colors/grey';
 
 const PageWrapper = styled.div`
   background: #FFFFFF;
-  margin: 0 0.5em;
 `;
 
 const Sidebar = styled.aside`
   position: fixed;
   left: 0;
-  top: 0;
+  top: 65px;
   bottom: 0;
   background: ${grey[100]};
-  width: 450px;
+  width: 350px;
   overflow: auto;
 `;
 
 const Content = styled.div`
   background: #FFFFFF;
   position: absolute;
-  top: 0;
+  top: 65px;
   right: 0;
   bottom: 0;
-  left: 460px;
+  left: 360px;
   padding: 2rem;
   overflow: auto;
 `;
