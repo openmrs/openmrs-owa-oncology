@@ -19,6 +19,10 @@ export function* fetchRegimenList() {
     // Call our request helper (see 'utils/request')
     const regimenList = yield call(request, requestURL, {headers});
 
+    // YUCKINESS: would be better to filter based on a specific UUID
+    // const filteredregimenList = regimenList.filter((element) => element.category.some((item) => item.display === "Chemotherapy regimen"));
+    // yield put(regimenListLoaded(filteredregimenList));
+    
     yield put(regimenListLoaded(regimenList));
   } catch (err) {
     yield put(regimenListLoadingError(err));

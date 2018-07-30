@@ -1,6 +1,7 @@
 export function getHost() {
   // const dummyContextPath = 'https://humci.pih-emr.org/mirebalais/ws/rest/v1';
   const dummyContextPath = 'https://humci-azure.pih-emr.org/mirebalais/ws/rest/v1';
+  // const dummyContextPath = 'https://oncology-test.pih-emr.org/mirebalais/ws/rest/v1';
 
   try {
     const host = window.location.origin;
@@ -19,6 +20,6 @@ export function getHost() {
 export function getHeaders() {
   return {
     Authorization: `Basic ${btoa('admin:Admin123')}`,
-    'Content-Type': 'application/json;charset=UTF-8',
+    'Content-Type': 'application/json',
   }
 }

@@ -12,6 +12,8 @@ import {
   LOAD_PATIENT,
   LOAD_PATIENT_SUCCESS,
   LOAD_PATIENT_ERROR,
+  POST_ENCOUNTER_SUCCESS,
+  POST_ENCOUNTER_ERROR,
   POST_CHEMO_ORDER_SUCCESS,
   POST_CHEMO_ORDER_ERROR,
 } from './constants';
@@ -62,6 +64,19 @@ export function loadPatientSuccess(patient) {
 export function loadPatientError(error) {
   return {
     type: LOAD_PATIENT_ERROR,
+    error,
+  };
+}
+
+export function postEncounterSuccessAction() {
+  return {
+    type: POST_ENCOUNTER_SUCCESS,
+  };
+}
+
+export function postEncounterFailureAction(error) {
+  return {
+    type: POST_ENCOUNTER_ERROR,
     error,
   };
 }

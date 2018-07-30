@@ -1,9 +1,11 @@
-import { put, call, takeLatest } from 'redux-saga/effects';
-import { POST_CHEMO_ORDER } from 'containers/OrderPage/constants';
+import { take, put, call, takeLatest } from 'redux-saga/effects';
+import { POST_CHEMO_ORDER, POST_ENCOUNTER_SUCCESS } from 'containers/OrderPage/constants';
 import request from 'utils/request';
 
 import {
-  postOrderSuccessAction,
+  // postEncounterFailureAction,
+  postEncounterSuccessAction,
+  // postOrderSuccessAction,
   postOrderFailureAction,
 } from '../OrderPage/actions';
 
@@ -18,9 +20,11 @@ export function* postChemoOrder(action) {
     yield call(request, requestURL, {
       headers,
       method: 'POST',
-      body: action.order,
+      body: JSON.stringify(action.encounter),
     });
-    yield put(postOrderSuccessAction());
+    yield put(postEncounterSuccessAction());
+
+    yield take(POST_ENCOUNTER_SUCCESS);
   } catch (err) {
     yield put(postOrderFailureAction(err));
   }
