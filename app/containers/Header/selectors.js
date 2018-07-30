@@ -6,16 +6,23 @@ import initialState from './reducers/initialState';
  */
 
 const selectCurrentSessionDomain = state => state.get('currentSession', initialState);
-const selectDefaultSettingEncounterTypeDomain = state => state.get('defaultSettingEncounterType', initialState);
-const selectDefaultSettingEncounterRoleDomain = state => state.get('defaultSettingEncounterRole', initialState);
 
 const selectHeaderDomain = state => state.get('header', initialState);
 
-const selectSettingEncounterTypeReducer = () =>
+const selectSettingDefaultEncounterTypeReducer = () =>
   createSelector(selectHeaderDomain, substate => substate.settingEncounterTypeReducer)
 
-const selectSettingEncounterRoleReducer = () =>
+const selectSettingDefaultEncounterRoleReducer = () =>
   createSelector(selectHeaderDomain, substate => substate.settingEncounterRoleReducer)
+
+const selectEncounterTypeReducer = () =>
+  createSelector(selectHeaderDomain, substate => substate.encounterTypeReducer)
+
+const selectEncounterRoleReducer = () =>
+  createSelector(selectHeaderDomain, substate => substate.encounterRoleReducer)
+
+const selectSessionReducer = () =>
+  createSelector(selectHeaderDomain, substate => substate.sessionReducer)
 
 /**
  * Other specific selectors
@@ -28,21 +35,37 @@ const selectSettingEncounterRoleReducer = () =>
 const makeSelectCurrentSession = () =>
   selectCurrentSessionDomain;
 
-const makeSelectDefaultEncounterRole = () =>
-  selectDefaultSettingEncounterTypeDomain;
-
 const makeSelectDefaultEncounterType = () =>
-  selectDefaultSettingEncounterRoleDomain;
-
-const makeSelectEncounterType = () =>
-  createSelector(selectSettingEncounterTypeReducer(), substate =>
+  createSelector(selectSettingDefaultEncounterTypeReducer(), substate =>
     substate.getIn(['settingEncounterType']).results[0].value
   );
 
-const makeSelectEncounterRole = () =>
-  createSelector(selectSettingEncounterRoleReducer(), substate =>
+const makeSelectDefaultEncounterRole = () =>
+  createSelector(selectSettingDefaultEncounterRoleReducer(), substate =>
     substate.getIn(['settingEncounterRole']).results[0].value
   );
+
+const makeSelectEncounterType = () => 
+  createSelector(selectEncounterTypeReducer(), substate =>
+    substate.getIn(['encounterType'])
+  );
+
+const makeSelectEncounterRole = () => 
+  createSelector(selectEncounterRoleReducer(), substate =>
+    substate.getIn(['encounterRole'])
+  );
+
+const makeSelectEncounterProvider = () =>
+  createSelector(selectSessionReducer(), substate =>
+    substate.get('currentProvider')
+  );
+
+const makeSelectEncounterLocation = () => 
+  createSelector(selectSessionReducer(), substate =>
+    substate.get('currentLocation')
+  );
+
+
 	
 export default makeSelectCurrentSession;
-export { makeSelectCurrentSession, makeSelectDefaultEncounterRole, makeSelectDefaultEncounterType, makeSelectEncounterRole, makeSelectEncounterType };
+export { makeSelectCurrentSession, makeSelectDefaultEncounterRole, makeSelectDefaultEncounterType,  makeSelectEncounterRole, makeSelectEncounterProvider, makeSelectEncounterType, makeSelectEncounterLocation};

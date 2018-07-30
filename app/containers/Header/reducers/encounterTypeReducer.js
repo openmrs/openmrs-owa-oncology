@@ -12,7 +12,7 @@ const encounterType = (state = initialState.get('encounterReducer'), action) => 
         .set('isLoading', action.status);
     case FETCH_ENCOUNTER_TYPE_SUCCESS:
       return state
-        .set('encounterType', action.encounterType)
+        .set('encounterType', action.configuration)
         .set('error', null)
         .set('isLoading', false)
     case FETCH_ENCOUNTER_TYPE_FAILURE:

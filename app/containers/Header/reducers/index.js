@@ -4,11 +4,11 @@ import { combineReducers } from 'redux';
 // import patientReducer from './patientReducer';
 import sessionReducer from './sessionReducer';
 // import careSettingReducer from './careSettingReducer';
-// import encounterReducer from './encounterReducer';
 // import activeOrderReducer from './activeOrderReducer';
 import settingEncounterTypeReducer from './settingEncounterTypeReducer';
 import settingEncounterRoleReducer from './settingEncounterRoleReducer';
-// import encounterRoleReducer from './encounterRoleReducer';
+import encounterTypeReducer from './encounterTypeReducer';
+import encounterRoleReducer from './encounterRoleReducer';
 
 export default combineReducers({
   // locationReducer,
@@ -16,9 +16,10 @@ export default combineReducers({
   // patientReducer,
   sessionReducer,
   // careSettingReducer,
-  // encounterReducer,
+
   // activeOrderReducer,
   settingEncounterTypeReducer,
   settingEncounterRoleReducer,
-  // encounterRoleReducer,
+  encounterTypeReducer,
+  encounterRoleReducer,
 });

@@ -12,6 +12,8 @@ import {
   LOAD_PATIENT,
   LOAD_PATIENT_SUCCESS,
   LOAD_PATIENT_ERROR,
+  POST_CHEMO_ORDER_SUCCESS,
+  POST_CHEMO_ORDER_ERROR,
 } from './constants';
 
 export function loadRegimenList() {
@@ -63,3 +65,17 @@ export function loadPatientError(error) {
     error,
   };
 }
+
+export function postOrderSuccessAction() {
+  return {
+    type: POST_CHEMO_ORDER_SUCCESS,
+  };
+}
+
+export function postOrderFailureAction(error) {
+  return {
+    type: POST_CHEMO_ORDER_ERROR,
+    error,
+  };
+}
+

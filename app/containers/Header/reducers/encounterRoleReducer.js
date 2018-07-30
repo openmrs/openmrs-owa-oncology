@@ -12,7 +12,7 @@ const encounterRole = (state = initialState.get('encounterRoleReducer'), action)
         .set('isLoading', action.status);
     case FETCH_ENCOUNTER_ROLE_SUCCESS:
       return state
-        .set('encounterRole', action.encounterRole)
+        .set('encounterRole', action.configuration)
         .set('error', null)
         .set('isLoading', false)
     case FETCH_ENCOUNTER_ROLE_FAILURE:

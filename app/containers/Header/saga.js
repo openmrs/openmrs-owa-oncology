@@ -27,7 +27,7 @@ import {
 } from './actions';
 import request from '../../utils/request';
 
-import { makeSelectEncounterType, makeSelectEncounterRole } from './selectors'
+import { makeSelectDefaultEncounterType, makeSelectDefaultEncounterRole } from './selectors'
 
 const baseUrl = 'https://humci-azure.pih-emr.org/mirebalais'; 
 const restEndpoint = "/ws/rest/v1"
@@ -74,7 +74,7 @@ export function* fetchEncounterType() {
   yield put(fetchDefaultEncounterTypeAction());
   yield take(SETTING_ENCOUNTER_TYPE_SUCCESS);
 
-  const encType = yield select(makeSelectEncounterType());
+  const encType = yield select(makeSelectDefaultEncounterType());
   
   const requestURL = `${baseUrl}${restEndpoint}/encountertype?q=${encType}`;
 
@@ -91,7 +91,7 @@ export function* fetchEncounterRole() {
   yield put(fetchDefaultEncounterRoleAction());
   yield take(SETTING_ENCOUNTER_ROLE_SUCCESS);
 
-  const encRole = yield select(makeSelectEncounterRole());
+  const encRole = yield select(makeSelectDefaultEncounterRole());
   
   const requestURL = `${baseUrl}${restEndpoint}/encounterrole?q=${encRole}`;
 
