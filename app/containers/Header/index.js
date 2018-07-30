@@ -31,6 +31,7 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import {
   makeSelectCurrentSession,
+  makeSelectEncounters,
   makeSelectPatient,
 } from './selectors';
 import reducer from './reducers';
@@ -41,6 +42,7 @@ import {
   fetchCurrentSessionAction,
   fetchEncounterRoleAction,
   fetchEncounterTypeAction,
+  fetchEncountersAction,
   loadPatient,
 } from './actions';
 
@@ -71,10 +73,17 @@ export class Header extends React.Component {
   };
 
   componentDidMount() {
+    const query = new URLSearchParams(window.location.search);
+    const patientUuid = query.get('patientId');
     this.props.loadCurrentSession();
     this.props.loadEncounterRole();
     this.props.loadEncounterType();
-    this.props.loadPatient();
+    this.props.loadPatient(patientUuid);
+    this.props.loadEncounters({
+      patient: patientUuid,
+      s: 'default',
+      v: 'full',
+    })
   }
 
   handleMenu = event => {
@@ -184,12 +193,14 @@ Header.propTypes = {
   loadEncounterRole: PropTypes.func.isRequired,
   loadEncounterType: PropTypes.func.isRequired,
   loadPatient: PropTypes.func.isRequired,
+  loadEncounters: PropTypes.func.isRequired,
   patient: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   currentSession: makeSelectCurrentSession(),
   patient: makeSelectPatient(),
+  encounters: makeSelectEncounters(),
   // currentSession: makeSelectDefaultEncounterRole(),
   // currentSession: makeSelectDefaultEncounterType(),
 });
@@ -199,7 +210,8 @@ function mapDispatchToProps(dispatch) {
     loadCurrentSession: () => dispatch(fetchCurrentSessionAction()),
     loadEncounterRole: () => dispatch(fetchEncounterRoleAction()),
     loadEncounterType: () => dispatch(fetchEncounterTypeAction()),
-    loadPatient: () => dispatch(loadPatient()),
+    loadEncounters: (params) => dispatch(fetchEncountersAction(params)),
+    loadPatient: (patientUuid) => dispatch(loadPatient(patientUuid)),
   };
 }
 

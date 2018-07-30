@@ -15,6 +15,9 @@ const selectSettingDefaultEncounterTypeReducer = () =>
 const selectSettingDefaultEncounterRoleReducer = () =>
   createSelector(selectHeaderDomain, substate => substate.settingEncounterRoleReducer)
 
+const selectEncounterReducer = () =>
+  createSelector(selectHeaderDomain, substate => substate.encounterReducer)
+
 const selectEncounterTypeReducer = () =>
   createSelector(selectHeaderDomain, substate => substate.encounterTypeReducer)
 
@@ -42,19 +45,24 @@ const makeSelectDefaultEncounterType = () =>
     substate.getIn(['settingEncounterType']).results[0].value
   );
 
+const makeSelectEncounters = () =>
+  createSelector(selectEncounterReducer(), substate =>
+    substate.get('encounters')
+  );
+
 const makeSelectDefaultEncounterRole = () =>
   createSelector(selectSettingDefaultEncounterRoleReducer(), substate =>
-    substate.getIn(['settingEncounterRole']).results[0].value
+    substate.get('settingEncounterRole').results[0].value
   );
 
 const makeSelectEncounterType = () =>
   createSelector(selectEncounterTypeReducer(), substate =>
-    substate.getIn(['encounterType'])
+    substate.get('encounterType')
   );
 
 const makeSelectEncounterRole = () =>
   createSelector(selectEncounterRoleReducer(), substate =>
-    substate.getIn(['encounterRole'])
+    substate.get('encounterRole')
   );
 
 const makeSelectEncounterProvider = () =>
@@ -82,5 +90,6 @@ export {
   makeSelectEncounterProvider,
   makeSelectEncounterType,
   makeSelectEncounterLocation,
+  makeSelectEncounters,
   makeSelectPatient,
 };

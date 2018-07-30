@@ -96,9 +96,14 @@ export default fromJS({
     error: null,
     loading: false,
   },
-  encounterReducer: {
+  encounterTypeReducer: {
     isLoading: false,
     encounterType: {},
+    error: null,
+  },
+  encounterReducer: {
+    isLoading: false,
+    encounters: {},
     error: null,
   },
   encounterRoleReducer: {
