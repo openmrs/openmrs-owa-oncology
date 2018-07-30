@@ -58,6 +58,17 @@ export function* fetchDefaultEncounterType() {
   }
 }
 
+export function* fetchEncounters() {
+  const requestURL = `${baseUrl}/encounters`;
+
+  try {
+    const response = yield call(request, requestURL, {headers});
+    yield put(fetchDefaultEncounterTypeSuccessAction(response));
+  } catch (err) {
+    yield put(fetchDefaultEncounterTypeErrorAction(err));
+  }
+}
+
 export function* fetchDefaultEncounterRole() {
   const requestURL = `${baseUrl}/systemsetting?v=custom:(value)&q=orderentryowa.encounterRole`;
 

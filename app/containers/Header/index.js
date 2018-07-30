@@ -104,7 +104,7 @@ export class Header extends React.Component {
 
     return (
       <Wrapper>
-        <AppBar color="secondary">
+        <AppBar color="primary">
           <Toolbar variant="dense" style={{ justifyContent: 'space-between' }}>
             <Logo src={logoImg} alt="openMRS logo"/>
             <Navigation>
