@@ -24,6 +24,8 @@ const selectEncounterRoleReducer = () =>
 const selectSessionReducer = () =>
   createSelector(selectHeaderDomain, substate => substate.sessionReducer)
 
+const selectPatientReducer = () =>
+  createSelector(selectHeaderDomain, substate => substate.patientReducer)
 /**
  * Other specific selectors
  */
@@ -45,12 +47,12 @@ const makeSelectDefaultEncounterRole = () =>
     substate.getIn(['settingEncounterRole']).results[0].value
   );
 
-const makeSelectEncounterType = () => 
+const makeSelectEncounterType = () =>
   createSelector(selectEncounterTypeReducer(), substate =>
     substate.getIn(['encounterType'])
   );
 
-const makeSelectEncounterRole = () => 
+const makeSelectEncounterRole = () =>
   createSelector(selectEncounterRoleReducer(), substate =>
     substate.getIn(['encounterRole'])
   );
@@ -60,12 +62,25 @@ const makeSelectEncounterProvider = () =>
     substate.get('currentProvider')
   );
 
-const makeSelectEncounterLocation = () => 
+const makeSelectEncounterLocation = () =>
   createSelector(selectSessionReducer(), substate =>
     substate.get('currentLocation')
   );
 
+const makeSelectPatient = () =>
+  createSelector(selectPatientReducer(), substate =>
+    substate.get('patient').toJS(),
+  );
 
-	
+
 export default makeSelectCurrentSession;
-export { makeSelectCurrentSession, makeSelectDefaultEncounterRole, makeSelectDefaultEncounterType,  makeSelectEncounterRole, makeSelectEncounterProvider, makeSelectEncounterType, makeSelectEncounterLocation};
+export {
+  makeSelectCurrentSession,
+  makeSelectDefaultEncounterRole,
+  makeSelectDefaultEncounterType,
+  makeSelectEncounterRole,
+  makeSelectEncounterProvider,
+  makeSelectEncounterType,
+  makeSelectEncounterLocation,
+  makeSelectPatient,
+};

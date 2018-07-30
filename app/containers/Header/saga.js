@@ -1,5 +1,5 @@
 import { take, select, takeLatest, call, put } from 'redux-saga/effects';
-import { 
+import {
   SET_CURRENT_SESSION_LOADING,
   SETTING_ENCOUNTER_TYPE_LOADING,
   SETTING_ENCOUNTER_ROLE_LOADING,
@@ -7,6 +7,7 @@ import {
   FETCH_ENCOUNTER_TYPE_LOADING,
   SETTING_ENCOUNTER_ROLE_SUCCESS,
   SETTING_ENCOUNTER_TYPE_SUCCESS,
+  LOAD_PATIENT,
 } from './constants';
 import {
   fetchCurrentSessionSuccessAction,
@@ -24,6 +25,8 @@ import {
   fetchEncounterTypeErrorAction,
   fetchEncounterRoleSuccessAction,
   fetchEncounterRoleErrorAction,
+  loadPatientError,
+  loadPatientSuccess,
 } from './actions';
 import request from '../../utils/request';
 
@@ -72,7 +75,7 @@ export function* fetchEncounterType() {
   yield take(SETTING_ENCOUNTER_TYPE_SUCCESS);
 
   const encType = yield select(makeSelectDefaultEncounterType());
-  
+
   const requestURL = `${baseUrl}/encountertype?q=${encType}`;
 
   try {
@@ -89,7 +92,7 @@ export function* fetchEncounterRole() {
   yield take(SETTING_ENCOUNTER_ROLE_SUCCESS);
 
   const encRole = yield select(makeSelectDefaultEncounterRole());
-  
+
   const requestURL = `${baseUrl}/encounterrole?q=${encRole}`;
 
   try {
@@ -100,11 +103,26 @@ export function* fetchEncounterRole() {
   }
 }
 
+export function* fetchPatient() {
+  const query = new URLSearchParams(window.location.search);
+  const patientUuid = query.get('patientId');
+  const requestURL = `${baseUrl}/patient/${patientUuid}?v=custom:(patientId,uuid,patientIdentifier:(uuid,identifier),person:(gender,age,birthdate,birthdateEstimated,personName,preferredAddress),attributes:(value,attributeType:(name)))`;
+
+  try {
+    // Call our request helper (see 'utils/request')
+    const patient = yield call(request, requestURL, {headers});
+    yield put(loadPatientSuccess(patient));
+  } catch (err) {
+    yield put(loadPatientError(err));
+  }
+}
+
 export default function* defaultSaga() {
   yield takeLatest(SET_CURRENT_SESSION_LOADING, fetchCurrentSession);
   yield takeLatest(SETTING_ENCOUNTER_TYPE_LOADING, fetchDefaultEncounterType);
   yield takeLatest(SETTING_ENCOUNTER_ROLE_LOADING, fetchDefaultEncounterRole);
   yield takeLatest(FETCH_ENCOUNTER_TYPE_LOADING, fetchEncounterType);
   yield takeLatest(FETCH_ENCOUNTER_ROLE_LOADING, fetchEncounterRole);
+  yield takeLatest(LOAD_PATIENT, fetchPatient);
 }
 

@@ -19,14 +19,13 @@ import {
   makeSelectChemotherapy,
   makeSelectPostmedications,
   makeSelectOrders,
-  makeSelectPatient,
-
 } from '../OrderPage/selectors';
 import {
   makeSelectEncounterType,
   makeSelectEncounterRole,
   makeSelectEncounterProvider,
   makeSelectEncounterLocation,
+  makeSelectPatient,
 } from '../Header/selectors'
 
 import reducer from './reducer';
@@ -55,7 +54,7 @@ export class SummaryPage extends React.Component {
     try {
       const encounterObj = this.createEncounterObject();
       const orderObj = this.createOrderObject()
-      this.props.postChemoOrder(encounterObj, orderObj);  
+      this.props.postChemoOrder(encounterObj, orderObj);
     } catch (error) {
       console.error('Unable to create order');
     }
@@ -174,7 +173,7 @@ export class SummaryPage extends React.Component {
       patient: this.props.patient.uuid,
     };
   }
-  
+
   createOrderObject() {
     return {
       encounter: '',
@@ -186,7 +185,7 @@ export class SummaryPage extends React.Component {
       ],
     };
   }
-  
+
   render() {
     const {
       orders,

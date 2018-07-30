@@ -29,13 +29,20 @@ import PatientCard from 'components/PatientCard';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import {makeSelectCurrentSession} from './selectors';
-import {makeSelectPatient} from '../OrderPage/selectors';
+import {
+  makeSelectCurrentSession,
+  makeSelectPatient,
+} from './selectors';
 import reducer from './reducers';
 import saga from './saga';
 // import messages from './messages';
 
-import { fetchCurrentSessionAction, fetchEncounterRoleAction, fetchEncounterTypeAction } from './actions';
+import {
+  fetchCurrentSessionAction,
+  fetchEncounterRoleAction,
+  fetchEncounterTypeAction,
+  loadPatient,
+} from './actions';
 
 import logoImg from './resources/openmrs-with-title-small.png';
 
@@ -67,6 +74,7 @@ export class Header extends React.Component {
     this.props.loadCurrentSession();
     this.props.loadEncounterRole();
     this.props.loadEncounterType();
+    this.props.loadPatient();
   }
 
   handleMenu = event => {
@@ -79,6 +87,7 @@ export class Header extends React.Component {
 
   render() {
     const { patient } = this.props;
+
     if (!patient) {
       return(<div></div>);
     }
@@ -174,6 +183,7 @@ Header.propTypes = {
   loadCurrentSession: PropTypes.func.isRequired,
   loadEncounterRole: PropTypes.func.isRequired,
   loadEncounterType: PropTypes.func.isRequired,
+  loadPatient: PropTypes.func.isRequired,
   patient: PropTypes.object,
 };
 
@@ -186,10 +196,10 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
     loadCurrentSession: () => dispatch(fetchCurrentSessionAction()),
     loadEncounterRole: () => dispatch(fetchEncounterRoleAction()),
     loadEncounterType: () => dispatch(fetchEncounterTypeAction()),
+    loadPatient: () => dispatch(loadPatient()),
   };
 }
 
