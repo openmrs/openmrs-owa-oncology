@@ -21,7 +21,8 @@ import { Sidebar, Content } from 'components/Page';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import makeSelectChemotherapyPage from './selectors';
+import { makeSelectObservations } from './selectors';
+import { loadObservations, createObservation } from './actions';
 
 import Main from './components/Main';
 import AdministrateForm from './components/AdministrateForm';
@@ -33,7 +34,6 @@ import messages from './messages';
 const SidebarTitle = styled.div`
   padding: 1em 1em 0.5em;
 `;
-
 
 const regimens = [
   {
@@ -109,7 +109,18 @@ const regimens = [
 
 /* eslint-disable react/prefer-stateless-function */
 export class ChemotherapyPage extends React.Component {
+
+  componentDidMount() {
+    this.props.loadObservations({
+      v: 'default',
+      q: 'dave',
+      limit: 10,
+    });
+  }
+
   render() {
+    console.log(this.props.observations);
+
     return (
       <div>
         <Helmet>
@@ -140,16 +151,18 @@ export class ChemotherapyPage extends React.Component {
 }
 
 ChemotherapyPage.propTypes = {
-  dispatch: PropTypes.func.isRequired,
+  loadObservations: PropTypes.func.isRequired,
+  observations: PropTypes.object.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
-  chemotherapypage: makeSelectChemotherapyPage(),
+  observations: makeSelectObservations(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch,
+    loadObservations: (params) => dispatch(loadObservations(params)),
+    createObservation: (observation) => dispatch(createObservation(observation)),
   };
 }
 

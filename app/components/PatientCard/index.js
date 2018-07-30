@@ -32,7 +32,7 @@ const TitleWrapper = styled.div`
 
 const TitlePart = styled.span`
   display: inline-block;
-  margin-right: 1em;
+  margin-right: 0.75em;
   &:last-child {
     margin-right: 0;
   }

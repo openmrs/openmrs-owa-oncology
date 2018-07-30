@@ -18,5 +18,8 @@ const selectChemotherapyPageDomain = state => state.get('chemotherapyPage', init
 const makeSelectChemotherapyPage = () =>
   createSelector(selectChemotherapyPageDomain, substate => substate.toJS());
 
+const makeSelectObservations = () =>
+  createSelector(selectChemotherapyPageDomain, substate => substate.get('observations'));
+
 export default makeSelectChemotherapyPage;
-export { selectChemotherapyPageDomain };
+export { selectChemotherapyPageDomain, makeSelectObservations };

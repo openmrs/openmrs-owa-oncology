@@ -47,7 +47,7 @@ const styles = theme => ({
     borderLeft: `5px solid transparent`,
     '&$selected, &$selected:hover': {
       borderLeftColor: theme.palette.primary.main,
-      background: grey[100],
+      background: grey[50],
     },
     '&:hover': {
       background: grey[200],

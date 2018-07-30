@@ -41,9 +41,12 @@ function Breadcrumb(props) {
   return (
     <Wrapper>
       {items.map(item =>
-        <Item>
+        <Item
+          key={`item-${item.label}`}
+        >
           {item.link && [
             <Button
+              key={`btn-${item.label}`}
               component={Link}
               to={item.link}
               size="small"
@@ -54,7 +57,9 @@ function Breadcrumb(props) {
             >
               {item.label}
             </Button>,
-            <ItemArrow>
+            <ItemArrow
+              key={`arrow-${item.label}`}
+            >
               <FontAwesomeIcon icon={faAngleRight} />
             </ItemArrow>,
           ]}

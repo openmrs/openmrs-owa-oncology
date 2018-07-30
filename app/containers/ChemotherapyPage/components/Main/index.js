@@ -53,6 +53,7 @@ function Main() {
         readOnly
         name="Premedications"
         medications={[{
+          uuid: 1,
           drug: {
             name: '0.9% Normal',
           },
@@ -68,6 +69,7 @@ function Main() {
         readOnly
         name="Chemotherapy"
         medications={[{
+          uuid: 2,
           drug: {
             name: '0.9% Normal',
           },

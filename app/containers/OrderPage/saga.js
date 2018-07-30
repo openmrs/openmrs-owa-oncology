@@ -12,7 +12,7 @@ import { getHost, getHeaders } from '../../utils/config';
 const baseUrl = getHost();
 const headers = getHeaders();
 
-export function* getRegimenList() {
+export function* fetchRegimenList() {
   const requestURL = `${baseUrl}/orderset?v=full`;
 
   try {
@@ -25,7 +25,7 @@ export function* getRegimenList() {
   }
 }
 
-export function* loadPatient() {
+export function* fetchPatient() {
   const query = new URLSearchParams(window.location.search);
   const patientUuid = query.get('patientId');
   const requestURL = `${baseUrl}/patient/${patientUuid}?v=custom:(patientId,uuid,patientIdentifier:(uuid,identifier),person:(gender,age,birthdate,birthdateEstimated,personName,preferredAddress),attributes:(value,attributeType:(name)))`;
@@ -43,6 +43,6 @@ export function* loadPatient() {
  * Root saga manages watcher lifecycle
  */
 export default function* order() {
-  yield takeLatest(LOAD_REGIMEN_LIST, getRegimenList);
-  yield takeLatest(LOAD_PATIENT, loadPatient);
+  yield takeLatest(LOAD_REGIMEN_LIST, fetchRegimenList);
+  yield takeLatest(LOAD_PATIENT, fetchPatient);
 }
