@@ -5,8 +5,6 @@
  */
 
 import {
-  DEFAULT_ACTION,
-
   SET_CURRENT_SESSION_LOADING,
   SET_CURRENT_SESSION_SUCCESS,
   SET_CURRENT_SESSION_FAILURE,
@@ -30,13 +28,10 @@ import {
   LOAD_PATIENT,
   LOAD_PATIENT_SUCCESS,
   LOAD_PATIENT_ERROR,
+  FETCH_ENCOUNTERS_LOADING,
+  FETCH_ENCOUNTERS_SUCCESS,
+  FETCH_ENCOUNTERS_FAILURE,
 } from './constants';
-
-export function defaultAction() {
-  return {
-    type: DEFAULT_ACTION,
-  };
-}
 
 export function fetchCurrentSessionAction() {
   return {
@@ -134,6 +129,27 @@ export function fetchEncounterRoleSuccessAction(configuration) {
 export function fetchEncounterRoleErrorAction(error) {
   return {
     type: FETCH_ENCOUNTER_ROLE_FAILURE,
+    error,
+  };
+}
+
+export function fetchEncountersAction(params) {
+  return {
+    type: FETCH_ENCOUNTERS_LOADING,
+    params,
+  };
+}
+
+export function fetchEncountersSuccessAction(encounters) {
+  return {
+    type: FETCH_ENCOUNTERS_SUCCESS,
+    encounters,
+  };
+}
+
+export function fetchEncountersErrorAction(error) {
+  return {
+    type: FETCH_ENCOUNTERS_FAILURE,
     error,
   };
 }

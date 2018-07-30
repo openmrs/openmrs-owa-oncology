@@ -8,6 +8,7 @@ import {
   SETTING_ENCOUNTER_ROLE_SUCCESS,
   SETTING_ENCOUNTER_TYPE_SUCCESS,
   LOAD_PATIENT,
+  FETCH_ENCOUNTERS_LOADING,
 } from './constants';
 import {
   fetchCurrentSessionSuccessAction,
@@ -23,10 +24,15 @@ import {
 
   fetchEncounterTypeSuccessAction,
   fetchEncounterTypeErrorAction,
+
   fetchEncounterRoleSuccessAction,
   fetchEncounterRoleErrorAction,
+
   loadPatientError,
   loadPatientSuccess,
+
+  fetchEncountersSuccessAction,
+  fetchEncountersErrorAction,
 } from './actions';
 import request from '../../utils/request';
 
@@ -58,14 +64,15 @@ export function* fetchDefaultEncounterType() {
   }
 }
 
-export function* fetchEncounters() {
-  const requestURL = `${baseUrl}/encounters`;
+export function* fetchEncounters({ params }) {
+  const query = Object.keys(params).map(k => `${k}=${params[k]}`).join('&');
+  const requestURL = `${baseUrl}/encounter?${query}`;
 
   try {
     const response = yield call(request, requestURL, {headers});
-    yield put(fetchDefaultEncounterTypeSuccessAction(response));
+    yield put(fetchEncountersSuccessAction(response));
   } catch (err) {
-    yield put(fetchDefaultEncounterTypeErrorAction(err));
+    yield put(fetchEncountersErrorAction(err));
   }
 }
 
@@ -114,9 +121,7 @@ export function* fetchEncounterRole() {
   }
 }
 
-export function* fetchPatient() {
-  const query = new URLSearchParams(window.location.search);
-  const patientUuid = query.get('patientId');
+export function* fetchPatient({ patientUuid }) {
   const requestURL = `${baseUrl}/patient/${patientUuid}?v=custom:(patientId,uuid,patientIdentifier:(uuid,identifier),person:(gender,age,birthdate,birthdateEstimated,personName,preferredAddress),attributes:(value,attributeType:(name)))`;
 
   try {
@@ -134,6 +139,6 @@ export default function* defaultSaga() {
   yield takeLatest(SETTING_ENCOUNTER_ROLE_LOADING, fetchDefaultEncounterRole);
   yield takeLatest(FETCH_ENCOUNTER_TYPE_LOADING, fetchEncounterType);
   yield takeLatest(FETCH_ENCOUNTER_ROLE_LOADING, fetchEncounterRole);
+  yield takeLatest(FETCH_ENCOUNTERS_LOADING, fetchEncounters);
   yield takeLatest(LOAD_PATIENT, fetchPatient);
 }
-

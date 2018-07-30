@@ -5,7 +5,7 @@ import {
 } from '../constants';
 import initialState from './initialState';
 
-const encounterType = (state = initialState.get('encounterReducer'), action) => {
+const encounterType = (state = initialState.get('encounterTypeReducer'), action) => {
   switch (action.type) {
     case FETCH_ENCOUNTER_TYPE_LOADING:
       return state

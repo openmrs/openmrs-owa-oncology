@@ -9,6 +9,7 @@ import settingEncounterTypeReducer from './settingEncounterTypeReducer';
 import settingEncounterRoleReducer from './settingEncounterRoleReducer';
 import encounterTypeReducer from './encounterTypeReducer';
 import encounterRoleReducer from './encounterRoleReducer';
+import encounterReducer from './encounterReducer';
 import patientReducer from './patientReducer';
 
 export default combineReducers({
@@ -22,5 +23,6 @@ export default combineReducers({
   settingEncounterRoleReducer,
   encounterTypeReducer,
   encounterRoleReducer,
+  encounterReducer,
   patientReducer,
 });
