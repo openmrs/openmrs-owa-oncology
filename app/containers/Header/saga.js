@@ -29,15 +29,12 @@ import request from '../../utils/request';
 
 import { makeSelectDefaultEncounterType, makeSelectDefaultEncounterRole } from './selectors'
 
-const baseUrl = 'https://humci-azure.pih-emr.org/mirebalais'; 
-const restEndpoint = "/ws/rest/v1"
-const headers = {
-  Authorization: `Basic ${btoa('admin:Admin123')}`,
-  'Content-Type': 'application/json;charset=UTF-8',
-}
+import { getHost, getHeaders } from '../../utils/config';
+const baseUrl = getHost();
+const headers = getHeaders();
 
 export function* fetchCurrentSession() {
-  const requestURL = `${baseUrl}${restEndpoint}/appui/session`;
+  const requestURL = `${baseUrl}/appui/session`;
 
   try {
     const response = yield call(request, requestURL, {headers});
@@ -48,7 +45,7 @@ export function* fetchCurrentSession() {
 }
 
 export function* fetchDefaultEncounterType() {
-  const requestURL = `${baseUrl}${restEndpoint}/systemsetting?v=custom:(value)&q=orderentryowa.encounterType`;
+  const requestURL = `${baseUrl}/systemsetting?v=custom:(value)&q=orderentryowa.encounterType`;
 
   try {
     const response = yield call(request, requestURL, {headers});
@@ -59,7 +56,7 @@ export function* fetchDefaultEncounterType() {
 }
 
 export function* fetchDefaultEncounterRole() {
-  const requestURL = `${baseUrl}${restEndpoint}/systemsetting?v=custom:(value)&q=orderentryowa.encounterRole`;
+  const requestURL = `${baseUrl}/systemsetting?v=custom:(value)&q=orderentryowa.encounterRole`;
 
   try {
     const response = yield call(request, requestURL, {headers});
@@ -76,7 +73,7 @@ export function* fetchEncounterType() {
 
   const encType = yield select(makeSelectDefaultEncounterType());
   
-  const requestURL = `${baseUrl}${restEndpoint}/encountertype?q=${encType}`;
+  const requestURL = `${baseUrl}/encountertype?q=${encType}`;
 
   try {
     const response = yield call(request, requestURL, {headers});
@@ -93,7 +90,7 @@ export function* fetchEncounterRole() {
 
   const encRole = yield select(makeSelectDefaultEncounterRole());
   
-  const requestURL = `${baseUrl}${restEndpoint}/encounterrole?q=${encRole}`;
+  const requestURL = `${baseUrl}/encounterrole?q=${encRole}`;
 
   try {
     const response = yield call(request, requestURL, {headers});

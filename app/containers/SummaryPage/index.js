@@ -86,21 +86,21 @@ export class SummaryPage extends React.Component {
           "display": "Registration Location",
           "links": [{
             "rel": "self",
-            "uri": "https://humci-azure.pih-emr.org:443/mirebalais/ws/rest/v1/locationtag/8fa112e0-e506-11e4-b571-0800200c9a66",
+            "uri": "https://humci.pih-emr.org:443/mirebalais/ws/rest/v1/locationtag/8fa112e0-e506-11e4-b571-0800200c9a66",
           }],
         }, {
           "uuid": "5e824f3a-dfb8-11e4-bccc-56847afe9799",
           "display": "Inpatients App Location",
           "links": [{
             "rel": "self",
-            "uri": "https://humci-azure.pih-emr.org:443/mirebalais/ws/rest/v1/locationtag/5e824f3a-dfb8-11e4-bccc-56847afe9799",
+            "uri": "https://humci.pih-emr.org:443/mirebalais/ws/rest/v1/locationtag/5e824f3a-dfb8-11e4-bccc-56847afe9799",
           }],
         }, {
           "uuid": "b8bbf83e-645f-451f-8efe-a0db56f09676",
           "display": "Login Location",
           "links": [{
             "rel": "self",
-            "uri": "https://humci-azure.pih-emr.org:443/mirebalais/ws/rest/v1/locationtag/b8bbf83e-645f-451f-8efe-a0db56f09676",
+            "uri": "https://humci.pih-emr.org:443/mirebalais/ws/rest/v1/locationtag/b8bbf83e-645f-451f-8efe-a0db56f09676",
           }],
         }],
         "parentLocation": {
@@ -108,7 +108,7 @@ export class SummaryPage extends React.Component {
           "display": "Hôpital Universitaire de Mirebalais - Prensipal",
           "links": [{
             "rel": "self",
-            "uri": "https://humci-azure.pih-emr.org:443/mirebalais/ws/rest/v1/location/24bd1390-5959-11e4-8ed6-0800200c9a66",
+            "uri": "https://humci.pih-emr.org:443/mirebalais/ws/rest/v1/location/24bd1390-5959-11e4-8ed6-0800200c9a66",
           }],
         },
         "childLocations": [],
@@ -118,28 +118,28 @@ export class SummaryPage extends React.Component {
           "display": "Location Code: M034",
           "links": [{
             "rel": "self",
-            "uri": "https://humci-azure.pih-emr.org:443/mirebalais/ws/rest/v1/location/afa09010-43b6-4f19-89e0-58d09941bcbd/attribute/709ee7f1-5d3d-493d-a931-6fca9a49b7ff",
+            "uri": "https://humci.pih-emr.org:443/mirebalais/ws/rest/v1/location/afa09010-43b6-4f19-89e0-58d09941bcbd/attribute/709ee7f1-5d3d-493d-a931-6fca9a49b7ff",
           }],
         }, {
           "uuid": "052f1b66-c857-4fde-8ca7-6eead559e64c",
           "display": "Default ID card Printer: Printer[hashCode=62a6388b,uuid=ef9a8933-3433-46be-8fc6-200060f4fc72]",
           "links": [{
             "rel": "self",
-            "uri": "https://humci-azure.pih-emr.org:443/mirebalais/ws/rest/v1/location/afa09010-43b6-4f19-89e0-58d09941bcbd/attribute/052f1b66-c857-4fde-8ca7-6eead559e64c",
+            "uri": "https://humci.pih-emr.org:443/mirebalais/ws/rest/v1/location/afa09010-43b6-4f19-89e0-58d09941bcbd/attribute/052f1b66-c857-4fde-8ca7-6eead559e64c",
           }],
         }, {
           "uuid": "4b48d247-2cfe-4123-aa4c-85758ac337a4",
           "display": "Default Label Printer: Printer[hashCode=8613c66c,uuid=eb60696e-bf5a-4c19-b2c3-6a256e2cf6db]",
           "links": [{
             "rel": "self",
-            "uri": "https://humci-azure.pih-emr.org:443/mirebalais/ws/rest/v1/location/afa09010-43b6-4f19-89e0-58d09941bcbd/attribute/4b48d247-2cfe-4123-aa4c-85758ac337a4",
+            "uri": "https://humci.pih-emr.org:443/mirebalais/ws/rest/v1/location/afa09010-43b6-4f19-89e0-58d09941bcbd/attribute/4b48d247-2cfe-4123-aa4c-85758ac337a4",
           }],
         }, {
           "uuid": "e5b6b920-f5c2-4400-b5f2-a0ee3f7c9f60",
           "display": "Default Wristband Printer: Printer[hashCode=6c08aa63,uuid=6bed3067-478d-43d6-b1c0-38c4dc3dd860]",
           "links": [{
             "rel": "self",
-            "uri": "https://humci-azure.pih-emr.org:443/mirebalais/ws/rest/v1/location/afa09010-43b6-4f19-89e0-58d09941bcbd/attribute/e5b6b920-f5c2-4400-b5f2-a0ee3f7c9f60",
+            "uri": "https://humci.pih-emr.org:443/mirebalais/ws/rest/v1/location/afa09010-43b6-4f19-89e0-58d09941bcbd/attribute/e5b6b920-f5c2-4400-b5f2-a0ee3f7c9f60",
           }],
         }],
         "address7": null,
@@ -153,10 +153,10 @@ export class SummaryPage extends React.Component {
         "address15": null,
         "links": [{
           "rel": "self",
-          "uri": "https://humci-azure.pih-emr.org:443/mirebalais/ws/rest/v1/location/afa09010-43b6-4f19-89e0-58d09941bcbd",
+          "uri": "https://humci.pih-emr.org:443/mirebalais/ws/rest/v1/location/afa09010-43b6-4f19-89e0-58d09941bcbd",
         }, {
           "rel": "full",
-          "uri": "https://humci-azure.pih-emr.org:443/mirebalais/ws/rest/v1/location/afa09010-43b6-4f19-89e0-58d09941bcbd?v=full",
+          "uri": "https://humci.pih-emr.org:443/mirebalais/ws/rest/v1/location/afa09010-43b6-4f19-89e0-58d09941bcbd?v=full",
         }],
         "resourceVersion": "2.0",
       }

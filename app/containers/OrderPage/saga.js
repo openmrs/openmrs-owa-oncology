@@ -8,20 +8,16 @@ import {
   loadPatientError,
 } from './actions';
 
-const baseUrl = 'https://humci-azure.pih-emr.org/mirebalais';
-const restEndpoint = "/ws/rest/v1"
+import { getHost, getHeaders } from '../../utils/config';
+const baseUrl = getHost();
+const headers = getHeaders();
 
 export function* getRegimenList() {
-  const requestURL = `${baseUrl}${restEndpoint}/orderset?v=full`;
+  const requestURL = `${baseUrl}/orderset?v=full`;
 
   try {
     // Call our request helper (see 'utils/request')
-    const regimenList = yield call(request, requestURL, {
-      headers: {
-        Authorization: `Basic ${btoa('admin:Admin123')}`,
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-    });
+    const regimenList = yield call(request, requestURL, {headers});
 
     yield put(regimenListLoaded(regimenList));
   } catch (err) {
@@ -32,16 +28,11 @@ export function* getRegimenList() {
 export function* loadPatient() {
   const query = new URLSearchParams(window.location.search);
   const patientUuid = query.get('patientId');
-  const requestURL = `${baseUrl}${restEndpoint}/patient/${patientUuid}?v=custom:(patientId,uuid,patientIdentifier:(uuid,identifier),person:(gender,age,birthdate,birthdateEstimated,personName,preferredAddress),attributes:(value,attributeType:(name)))`;
+  const requestURL = `${baseUrl}/patient/${patientUuid}?v=custom:(patientId,uuid,patientIdentifier:(uuid,identifier),person:(gender,age,birthdate,birthdateEstimated,personName,preferredAddress),attributes:(value,attributeType:(name)))`;
 
   try {
     // Call our request helper (see 'utils/request')
-    const patient = yield call(request, requestURL, {
-      headers: {
-        Authorization: `Basic ${btoa('admin:Admin123')}`,
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
-    });
+    const patient = yield call(request, requestURL, {headers});
     yield put(loadPatientSuccess(patient));
   } catch (err) {
     yield put(loadPatientError(err));

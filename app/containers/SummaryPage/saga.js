@@ -7,18 +7,16 @@ import {
   postOrderFailureAction,
 } from '../OrderPage/actions';
 
-const baseUrl = 'https://humci-azure.pih-emr.org/mirebalais'; 
-const restEndpoint = "/ws/rest/v1"
+import { getHost, getHeaders } from '../../utils/config';
+const baseUrl = getHost();
+const headers = getHeaders();
 
 export function* postChemoOrder(action) {
-  const requestURL = `${baseUrl}${restEndpoint}/encounter`;
+  const requestURL = `${baseUrl}/encounter`;
 
   try {
     yield call(request, requestURL, {
-      headers: {
-        Authorization: `Basic ${btoa('admin:Admin123')}`,
-        'Content-Type': 'application/json;charset=UTF-8',
-      },
+      headers,
       method: 'POST',
       body: action.order,
     });
