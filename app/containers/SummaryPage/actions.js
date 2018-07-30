@@ -1,4 +1,4 @@
-import { POST_CHEMO_ORDER } from "../OrderPage/constants";
+import { POST_CHEMO_ORDER, POST_CHEMO_ORDER_SUCCESS, POST_CHEMO_ORDER_ERROR } from "../OrderPage/constants";
 
 /*
  *
@@ -6,9 +6,21 @@ import { POST_CHEMO_ORDER } from "../OrderPage/constants";
  *
  */
 
-export function postChemoOrder(orderIndex) {
+export function postChemoOrderAction(order) {
   return {
     type: POST_CHEMO_ORDER,
-    orderIndex,
+    order,
+  }
+}
+
+export function postOrderSuccessAction() {
+  return {
+    type: POST_CHEMO_ORDER_SUCCESS,
+  }
+}
+
+export function postOrderFailureAction() {
+  return {
+    type: POST_CHEMO_ORDER_ERROR,
   }
 }

@@ -14,7 +14,7 @@ import { compose } from 'redux';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
-import {makeSelectCurrentSession} from './selectors';
+import {makeSelectCurrentSession } from './selectors';
 import reducer from './reducers';
 import saga from './saga';
 // import messages from './messages';
@@ -51,6 +51,8 @@ Header.propTypes = {
 
 const mapStateToProps = createStructuredSelector({
   currentSession: makeSelectCurrentSession(),
+  // currentSession: makeSelectDefaultEncounterRole(),
+  // currentSession: makeSelectDefaultEncounterType(),
 });
 
 function mapDispatchToProps(dispatch) {

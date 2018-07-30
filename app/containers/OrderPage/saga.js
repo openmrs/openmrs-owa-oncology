@@ -1,12 +1,12 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
-import { LOAD_REGIMEN_LIST, LOAD_PATIENT} from 'containers/OrderPage/constants';
+import request from 'utils/request';
+import { LOAD_REGIMEN_LIST, LOAD_PATIENT} from './constants';
 import {
   regimenListLoaded,
   regimenListLoadingError,
   loadPatientSuccess,
   loadPatientError,
-} from 'containers/OrderPage/actions';
-import request from 'utils/request';
+} from './actions';
 
 const baseUrl = 'https://humci-azure.pih-emr.org/mirebalais';
 const restEndpoint = "/ws/rest/v1"
