@@ -4,9 +4,9 @@
  *
  */
 
-import { 
-  DEFAULT_ACTION, 
-  
+import {
+  DEFAULT_ACTION,
+
   SET_CURRENT_SESSION_LOADING,
   SET_CURRENT_SESSION_SUCCESS,
   SET_CURRENT_SESSION_FAILURE,
@@ -26,6 +26,10 @@ import {
   FETCH_ENCOUNTER_ROLE_LOADING,
   FETCH_ENCOUNTER_ROLE_SUCCESS,
   FETCH_ENCOUNTER_ROLE_FAILURE,
+
+  LOAD_PATIENT,
+  LOAD_PATIENT_SUCCESS,
+  LOAD_PATIENT_ERROR,
 } from './constants';
 
 export function defaultAction() {
@@ -130,6 +134,28 @@ export function fetchEncounterRoleSuccessAction(configuration) {
 export function fetchEncounterRoleErrorAction(error) {
   return {
     type: FETCH_ENCOUNTER_ROLE_FAILURE,
+    error,
+  };
+}
+
+// Load patient from uuid
+export function loadPatient(patientUuid) {
+  return {
+    type: LOAD_PATIENT,
+    patientUuid,
+  };
+}
+
+export function loadPatientSuccess(patient) {
+  return {
+    type: LOAD_PATIENT_SUCCESS,
+    patient,
+  };
+}
+
+export function loadPatientError(error) {
+  return {
+    type: LOAD_PATIENT_ERROR,
     error,
   };
 }

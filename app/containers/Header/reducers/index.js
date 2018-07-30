@@ -9,6 +9,7 @@ import settingEncounterTypeReducer from './settingEncounterTypeReducer';
 import settingEncounterRoleReducer from './settingEncounterRoleReducer';
 import encounterTypeReducer from './encounterTypeReducer';
 import encounterRoleReducer from './encounterRoleReducer';
+import patientReducer from './patientReducer';
 
 export default combineReducers({
   // locationReducer,
@@ -16,10 +17,10 @@ export default combineReducers({
   // patientReducer,
   sessionReducer,
   // careSettingReducer,
-
   // activeOrderReducer,
   settingEncounterTypeReducer,
   settingEncounterRoleReducer,
   encounterTypeReducer,
   encounterRoleReducer,
+  patientReducer,
 });

@@ -28,15 +28,17 @@ import Page from 'components/Page';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
-import { loadRegimenList, updateOrder, loadPatient } from './actions';
+import { loadRegimenList, updateOrder } from './actions';
 
 import {
   makeSelectRegimenList,
   makeSelectPremedications,
   makeSelectChemotherapy,
-  makeSelectPatient,
   makeSelectOrders,
 } from './selectors';
+import {
+  makeSelectPatient,
+} from '../Header/selectors'
 
 import CyclesFormControl from './components/CyclesFormControl';
 import reducer from './reducer';
@@ -51,7 +53,6 @@ const Section = styled.div`
 export class OrderPage extends React.Component {
 
   componentDidMount() {
-    this.props.loadPatient();
     if (!(this.props.orders.length > 0)) {
       this.props.loadRegimenList();
     }
@@ -226,7 +227,6 @@ OrderPage.propTypes = {
   loadRegimenList: PropTypes.func.isRequired,
   updateOrder: PropTypes.func.isRequired,
   regimenList: PropTypes.object,
-  loadPatient: PropTypes.func.isRequired,
   patient: PropTypes.object,
   premedications: PropTypes.array.isRequired,
   chemotherapy: PropTypes.array.isRequired,
@@ -247,7 +247,6 @@ function mapDispatchToProps(dispatch) {
   return {
     loadRegimenList: () => dispatch(loadRegimenList()),
     updateOrder: (index, order) => dispatch(updateOrder(index, order)),
-    loadPatient: () => dispatch(loadPatient()),
   };
 }
 

@@ -19,13 +19,13 @@ import {
   makeSelectChemotherapy,
   makeSelectPostmedications,
   makeSelectOrders,
-  makeSelectPatient,
 } from '../OrderPage/selectors';
 import {
   makeSelectEncounterType,
   makeSelectEncounterRole,
   makeSelectEncounterProvider,
   makeSelectEncounterLocation,
+  makeSelectPatient,
 } from '../Header/selectors'
 
 import reducer from './reducer';
@@ -172,7 +172,7 @@ export class SummaryPage extends React.Component {
       patient: this.props.patient.uuid,
     };
   }
-  
+
   render() {
     const {
       orders,

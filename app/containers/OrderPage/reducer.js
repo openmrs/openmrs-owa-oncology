@@ -10,9 +10,6 @@ import {
   LOAD_REGIMEN_LIST_SUCCESS,
   LOAD_REGIMEN_LIST_ERROR,
   UPDATE_ORDER,
-  LOAD_PATIENT,
-  LOAD_PATIENT_SUCCESS,
-  LOAD_PATIENT_ERROR,
   POST_CHEMO_ORDER,
 } from './constants';
 
@@ -26,6 +23,7 @@ export const initialState = fromJS({
 });
 
 function orderPageReducer(state = initialState, action) {
+
   switch (action.type) {
     // RegimenList
     case LOAD_REGIMEN_LIST:
@@ -62,14 +60,6 @@ function orderPageReducer(state = initialState, action) {
           .update(action.index, () => action.order)
       );
 
-    // Patient
-    case LOAD_PATIENT:
-      return state.setIn(['loading', 'patientUuid'], true);
-    case LOAD_PATIENT_SUCCESS:
-      return state
-        .set('patient', action.patient);
-    case LOAD_PATIENT_ERROR:
-      return state.set('error', action.error);
     case POST_CHEMO_ORDER:
       return state.set('patient', action.patient);
     default:
