@@ -19,11 +19,10 @@ export function postEncounterFailureAction() {
   }
 }
 
-export function postChemoOrderAction(encounter, order) {
+export function postChemoOrderAction(orderInfo) {
   return {
     type: POST_CHEMO_ORDER,
-    encounter,
-    order,
+    orderInfo,
   }
 }
 

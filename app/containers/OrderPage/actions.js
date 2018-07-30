@@ -68,9 +68,10 @@ export function loadPatientError(error) {
   };
 }
 
-export function postEncounterSuccessAction() {
+export function postEncounterSuccessAction(encounter) {
   return {
     type: POST_ENCOUNTER_SUCCESS,
+    encounter,
   };
 }
 
