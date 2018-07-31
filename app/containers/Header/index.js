@@ -46,7 +46,7 @@ import {
   loadPatient,
 } from './actions';
 
-import logoImg from './resources/openmrs-with-title-small.png';
+import logoImg from './resources/partners_in_health_logo.png';
 
 const Logo = styled.img`
   width: 120px;
