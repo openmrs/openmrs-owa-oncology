@@ -69,6 +69,11 @@ const Label = styled.span`
 
 function PatientCard(props) {
   const { patient } = props;
+
+  if (patient.firstName === '' && patient.lastName === '') {
+    return <div />;
+  }
+
   return (
     <Wrapper>
       <TitleWrapper>

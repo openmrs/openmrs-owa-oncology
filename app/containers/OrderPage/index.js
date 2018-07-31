@@ -162,7 +162,7 @@ export class OrderPage extends React.Component {
               </Section>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={12} zeroMinWidth>
               <Section>
                 <Typography variant="headline" gutterBottom>
                   <FormattedMessage {...messages.medications} />

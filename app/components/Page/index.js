@@ -20,7 +20,7 @@ const Sidebar = styled.aside`
   top: 155px;
   bottom: 0;
   background: ${grey[100]};
-  width: 350px;
+  width: 300px;
   overflow: auto;
 `;
 
@@ -30,13 +30,13 @@ const Content = styled.div`
   top: 155px;
   right: 0;
   bottom: 0;
-  left: 360px;
+  left: 310px;
   padding: 2rem;
   overflow: auto;
 `;
 
 const Center = styled.div`
-  width: 980px;
+  max-width: 980px;
   padding: 2rem;
   margin: 0 auto;
 `;

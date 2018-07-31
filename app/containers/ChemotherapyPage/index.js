@@ -97,7 +97,6 @@ export class ChemotherapyPage extends React.Component {
   render() {
     const { encounters } = this.props;
 
-
     const oncEncounters = (encounters.results || []).filter(encounter =>
       encounter.encounterType.uuid === ENC_ONC_CONSULT
     );

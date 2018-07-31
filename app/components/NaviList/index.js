@@ -26,7 +26,6 @@ import Status from 'components/Status';
 // import messages from './messages';
 
 const Arrow = styled.div`
-  margin-left: 1em;
   font-size: 1.2em;
 `;
 
@@ -97,6 +96,12 @@ class NaviList extends React.Component {
             >
               <ListItemText
                 secondary={item.title}
+                secondaryTypographyProps={{
+                  style: {
+                    overflow: 'hidden',
+                    'text-overflow': 'ellipsis',
+                  },
+                }}
               />
               <Arrow>
                 {this.isOpen(i) ?
@@ -129,6 +134,12 @@ class NaviList extends React.Component {
                     <ListItemText
                       inset
                       primary={subItem.title}
+                      primaryTypographyProps={{
+                        style: {
+                          overflow: 'hidden',
+                          'text-overflow': 'ellipsis',
+                        },
+                      }}
                     />
                     {subItem.status === 'active' &&
                       <Status

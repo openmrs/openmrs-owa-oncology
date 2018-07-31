@@ -26,6 +26,8 @@ import messages from './messages';
 
 const Wrapper = styled.div`
   margin-bottom: 3rem;
+  width: 100%;
+  overflow: auto;
 `;
 
 class MedicationTable extends React.Component {
