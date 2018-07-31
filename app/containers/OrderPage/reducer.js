@@ -10,7 +10,6 @@ import {
   LOAD_REGIMEN_LIST_SUCCESS,
   LOAD_REGIMEN_LIST_ERROR,
   UPDATE_ORDER,
-  POST_CHEMO_ORDER,
 } from './constants';
 
 export const initialState = fromJS({
@@ -59,9 +58,6 @@ function orderPageReducer(state = initialState, action) {
           .get('orders')
           .update(action.index, () => action.order)
       );
-
-    case POST_CHEMO_ORDER:
-      return state.set('patient', action.patient);
     default:
       return state;
   }
