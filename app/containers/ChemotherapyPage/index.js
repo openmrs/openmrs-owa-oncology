@@ -21,8 +21,10 @@ import { Sidebar, Content } from 'components/Page';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
+import { getParam } from 'utils/helpers';
 import { makeSelectObservations } from './selectors';
 import { loadObservations, createObservation } from './actions';
+import { createEncounterAction } from '../Header/actions';
 
 import Main from './components/Main';
 import AdministrateForm from './components/AdministrateForm';
@@ -30,7 +32,13 @@ import AdministrateForm from './components/AdministrateForm';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
-import { makeSelectEncounters } from '../Header/selectors';
+import {
+  makeSelectEncounters,
+  makeSelectEncounterRole,
+  makeSelectEncounterProvider,
+} from '../Header/selectors';
+
+import { ENC_CHEMO_SESSION, ENC_ONC_CONSULT } from '../../conceptMapping.json';
 
 const SidebarTitle = styled.div`
   padding: 1em 1em 0.5em;
@@ -40,14 +48,25 @@ const SidebarTitle = styled.div`
 export class ChemotherapyPage extends React.Component {
 
   componentDidMount() {
-    console.log(this.props.match);
-    const { params } = this.props.match;
+    // const { params } = this.props.match;
+    const patientUuid = getParam('patientId');
 
     this.props.loadObservations({
       v: 'default',
-      concept: '5d1bc5de-6a35-4195-8631-7322941fe528',
-      encounter: params.cycleUuid,
+      patient: patientUuid,
     });
+    setTimeout(() => {
+      this.props.createEncounter({
+        encounterType: ENC_CHEMO_SESSION,
+        patient: patientUuid,
+        obs: [
+          {
+            "concept": "5d1bc5de-6a35-4195-8631-7322941fe528",
+            "value": 1,
+          },
+        ],
+      });
+    }, 1000);
     /*
     setTimeout(() => {
       this.props.createObservation({
@@ -65,17 +84,32 @@ export class ChemotherapyPage extends React.Component {
         "value": 1,
         "status": "FINAL",
       });
-
     }, 2000);
     */
   }
 
-  render() {
-    console.log(this.props);
+  getEncounterStatus() {
+    // const observation = encounter.obs.map(enc)
+  }
 
-    const encounters = (this.props.encounters.results || []).filter(encounter =>
-      encounter.encounterType.uuid === '035fb8da-226a-420b-8d8b-3904f3bedb25'
+  render() {
+    const { encounters } = this.props;
+
+
+    const oncEncounters = (encounters.results || []).filter(encounter =>
+      encounter.encounterType.uuid === ENC_ONC_CONSULT
     );
+    const oncSessionEncounters = (encounters.results || []).filter(encounter =>
+      encounter.encounterType.uuid === ENC_CHEMO_SESSION
+    );
+    console.log(oncSessionEncounters);
+
+
+    /*
+    const observation = (observations.results || [])
+      .find(obs => obs.concept.uuid === CYCLE_STATUS_CONCEPT);
+    */
+
 
     return (
       <div>
@@ -92,7 +126,7 @@ export class ChemotherapyPage extends React.Component {
             </SidebarTitle>
             <NaviList
               selectedItem={this.props.match.params.cycleUuid}
-              items={encounters.map(encounter => ({
+              items={oncEncounters.map(encounter => ({
                 id: encounter.uuid,
                 title: 'CHOP Protocol for Non Hodgkin Lymphome',
                 status: 'completed',
@@ -124,17 +158,23 @@ ChemotherapyPage.propTypes = {
   encounters: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   createObservation: PropTypes.func.isRequired,
+  createEncounter: PropTypes.func.isRequired,
+  encounterRole: PropTypes.object.isRequired,
+  encounterProvider: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
   observations: makeSelectObservations(),
   encounters: makeSelectEncounters(),
+  encounterRole: makeSelectEncounterRole(),
+  encounterProvider: makeSelectEncounterProvider(),
 });
 
 function mapDispatchToProps(dispatch) {
   return {
     loadObservations: (params) => dispatch(loadObservations(params)),
     createObservation: (observation) => dispatch(createObservation(observation)),
+    createEncounter: (encounter) => dispatch(createEncounterAction(encounter)),
   };
 }
 

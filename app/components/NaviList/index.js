@@ -166,7 +166,7 @@ class NaviList extends React.Component {
 NaviList.propTypes = {
   items: PropTypes.array,
   classes: PropTypes.object.isRequired,
-  selectedItem: PropTypes.string.isRequired,
+  selectedItem: PropTypes.string,
 };
 
 export default withStyles(styles)(NaviList);

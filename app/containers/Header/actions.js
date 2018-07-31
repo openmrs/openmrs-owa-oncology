@@ -31,6 +31,9 @@ import {
   FETCH_ENCOUNTERS_LOADING,
   FETCH_ENCOUNTERS_SUCCESS,
   FETCH_ENCOUNTERS_FAILURE,
+  CREATE_ENCOUNTER_LOADING,
+  CREATE_ENCOUNTER_SUCCESS,
+  CREATE_ENCOUNTER_FAILURE,
 } from './constants';
 
 export function fetchCurrentSessionAction() {
@@ -150,6 +153,27 @@ export function fetchEncountersSuccessAction(encounters) {
 export function fetchEncountersErrorAction(error) {
   return {
     type: FETCH_ENCOUNTERS_FAILURE,
+    error,
+  };
+}
+
+export function createEncounterAction(encounter) {
+  return {
+    type: CREATE_ENCOUNTER_LOADING,
+    encounter,
+  };
+}
+
+export function createEncounterSuccessAction(encounter) {
+  return {
+    type: CREATE_ENCOUNTER_SUCCESS,
+    encounter,
+  };
+}
+
+export function createEncounterErrorAction(error) {
+  return {
+    type: CREATE_ENCOUNTER_FAILURE,
     error,
   };
 }

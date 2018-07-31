@@ -9,6 +9,7 @@ import {
   SETTING_ENCOUNTER_TYPE_SUCCESS,
   LOAD_PATIENT,
   FETCH_ENCOUNTERS_LOADING,
+  CREATE_ENCOUNTER_LOADING,
 } from './constants';
 import {
   fetchCurrentSessionSuccessAction,
@@ -33,6 +34,9 @@ import {
 
   fetchEncountersSuccessAction,
   fetchEncountersErrorAction,
+
+  createEncounterSuccessAction,
+  createEncounterErrorAction,
 } from './actions';
 import request from '../../utils/request';
 
@@ -73,6 +77,21 @@ export function* fetchEncounters({ params }) {
     yield put(fetchEncountersSuccessAction(response));
   } catch (err) {
     yield put(fetchEncountersErrorAction(err));
+  }
+}
+
+export function* postEncounter({ encounter }) {
+  const requestURL = `${baseUrl}/encounter`;
+
+  try {
+    const response = yield call(request, requestURL, {
+      headers,
+      method: 'POST',
+      body: JSON.stringify(encounter),
+    });
+    yield put(createEncounterSuccessAction(response));
+  } catch (err) {
+    yield put(createEncounterErrorAction(err));
   }
 }
 
@@ -141,4 +160,5 @@ export default function* defaultSaga() {
   yield takeLatest(FETCH_ENCOUNTER_ROLE_LOADING, fetchEncounterRole);
   yield takeLatest(FETCH_ENCOUNTERS_LOADING, fetchEncounters);
   yield takeLatest(LOAD_PATIENT, fetchPatient);
+  yield takeLatest(CREATE_ENCOUNTER_LOADING, postEncounter);
 }

@@ -8,7 +8,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-// import { Helmet } from 'react-helmet';
 // import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
 import { compose } from 'redux';
@@ -29,6 +28,7 @@ import PatientCard from 'components/PatientCard';
 
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
+import { getParam } from 'utils/helpers';
 import {
   makeSelectCurrentSession,
   makeSelectEncounters,
@@ -73,8 +73,7 @@ export class Header extends React.Component {
   };
 
   componentDidMount() {
-    const query = new URLSearchParams(window.location.search);
-    const patientUuid = query.get('patientId');
+    const patientUuid = getParam('patientId');
     this.props.loadCurrentSession();
     this.props.loadEncounterRole();
     this.props.loadEncounterType();

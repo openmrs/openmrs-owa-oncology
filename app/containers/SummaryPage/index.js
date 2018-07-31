@@ -26,7 +26,7 @@ import {
   makeSelectEncounterProvider,
   makeSelectEncounterLocation,
   makeSelectPatient,
-} from '../Header/selectors'
+} from '../Header/selectors';
 
 import reducer from './reducer';
 import saga from './saga';
@@ -53,7 +53,7 @@ export class SummaryPage extends React.Component {
   submitOrder(orderIndex) {
     try {
       const encounterObj = this.createEncounterObject();
-      this.props.postChemoOrder({encounterObj, orderIndex, patientUuid: this.props.patient.uuid});  
+      this.props.postChemoOrder({encounterObj, orderIndex, patientUuid: this.props.patient.uuid});
     } catch (error) {
       console.error('Unable to create order');
     }
@@ -62,7 +62,6 @@ export class SummaryPage extends React.Component {
   createEncounterObject() {
     const dummyLocation =
     {
-
       "uuid": "afa09010-43b6-4f19-89e0-58d09941bcbd",
       "display": "Ijans Resepsyon",
       "name": "Ijans Resepsyon",
