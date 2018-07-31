@@ -41,7 +41,7 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={DashboardPage} />
         <Route exact path="/nurseDashboard" component={DashboardPage} />
-        <Route exact path="/physicianDashboard" component={DashboardPage} />
+        <Route exact path="/physicianDashboard" component={ChemotherapyPage} />
         <Route path="/chemotherapy" component={ChemotherapyPage} />
         <Route exact path="/order/:template?" component={OrderPage} />
         <Route exact path="/order/:template/summary" component={SummaryPage} />

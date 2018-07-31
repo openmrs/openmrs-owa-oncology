@@ -7,6 +7,8 @@
   "OGAT_NUM_CYCLES": "uuid_numOfCycles",
   "OGAT_CYCLE_LENGTH": "uuid_cycle_length",
   "OGAT_CYCLE_LENGTH_UNIT": "uuid_cycle_length_unit",
+  "OGAT_CYCLE_LENGTH_UNIT_DAY": "uuid_cycle_length_unit_days",
+  "OGAT_CYCLE_LENGTH_UNIT_WEEK": "uuid_cycle_length_unit_days",
   "ENC_ONC_CONSULT": "035fb8da-226a-420b-8d8b-3904f3bedb25",
   "ENC_CHEMO_SESSION": "828964fa-17eb-446e-aba4-e940b0f4be5b"
 }

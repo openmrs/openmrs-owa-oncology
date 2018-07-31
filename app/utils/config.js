@@ -9,7 +9,7 @@ export function getHost() {
       throw new Error('running against localhost, using dummy server')
     }
     const distro = window.location.pathname.split( '/' )[1]
-    const contextPath = `${host}${distro}`;
+    const contextPath = `${host}/${distro}`;
     const apiBaseUrl = `${contextPath}/ws/rest/v1`;
     return apiBaseUrl;
   } catch (error) {
