@@ -40,7 +40,7 @@ export default function App() {
       <Header/>
       <Switch>
         <Route exact path="/" component={DashboardPage} />
-        <Route path="/chemotherapy" component={ChemotherapyPage} />
+        <Route path="/chemotherapy/:cycleUuid?" component={ChemotherapyPage} />
         <Route exact path="/order/:template?" component={OrderPage} />
         <Route exact path="/order/:template/summary" component={SummaryPage} />
         <Route component={NotFoundPage} />

@@ -103,8 +103,6 @@ export class Header extends React.Component {
 
     const { anchorEl} = this.state;
     const open = Boolean(anchorEl);
-
-
     const {givenName, familyName} = patient.person.personName;
     const {age, gender, birthdate} = patient.person;
     const {identifier} = patient.patientIdentifier;

@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Link } from 'react-router-dom'
@@ -24,7 +24,9 @@ const HeadActions = styled.div`
   float: right;
 `;
 
-function Main() {
+function Main(props) {
+  const { params } = props.match;
+
   return (
     <div>
       <Head>
@@ -33,7 +35,7 @@ function Main() {
             variant="contained"
             color="primary"
             component={Link}
-            to="/chemotherapy/administrate"
+            to={`/chemotherapy/${params.cycleUuid}/administrate`}
           >
             Administrate
           </Button>
@@ -91,6 +93,8 @@ function Main() {
   );
 }
 
-Main.propTypes = {};
+Main.propTypes = {
+  match: PropTypes.object.isRequired,
+};
 
 export default Main;

@@ -8,12 +8,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { Link } from 'react-router-dom'
 import { withStyles } from '@material-ui/core/styles';
 import MenuList from '@material-ui/core/MenuList';
 import MenuItem from '@material-ui/core/MenuItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Collapse from '@material-ui/core/Collapse';
-import Divider from '@material-ui/core/Divider';
 import Typography from '@material-ui/core/Typography';
 import grey from '@material-ui/core/colors/grey';
 
@@ -81,10 +81,10 @@ class NaviList extends React.Component {
   }
 
   render() {
-    const { items, classes } = this.props;
+    const { items, classes, selectedItem } = this.props;
+
     return (
       <MenuList>
-        <Divider />
         {items.map((item, i) =>
           [
             <MenuItem
@@ -119,8 +119,11 @@ class NaviList extends React.Component {
                       root: classes.root,
                       selected: classes.selected,
                     }}
+                    component={Link}
+                    to={`/chemotherapy/${subItem.id}`}
+                    divider={j === item.children.length - 1}
                     key={subItem.id}
-                    selected={j === 0 && i === 0}
+                    selected={subItem.id === selectedItem}
                   >
                     <Num>C{subItem.cycle}</Num>
                     <ListItemText
@@ -163,6 +166,7 @@ class NaviList extends React.Component {
 NaviList.propTypes = {
   items: PropTypes.array,
   classes: PropTypes.object.isRequired,
+  selectedItem: PropTypes.string.isRequired,
 };
 
 export default withStyles(styles)(NaviList);
