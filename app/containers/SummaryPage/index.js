@@ -50,11 +50,10 @@ const ButtonContainer = styled.div`
 /* eslint-disable react/prefer-stateless-function */
 export class SummaryPage extends React.Component {
 
-  submitOrder() {
+  submitOrder(orderIndex) {
     try {
       const encounterObj = this.createEncounterObject();
-      const orderObj = this.createOrderObject()
-      this.props.postChemoOrder(encounterObj, orderObj);
+      this.props.postChemoOrder({encounterObj, orderIndex, patientUuid: this.props.patient.uuid});  
     } catch (error) {
       console.error('Unable to create order');
     }
@@ -174,18 +173,6 @@ export class SummaryPage extends React.Component {
     };
   }
 
-  createOrderObject() {
-    return {
-      encounter: '',
-      orderset: '',
-      // patient: this.props.patient.uuid,      // not sure if we need to send this
-      orders: [
-        {},   // this will be similar to the template;
-        {},
-      ],
-    };
-  }
-
   render() {
     const {
       orders,
@@ -284,7 +271,7 @@ export class SummaryPage extends React.Component {
                   <Button
                     color="primary"
                     variant="contained"
-                    onClick={() => this.submitOrder()}
+                    onClick={() => this.submitOrder(orderIndex)}
                   >
                     <FormattedMessage {...messages.submit} />
                   </Button>
@@ -327,7 +314,7 @@ const mapStateToProps = createStructuredSelector({
 
 function mapDispatchToProps(dispatch) {
   return {
-    postChemoOrder: (encounter, order) => dispatch(postChemoOrderAction(encounter, order)),
+    postChemoOrder: (orderInfo) => dispatch(postChemoOrderAction(orderInfo)),
   };
 }
 

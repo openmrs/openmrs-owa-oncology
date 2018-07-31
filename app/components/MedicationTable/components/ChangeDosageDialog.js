@@ -97,10 +97,10 @@ class ChangeDosageDialog extends React.PureComponent {
           <List>
             {medications.map(medication =>
               [
-                <ListItem key={`medication-${medication.drug.uuid}`}>
+                <ListItem key={`medication-${medication.uuid}`}>
                   <ListItemText
-                    primary={medication.drug.name}
-                    secondary={medication.administrationInstructions}
+                    primary={medication.drugConcept}
+                    secondary={medication.dosingInstructions.dosingTiming}
                   />
                   <ListItemInfo>
                     {this.state.percentage !== 0 &&
@@ -119,7 +119,7 @@ class ChangeDosageDialog extends React.PureComponent {
                     }
                   </ListItemInfo>
                 </ListItem>,
-                <li key={`divider-${medication.drug.uuid}`}>
+                <li key={`divider-${medication.uuid}`}>
                   <Divider/>
                 </li>,
               ]

@@ -43,9 +43,10 @@ export function updateOrder(index, order) {
   };
 }
 
-export function postEncounterSuccessAction() {
+export function postEncounterSuccessAction(encounter) {
   return {
     type: POST_ENCOUNTER_SUCCESS,
+    encounter,
   };
 }
 

@@ -27,11 +27,11 @@ class SummaryMedListControl extends React.PureComponent {
         <SytledListHeader>
           <ListItemText primary={label} />
         </SytledListHeader>
-        {medications && medications[orderIndex].length > 0 && medications[orderIndex].map(({uuid, drug, administrationInstructions, dosingModifications}) => (
+        {medications && medications[orderIndex].length > 0 && medications[orderIndex].map(({uuid, drugConcept, administrationInstructions, dosingModifications}) => (
           <div key={`drug-${uuid}`}>
             <ListItem >
               <ListItemText
-                primary={drug.name}
+                primary={drugConcept}
                 secondary={administrationInstructions}
               />
               {dosingModifications &&
