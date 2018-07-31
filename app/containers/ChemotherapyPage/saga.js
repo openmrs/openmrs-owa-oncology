@@ -33,7 +33,7 @@ export function* postObservation(action) {
     const observation = yield call(request, requestURL, {
       headers,
       method: 'POST',
-      body: action.order,
+      body: JSON.stringify(action.observation),
     });
     yield put(observationCreated(observation));
   } catch (err) {

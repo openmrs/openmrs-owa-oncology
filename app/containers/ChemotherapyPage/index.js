@@ -30,96 +30,52 @@ import AdministrateForm from './components/AdministrateForm';
 import reducer from './reducer';
 import saga from './saga';
 import messages from './messages';
+import { makeSelectEncounters } from '../Header/selectors';
 
 const SidebarTitle = styled.div`
   padding: 1em 1em 0.5em;
 `;
 
-const regimens = [
-  {
-    id: 1,
-    title: 'CHOP Protocol for Non Hodgkin Lymphome',
-    status: 'active',
-    children: [
-      {
-        id: 11,
-        cycle: 3,
-        title: 'Cycle 3 of 6',
-        date: '08/01/18',
-        status: 'active',
-      }, {
-        id: 12,
-        cycle: 2,
-        title: 'Cycle 2 of 6',
-        date: '08/01/18',
-        status: 'completed',
-      }, {
-        id: 13,
-        cycle: 1,
-        title: 'Cycle 1 of 6',
-        date: '08/01/18',
-        status: 'completed',
-      },
-    ],
-  }, {
-    id: 2,
-    title: 'CHOP Protocol for Non Hodgkin Lymphome',
-    status: 'completed',
-    children: [
-      {
-        id: 21,
-        cycle: 6,
-        title: 'Cycle 6 of 6',
-        date: '08/01/18',
-        status: 'completed',
-      }, {
-        id: 22,
-        cycle: 5,
-        title: 'Cycle 5 of 6',
-        date: '08/01/18',
-        status: 'completed',
-      }, {
-        id: 23,
-        cycle: 4,
-        title: 'Cycle 4 of 6',
-        date: '08/01/18',
-        status: 'completed',
-      }, {
-        id: 24,
-        cycle: 3,
-        title: 'Cycle 3 of 6',
-        date: '08/01/18',
-        status: 'completed',
-      }, {
-        id: 25,
-        cycle: 2,
-        title: 'Cycle 2 of 6',
-        date: '08/01/18',
-        status: 'completed',
-      }, {
-        id: 26,
-        cycle: 1,
-        title: 'Cycle 1 of 6',
-        date: '08/01/18',
-        status: 'completed',
-      },
-    ],
-  },
-];
-
 /* eslint-disable react/prefer-stateless-function */
 export class ChemotherapyPage extends React.Component {
 
   componentDidMount() {
+    console.log(this.props.match);
+    const { params } = this.props.match;
+
     this.props.loadObservations({
       v: 'default',
-      q: 'dave',
-      limit: 10,
+      concept: '5d1bc5de-6a35-4195-8631-7322941fe528',
+      encounter: params.cycleUuid,
     });
+    /*
+    setTimeout(() => {
+      this.props.createObservation({
+        "person": {
+          "uuid": "892c3c1c-1002-4e4d-9096-b61c89dca676",
+        },
+        "concept": "5d1bc5de-6a35-4195-8631-7322941fe528",
+        "encounter": "00d1d220-7d6b-4481-a1e4-6f44bca08759",
+        "obsDatetime": "2018-07-30T11:45:45.000-0400",
+        "accessionNumber": null,
+        "obsGroup": null,
+        "valueCodedName": null,
+        "groupMembers": null,
+        "comment": "dsfd",
+        "value": 1,
+        "status": "FINAL",
+      });
+
+    }, 2000);
+    */
   }
 
   render() {
-    console.log(this.props.observations);
+    console.log(this.props);
+
+    const encounters = (this.props.encounters.results || []).filter(encounter =>
+      encounter.encounterType.uuid === '035fb8da-226a-420b-8d8b-3904f3bedb25'
+    );
 
     return (
       <div>
@@ -135,13 +91,25 @@ export class ChemotherapyPage extends React.Component {
               </Typography>
             </SidebarTitle>
             <NaviList
-              items={regimens}
+              selectedItem={this.props.match.params.cycleUuid}
+              items={encounters.map(encounter => ({
+                id: encounter.uuid,
+                title: 'CHOP Protocol for Non Hodgkin Lymphome',
+                status: 'completed',
+                children: [{
+                  id: encounter.uuid,
+                  cycle: 1,
+                  title: 'Cycle 1 of 6',
+                  date: '08/01/18',
+                  status: 'completed',
+                }],
+              }))}
             />
           </Sidebar>
           <Content>
             <Switch>
-              <Route exact path="/chemotherapy" component={Main} />
-              <Route exact path="/chemotherapy/administrate" component={AdministrateForm} />
+              <Route exact path="/chemotherapy/:cycleUuid?" component={Main} />
+              <Route exact path="/chemotherapy/:cycleUuid/administrate" component={AdministrateForm} />
             </Switch>
           </Content>
         </div>
@@ -153,10 +121,14 @@ export class ChemotherapyPage extends React.Component {
 ChemotherapyPage.propTypes = {
   loadObservations: PropTypes.func.isRequired,
   observations: PropTypes.object.isRequired,
+  encounters: PropTypes.object.isRequired,
+  match: PropTypes.object.isRequired,
+  createObservation: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   observations: makeSelectObservations(),
+  encounters: makeSelectEncounters(),
 });
 
 function mapDispatchToProps(dispatch) {
