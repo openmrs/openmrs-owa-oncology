@@ -1,0 +1,12 @@
+{
+  "OGR_CHEMO_PARENT_SET": "uuid_chemoParentSet",
+  "OGR_PREMEDICATION": "uuid_premedication",
+  "OGR_CHEMOTHERAPY": "uuid_chemotherapy",
+  "OGR_POSTMEDICATION": "uuid_postmedication",
+  "OGAT_CYCLE_NUMBER": "uuid_cycleNumber",
+  "OGAT_NUM_CYCLES": "uuid_numOfCycles",
+  "OGAT_CYCLE_LENGTH": "uuid_cycle_length",
+  "OGAT_CYCLE_LENGTH_UNIT": "uuid_cycle_length_unit",
+  "ENC_ONC_CONSULT": "035fb8da-226a-420b-8d8b-3904f3bedb25",
+  "ENC_CHEMO_SESSION": "828964fa-17eb-446e-aba4-e940b0f4be5b"
+}
