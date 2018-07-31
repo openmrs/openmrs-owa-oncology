@@ -1,10 +1,21 @@
-import { POST_CHEMO_ORDER, POST_ENCOUNTER_SUCCESS, POST_ENCOUNTER_ERROR, POST_CHEMO_ORDER_SUCCESS, POST_CHEMO_ORDER_ERROR } from "../OrderPage/constants";
+import { 
+  POST_CHEMO_ORDER,
+  POST_ENCOUNTER, 
+  POST_ENCOUNTER_SUCCESS,
+  POST_ENCOUNTER_ERROR,
+  POST_ORDERGROUP,
+  POST_ORDERGROUP_SUCCESS,
+  POST_ORDERGROUP_ERROR,
+  POST_CHEMO_ORDER_SUCCESS,
+  POST_CHEMO_ORDER_ERROR,
+} from "./constants";
 
-/*
- *
- * SummaryPage actions
- *
- */
+export function postEncounterAction(encounter) {
+  return {
+    type: POST_ENCOUNTER,
+    encounter,
+  }
+}
 
 export function postEncounterSuccessAction(encoutner) {
   return {
@@ -16,6 +27,26 @@ export function postEncounterSuccessAction(encoutner) {
 export function postEncounterFailureAction() {
   return {
     type: POST_ENCOUNTER_ERROR,
+  }
+}
+
+export function postOrderGroupAction(action,encounter) {
+  return {
+    type: POST_ORDERGROUP,
+    action,
+    encounter,
+  }
+}
+
+export function postOrderGroupSuccessAction() {
+  return {
+    type: POST_ORDERGROUP_SUCCESS,
+  }
+}
+
+export function postOrderGroupFailureAction() {
+  return {
+    type: POST_ORDERGROUP_ERROR,
   }
 }
 
