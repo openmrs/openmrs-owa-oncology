@@ -55,6 +55,7 @@ export class ChemotherapyPage extends React.Component {
       v: 'default',
       patient: patientUuid,
     });
+    /*
     setTimeout(() => {
       this.props.createEncounter({
         encounterType: ENC_CHEMO_SESSION,
@@ -67,6 +68,7 @@ export class ChemotherapyPage extends React.Component {
         ],
       });
     }, 1000);
+    */
     /*
     setTimeout(() => {
       this.props.createObservation({
@@ -104,12 +106,10 @@ export class ChemotherapyPage extends React.Component {
     );
     console.log(oncSessionEncounters);
 
-
     /*
     const observation = (observations.results || [])
       .find(obs => obs.concept.uuid === CYCLE_STATUS_CONCEPT);
     */
-
 
     return (
       <div>

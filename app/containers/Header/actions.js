@@ -28,12 +28,18 @@ import {
   LOAD_PATIENT,
   LOAD_PATIENT_SUCCESS,
   LOAD_PATIENT_ERROR,
+
   FETCH_ENCOUNTERS_LOADING,
   FETCH_ENCOUNTERS_SUCCESS,
   FETCH_ENCOUNTERS_FAILURE,
+
   CREATE_ENCOUNTER_LOADING,
   CREATE_ENCOUNTER_SUCCESS,
   CREATE_ENCOUNTER_FAILURE,
+
+  FETCH_ORDER_GROUP_LOADING,
+  FETCH_ORDER_GROUP_SUCCESS,
+  FETCH_ORDER_GROUP_FAILURE,
 } from './constants';
 
 export function fetchCurrentSessionAction() {
@@ -196,6 +202,27 @@ export function loadPatientSuccess(patient) {
 export function loadPatientError(error) {
   return {
     type: LOAD_PATIENT_ERROR,
+    error,
+  };
+}
+
+export function fetchOrderGroupsAction(params) {
+  return {
+    type: FETCH_ORDER_GROUP_LOADING,
+    params,
+  };
+}
+
+export function fetchOrderGroupsSuccessAction(orderGroups) {
+  return {
+    type: FETCH_ORDER_GROUP_SUCCESS,
+    orderGroups,
+  };
+}
+
+export function fetchOrderGroupsErrorAction(error) {
+  return {
+    type: FETCH_ORDER_GROUP_FAILURE,
     error,
   };
 }

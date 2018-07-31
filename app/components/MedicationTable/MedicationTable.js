@@ -136,7 +136,7 @@ class MedicationTable extends React.Component {
             <TableBody>
               {medications.map(medication =>
                 <TableRow
-                  onClick={e => this.handleClick(e, medication.uuid)}
+                  onClick={e => !readOnly && this.handleClick(e, medication.uuid)}
                   role="checkbox"
                   aria-checked={this.isSelected(medication.uuid)}
                   tabIndex={-1}

@@ -10,6 +10,7 @@ import {
   LOAD_PATIENT,
   FETCH_ENCOUNTERS_LOADING,
   CREATE_ENCOUNTER_LOADING,
+  FETCH_ORDER_GROUP_LOADING,
 } from './constants';
 import {
   fetchCurrentSessionSuccessAction,
@@ -37,6 +38,8 @@ import {
 
   createEncounterSuccessAction,
   createEncounterErrorAction,
+  fetchOrderGroupsErrorAction,
+  fetchOrderGroupsSuccessAction,
 } from './actions';
 import request from '../../utils/request';
 
@@ -152,6 +155,19 @@ export function* fetchPatient({ patientUuid }) {
   }
 }
 
+export function* fetchOrderGroups({ params }) {
+  const query = Object.keys(params).map(k => `${k}=${params[k]}`).join('&');
+  const requestURL = `${baseUrl}/ordergroup?${query}`;
+
+  try {
+    // Call our request helper (see 'utils/request')
+    const patient = yield call(request, requestURL, {headers});
+    yield put(fetchOrderGroupsSuccessAction(patient));
+  } catch (err) {
+    yield put(fetchOrderGroupsErrorAction(err));
+  }
+}
+
 export default function* defaultSaga() {
   yield takeLatest(SET_CURRENT_SESSION_LOADING, fetchCurrentSession);
   yield takeLatest(SETTING_ENCOUNTER_TYPE_LOADING, fetchDefaultEncounterType);
@@ -161,4 +177,5 @@ export default function* defaultSaga() {
   yield takeLatest(FETCH_ENCOUNTERS_LOADING, fetchEncounters);
   yield takeLatest(LOAD_PATIENT, fetchPatient);
   yield takeLatest(CREATE_ENCOUNTER_LOADING, postEncounter);
+  yield takeLatest(FETCH_ORDER_GROUP_LOADING, fetchOrderGroups);
 }
