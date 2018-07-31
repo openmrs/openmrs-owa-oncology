@@ -55,14 +55,14 @@ class EditMedicationDialog extends React.PureComponent {
             </Grid>
             <Grid item xs={8}>
               <Typography variant="subheading" gutterBottom>
-                {medication.drug.name}
+                {medication.drugConcept}
               </Typography>
             </Grid>
             <Grid item xs={4}>
               <FormLabel>Dose</FormLabel>
             </Grid>
             <Grid item xs={4}>
-              <TextField id="dose" type="text" fullWidth defaultValue={medication.dosingInstructions.dose} />
+              <TextField id="dose" type="text" fullWidth defaultValue={medication.dose} />
             </Grid>
             <Grid item xs={4}>
               <FormControl fullWidth>
@@ -141,7 +141,7 @@ class EditMedicationDialog extends React.PureComponent {
                 rows="3"
                 multiid="medication"
                 type="text"
-                defaultValue={medication.administrationInstructions}
+                defaultValue={medication.dosingInstructions.dosingTiming}
                 fullWidth
               />
             </Grid>

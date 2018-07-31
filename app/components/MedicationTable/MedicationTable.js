@@ -84,7 +84,7 @@ class MedicationTable extends React.Component {
     } else if (selectedMedications.length === 1) {
       description = <FormattedMessage
         {...messages.deleteDialogDescription}
-        values={{ medication: <strong>{selectedMedications[0].drug.name}</strong> }}
+        values={{ medication: <strong>{selectedMedications[0].drugConcept}</strong> }}
       />;
     }
     return description;
@@ -148,11 +148,11 @@ class MedicationTable extends React.Component {
                     </TableCell>
                   }
                   <TableCell>
-                    {medication.drug.name}
+                    {medication.drugConcept}
                   </TableCell>
                   <TableCell>
                     <Typography noWrap>
-                      {medication.dosingInstructions.dose} {medication.dosingInstructions.doseUnits}
+                      {medication.dose} {medication.doseUnits}
                       &nbsp;&nbsp;
                       {medication.dosingModifications &&
                         <Tag
@@ -162,8 +162,8 @@ class MedicationTable extends React.Component {
                       }
                     </Typography>
                   </TableCell>
-                  <TableCell>{medication.dosingInstructions.route}</TableCell>
-                  <TableCell>{medication.administrationInstructions}</TableCell>
+                  <TableCell>{medication.route}</TableCell>
+                  <TableCell>{medication.dosingInstructions.dosingTiming}</TableCell>
                 </TableRow>
               )}
             </TableBody>
