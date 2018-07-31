@@ -40,7 +40,7 @@ const SliderLabel = styled.div`
   margin: 1em 0 0.5em;
 `
 const SliderWrapper = styled.div`
-  margin: 0 0.4em;
+  margin: 0 1.5em 0 0.4em;
 `
 
 const OptionalButton = styled.button`

@@ -42,7 +42,10 @@ function MedicationTableToolbar(props) {
 
   return (
     <Wrapper>
-      <Toolbar className={classes.root}>
+      <Toolbar
+        className={classes.root}
+        variant="dense"
+      >
         <ToolbarTitle>
           {numSelected > 0 ? (
             <Typography color="inherit" variant="subheading">
@@ -60,6 +63,7 @@ function MedicationTableToolbar(props) {
               variant="outlined"
               onClick={props.onChangeDosage}
               disabled={numSelected === 0}
+              size="small"
             >
               <FormattedMessage {...messages.changeDosage} />
             </Button>
@@ -68,6 +72,7 @@ function MedicationTableToolbar(props) {
               variant="outlined"
               onClick={props.onEdit}
               disabled={numSelected !== 1}
+              size="small"
             >
               <FormattedMessage {...messages.edit} />
             </Button>
@@ -77,6 +82,7 @@ function MedicationTableToolbar(props) {
               color="secondary"
               onClick={props.onDelete}
               disabled={numSelected === 0}
+              size="small"
             >
               <FormattedMessage {...messages.delete} />
             </Button>

@@ -148,8 +148,8 @@ export class OrderPage extends React.Component {
         </Grid>
 
         {/* Regimen Cycles Header */}
-        {template >= 0 && orders.length > 0 &&
-          <Grid container>
+        {template >= 0 && orders.length > 0 && [
+          <Grid container key="grid1">
             <Grid item xs={12}>
               <Section>
                 <Typography variant="headline" gutterBottom>
@@ -195,28 +195,30 @@ export class OrderPage extends React.Component {
                 />
               </Section>
             </Grid>
-          </Grid>
-        }
-        <Grid
-          container
-          alignItems="center"
-          direction="row"
-          justify="center"
-        >
-          <Route
-            render={({ history }) => (
-              <Button
-                variant="contained"
-                disabled={template === ""}
-                onClick={() => {
-                  history.push(`/order/${template}/summary`);
-                }}
-              >
-                <FormattedMessage {...messages.next} />
-              </Button>
-            )}
-          />
-        </Grid>
+          </Grid>,
+          <Grid
+            key="grid2"
+            container
+            alignItems="center"
+            direction="row"
+            justify="center"
+          >
+            <Route
+              render={({ history }) => (
+                <Button
+                  variant="contained"
+                  disabled={template === ""}
+                  onClick={() => {
+                    history.push(`/order/${template}/summary`);
+                  }}
+                >
+                  <FormattedMessage {...messages.next} />
+                </Button>
+              )}
+            />
+          </Grid>,
+        ]}
+
       </Page>
     );
   }

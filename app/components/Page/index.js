@@ -12,6 +12,7 @@ import grey from '@material-ui/core/colors/grey';
 
 const PageWrapper = styled.div`
   background: #FFFFFF;
+  min-height: 100%;
 `;
 
 const Sidebar = styled.aside`
