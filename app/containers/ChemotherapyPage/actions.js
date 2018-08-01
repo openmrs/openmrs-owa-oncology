@@ -5,34 +5,12 @@
  */
 
 import {
-  LOAD_OBSERVATIONS,
-  LOAD_OBSERVATIONS_SUCCESS,
-  LOAD_OBSERVATIONS_ERROR,
   CREATE_OBSERVATION,
   CREATE_OBSERVATION_SUCCESS,
   CREATE_OBSERVATION_ERROR,
 } from './constants';
 
-export function loadObservations(params) {
-  return {
-    type: LOAD_OBSERVATIONS,
-    params,
-  };
-}
 
-export function observationsLoaded(observations) {
-  return {
-    type: LOAD_OBSERVATIONS_SUCCESS,
-    observations,
-  };
-}
-
-export function observationsLoadingError(error) {
-  return {
-    type: LOAD_OBSERVATIONS_ERROR,
-    error,
-  };
-}
 
 export function createObservation(observation) {
   return {

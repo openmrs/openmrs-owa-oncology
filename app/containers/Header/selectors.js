@@ -32,6 +32,10 @@ const selectPatientReducer = () =>
 
 const selectOrderGroupReducer = () =>
   createSelector(selectHeaderDomain, substate => substate.orderGroupReducer)
+
+const selectObservationReducer = () =>
+  createSelector(selectHeaderDomain, substate => substate.observationReducer)
+
 /**
  * Other specific selectors
  */
@@ -88,6 +92,11 @@ const makeSelectOrderGroups = () =>
     substate.get('orderGroups').toJS(),
   );
 
+const makeSelectObservations = () =>
+  createSelector(selectObservationReducer(), substate =>
+    substate.get('observations').toJS(),
+  );
+
 const makeSelectParentOrderGroups = () =>
   createSelector(makeSelectOrderGroups(), orderGroups =>
     (orderGroups.results || []).filter(orderGroup =>
@@ -104,6 +113,11 @@ const makeSelectParentOrderGroups = () =>
     }))
   );
 
+const makeSelectExtendedOrderGroups = () =>
+  createSelector(selectOrderGroupReducer(), substate =>
+    substate.get('extendedOrderGroups').toJS(),
+  );
+
 export default makeSelectCurrentSession;
 export {
   makeSelectCurrentSession,
@@ -117,4 +131,6 @@ export {
   makeSelectPatient,
   makeSelectOrderGroups,
   makeSelectParentOrderGroups,
+  makeSelectObservations,
+  makeSelectExtendedOrderGroups,
 };

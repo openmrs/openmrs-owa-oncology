@@ -118,6 +118,12 @@ export default fromJS({
   orderGroupReducer: {
     loading: false,
     orderGroups: {},
+    extendedOrderGroups: [],
+    error: null,
+  },
+  observationReducer: {
+    loading: false,
+    observations: {},
     error: null,
   },
 });

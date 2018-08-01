@@ -40,6 +40,14 @@ import {
   FETCH_ORDER_GROUP_LOADING,
   FETCH_ORDER_GROUP_SUCCESS,
   FETCH_ORDER_GROUP_FAILURE,
+
+  FETCH_OBSERVATIONS_LOADING,
+  FETCH_OBSERVATIONS_SUCCESS,
+  FETCH_OBSERVATIONS_FAILURE,
+
+  LOAD_EXTENDED_ORDER_GROUPS,
+  LOAD_EXTENDED_ORDER_GROUPS_SUCCESS,
+  LOAD_EXTENDED_ORDER_GROUPS_ERROR,
 } from './constants';
 
 export function fetchCurrentSessionAction() {
@@ -223,6 +231,48 @@ export function fetchOrderGroupsSuccessAction(orderGroups) {
 export function fetchOrderGroupsErrorAction(error) {
   return {
     type: FETCH_ORDER_GROUP_FAILURE,
+    error,
+  };
+}
+
+export function fetchObservationsAction(params) {
+  return {
+    type: FETCH_OBSERVATIONS_LOADING,
+    params,
+  };
+}
+
+export function fetchObservationsSuccessAction(observations) {
+  return {
+    type: FETCH_OBSERVATIONS_SUCCESS,
+    observations,
+  };
+}
+
+export function fetchObservationsErrorAction(error) {
+  return {
+    type: FETCH_OBSERVATIONS_FAILURE,
+    error,
+  };
+}
+
+export function loadExtendedOrderGroups(patientUuid) {
+  return {
+    type: LOAD_EXTENDED_ORDER_GROUPS,
+    patientUuid,
+  };
+}
+
+export function extendedOrderGroupsLoaded(orderGroups) {
+  return {
+    type: LOAD_EXTENDED_ORDER_GROUPS_SUCCESS,
+    orderGroups,
+  };
+}
+
+export function extendedOrderGroupsLoadingError(error) {
+  return {
+    type: LOAD_EXTENDED_ORDER_GROUPS_ERROR,
     error,
   };
 }

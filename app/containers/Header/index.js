@@ -33,6 +33,7 @@ import {
   makeSelectCurrentSession,
   makeSelectEncounters,
   makeSelectPatient,
+  makeSelectObservations,
 } from './selectors';
 import reducer from './reducers';
 import saga from './saga';
@@ -45,6 +46,8 @@ import {
   fetchEncountersAction,
   loadPatient,
   fetchOrderGroupsAction,
+  fetchObservationsAction,
+  loadExtendedOrderGroups,
 } from './actions';
 
 import logoImg from './resources/partners_in_health_logo.png';
@@ -79,15 +82,7 @@ export class Header extends React.Component {
     this.props.loadEncounterRole();
     this.props.loadEncounterType();
     this.props.loadPatient(patientUuid);
-    this.props.fetchOrderGroups({
-      patient: patientUuid,
-      v: 'full',
-    });
-    this.props.loadEncounters({
-      patient: patientUuid,
-      s: 'default',
-      v: 'full',
-    })
+    this.props.loadExtendedOrderGroups(patientUuid);
   }
 
   handleMenu = event => {
@@ -195,15 +190,15 @@ Header.propTypes = {
   loadEncounterRole: PropTypes.func.isRequired,
   loadEncounterType: PropTypes.func.isRequired,
   loadPatient: PropTypes.func.isRequired,
-  loadEncounters: PropTypes.func.isRequired,
-  fetchOrderGroups: PropTypes.func.isRequired,
   patient: PropTypes.object,
+  loadExtendedOrderGroups: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
   currentSession: makeSelectCurrentSession(),
   patient: makeSelectPatient(),
   encounters: makeSelectEncounters(),
+  observations: makeSelectObservations(),
   // currentSession: makeSelectDefaultEncounterRole(),
   // currentSession: makeSelectDefaultEncounterType(),
 });
@@ -215,7 +210,9 @@ function mapDispatchToProps(dispatch) {
     loadEncounterType: () => dispatch(fetchEncounterTypeAction()),
     loadEncounters: (params) => dispatch(fetchEncountersAction(params)),
     loadPatient: (patientUuid) => dispatch(loadPatient(patientUuid)),
-    fetchOrderGroups: (params) => dispatch(fetchOrderGroupsAction(params)),
+    loadOrderGroups: (params) => dispatch(fetchOrderGroupsAction(params)),
+    loadObservations: (params) => dispatch(fetchObservationsAction(params)),
+    loadExtendedOrderGroups: (patientUuid) => dispatch(loadExtendedOrderGroups(patientUuid)),
   };
 }
 
