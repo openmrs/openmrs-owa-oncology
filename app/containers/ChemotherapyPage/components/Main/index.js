@@ -53,7 +53,6 @@ function Main(props) {
     name: 'Postmedications',
     reasonUuid: OGR_POSTMEDICATION,
   }];
-  console.log(orderGroup);
 
   return (
     <div>
