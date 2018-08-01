@@ -154,7 +154,7 @@ class MedicationTable extends React.Component {
                     </TableCell>
                   }
                   <TableCell>
-                    {medication.drugConcept}
+                    {medication.drugConcept || (medication.concept && medication.concept.display)}
                   </TableCell>
                   <TableCell>
                     <Typography noWrap>

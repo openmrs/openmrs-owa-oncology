@@ -64,7 +64,20 @@ const styles = theme => ({
 });
 
 class NaviList extends React.Component {
-  state = { collapse: { 0: true } };
+
+  constructor(props) {
+    super(props);
+
+    const { items, selectedItem } = props;
+    const selectedPanelIndex = items.findIndex(item =>
+      item.children.some(subItem => subItem.id === selectedItem)
+    );
+    const collapse = { 0: true };
+    if (selectedPanelIndex > 0) {
+      collapse[selectedPanelIndex] = true;
+    }
+    this.state = { collapse };
+  }
 
   toggleCollapse(index) {
     this.setState({

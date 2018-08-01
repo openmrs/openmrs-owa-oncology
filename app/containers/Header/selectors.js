@@ -92,7 +92,16 @@ const makeSelectParentOrderGroups = () =>
   createSelector(makeSelectOrderGroups(), orderGroups =>
     (orderGroups.results || []).filter(orderGroup =>
       orderGroup.nestedOrderGroups && orderGroup.nestedOrderGroups.length > 0
-    )
+    ).map(orderGroup => ({
+      ...orderGroup,
+      nestedOrderGroups: orderGroup.nestedOrderGroups.map(subOrderGroup => ({
+        ...subOrderGroup,
+        orders: subOrderGroup.orders.map(order => ({
+          ...order,
+          dosingInstructions: JSON.parse(order.dosingInstructions),
+        })),
+      })),
+    }))
   );
 
 export default makeSelectCurrentSession;

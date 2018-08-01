@@ -96,8 +96,8 @@ export class ChemotherapyPage extends React.Component {
     // const observation = encounter.obs.map(enc)
   }
 
-  getCurrentOrderGroup(orderGroups/* , uuid */) {
-    return orderGroups[0];
+  getCurrentOrderGroup(orderGroups , uuid) {
+    return orderGroups.find(orderGroup => orderGroup.uuid === uuid);
   }
 
   render() {
@@ -130,21 +130,23 @@ export class ChemotherapyPage extends React.Component {
               <FormattedMessage {...messages.header} />
             </Typography>
           </SidebarTitle>
-          <NaviList
-            selectedItem={cycleUuid}
-            items={orderGroups.map(orderGroup => ({
-              id: orderGroup.uuid,
-              title: orderGroup.orderSet.display,
-              status: 'completed',
-              children: [{
+          {orderGroups.length > 0 &&
+            <NaviList
+              selectedItem={cycleUuid}
+              items={orderGroups.map(orderGroup => ({
                 id: orderGroup.uuid,
-                cycle: 1,
-                title: 'Cycle 1 of 6',
-                date: '08/01/18',
+                title: orderGroup.orderSet.display,
                 status: 'completed',
-              }],
-            }))}
-          />
+                children: [{
+                  id: orderGroup.uuid,
+                  cycle: 1,
+                  title: 'Cycle 1 of 6',
+                  date: '08/01/18',
+                  status: 'completed',
+                }],
+              }))}
+            />
+          }
         </Sidebar>
         <Content>
           <Switch>
