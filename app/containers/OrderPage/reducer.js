@@ -22,7 +22,6 @@ export const initialState = fromJS({
 });
 
 function orderPageReducer(state = initialState, action) {
-
   switch (action.type) {
     // RegimenList
     case LOAD_REGIMEN_LIST:

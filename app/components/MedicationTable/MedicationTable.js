@@ -156,10 +156,10 @@ class MedicationTable extends React.Component {
                     <Typography noWrap>
                       {medication.dose} {medication.doseUnits}
                       &nbsp;&nbsp;
-                      {medication.dosingModifications &&
+                      {medication.dosingInstructions.dosingAdjustment !== 0 &&
                         <Tag
-                          value={`${medication.dosingModifications.value}${medication.dosingModifications.units}`}
-                          sign={medication.dosingModifications.sign === 1 ? <span>&plus;</span> : <span>&minus;</span>}
+                          value={`${Math.abs(medication.dosingInstructions.dosingAdjustment)}%`}
+                          sign={medication.dosingInstructions.dosingAdjustment >= 0 ? <span>&#43;</span> : <span>&#8722;</span>}
                         />
                       }
                     </Typography>

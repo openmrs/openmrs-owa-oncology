@@ -62,13 +62,13 @@ export class OrderPage extends React.Component {
     this.props.history.push(`/order/${e.target.value}`);
   };
 
-  handleMedicationsChange = (updatedMedications, orderReason) => {
+  handleMedicationsChange = (updatedMedications, category) => {
     const { orders, match } = this.props;
     const { template }  = match.params;
     const newOrder = {
       ...orders[template],
       medications: orders[template].medications.map(medication =>
-        (medication.orderReason !== orderReason && medication) ||
+        (medication.category !== category && medication) ||
           updatedMedications.find(m => m.uuid === medication.uuid)
       ).filter(m => m),
     }
