@@ -35,7 +35,6 @@ function getMedicationsByReason(orderGroups, reasonUuid) {
     orderGr.orderGroupReason.uuid === reasonUuid
   );
   return (orderGroup && orderGroup.orders) || [];
-
 }
 
 function Main(props) {

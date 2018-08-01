@@ -59,16 +59,7 @@ export class ChemotherapyPage extends React.Component {
     });
     /*
     setTimeout(() => {
-      this.props.createEncounter({
-        encounterType: ENC_CHEMO_SESSION,
-        patient: patientUuid,
-        obs: [
-          {
-            "concept": "5d1bc5de-6a35-4195-8631-7322941fe528",
-            "value": 1,
-          },
-        ],
-      });
+
     }, 1000);
     */
     /*
@@ -100,9 +91,57 @@ export class ChemotherapyPage extends React.Component {
     return orderGroups.find(orderGroup => orderGroup.uuid === uuid);
   }
 
+  handleAdministrateFormSubmit = (data) => {
+    console.log('SUBMIT');
+    console.log(data);
+    /*
+    const patientUuid = getParam('patientId');
+    this.props.createEncounter({
+      encounterType: ENC_CHEMO_SESSION,
+      patient: patientUuid,
+      encounterProviders: [
+        {
+          uuid: '1f29f30d-bb43-401a-aac4-7d8eed8b398e',
+        },
+      ],
+      obs: [
+        {
+          order: "51ea5ed8-d217-453e-9a12-aa3aba94f179",
+          display: "Administered dose",
+          concept: "595c4408-b923-4646-8486-48efde871f9e", // <ADMIN_DOSE uuid>
+          person: "bf6abba0-b581-44a8-b188-ae4624801000",
+          groupMembers: [
+            {
+              concept: "986de2e7-9c9a-473a-8afc-d4b41aa08706", // <DOSING_UNIT_QUESTION uuid>
+              value: "161553AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", // <some dosing unit - mg/ml/mg_per_sq_m uuid>
+            },
+            {
+              concept: "160856AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", // <QUANTITY_OF_MEDICATION uuid>
+              value: "100",
+            },
+          ],
+        },
+        {
+          // Physician Notes
+          "display": "Clinical Impressions Notes",
+          "concept": "3cd9d956-26fe-102b-80cb-0017a47871b2",
+          "value": "The patient was given a reduced dose due to old age."
+        },
+        {
+          // Cycle Status
+          "display": "Single Cycle Status",
+          "concept": "e270e139-f32d-4e86-9f02-175d60c3f4ac", // <uuid OG_SINGLE_CYCLE_STATUS>
+          "value": "3cdcecea-26fe-102b-80cb-0017a47871b2" // <uuid for the status, in this case OG_SCL_COMPLETE>
+        }
+      ]
+    });
+    */
+  }
+
   render() {
     const { orderGroups, match } = this.props;
     const { cycleUuid } = match.params;
+    const selectedOrderGroup = this.getCurrentOrderGroup(orderGroups, cycleUuid);
 
     /*
     const { encounters } = this.props;
@@ -154,10 +193,21 @@ export class ChemotherapyPage extends React.Component {
               exact
               path="/chemotherapy/:cycleUuid?"
               render={props =>
-                <Main {...props} orderGroup={this.getCurrentOrderGroup(orderGroups, cycleUuid)} />
+                <Main {...props} orderGroup={selectedOrderGroup} />
               }
             />
-            <Route exact path="/chemotherapy/:cycleUuid/administrate" component={AdministrateForm} />
+            <Route
+              exact
+              path="/chemotherapy/:cycleUuid/administrate"
+              render={props =>
+                orderGroups.length > 0 &&
+                  <AdministrateForm
+                    {...props}
+                    orderGroup={selectedOrderGroup}
+                    onFormSubmit={this.handleAdministrateFormSubmit}
+                  />
+              }
+            />
           </Switch>
         </Content>
       </div>
