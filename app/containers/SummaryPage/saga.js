@@ -14,6 +14,11 @@ import {
   OGAT_CYCLE_LENGTH_UNIT_WEEK, 
   OGAT_CYCLE_LENGTH_UNIT_DAY,
   OUTPATIENT_CARE_SETTING,
+  ROUTE_IV,
+  ROUTE_ORAL,
+  MG,
+  ML,
+  MG_PER_SQ_M,
 } from '../../conceptMapping.json';
 
 import {
@@ -63,7 +68,19 @@ function* submitEncounter(encounter) {
   const requestUrlEncounter = `${baseUrl}/encounter`;
 
   try {
-    const encToPost = JSON.stringify(encounter.encounter);
+    const temp = JSON.parse(JSON.stringify(encounter.encounter));
+
+
+    // ADD PATIENT NOTES AS OBS TO ENCOUNTER
+    // temp.obs = [];
+    // temp.obs.push()
+    //   {
+    //     "concept": "5d1bc5de-6a35-4195-8631-7322941fe528",
+    //     "value": 1,
+    //   },
+    // ],
+
+    const encToPost = JSON.stringify(temp);
   
     const encounterResponse = yield call(request, requestUrlEncounter, {
       headers,
@@ -92,6 +109,34 @@ function filterOrders(medArray, orderSetMembers, encounter, currentProvider) {
         temp.concept = osMember.concept.uuid
     })
 
+    // map words to uuids in the order
+    switch (temp.route) {
+      case "Intravenous":
+        temp.route = ROUTE_IV;
+        break;
+      case "Oral":
+        temp.route = ROUTE_ORAL;
+        break;
+      default:
+        temp.route = ROUTE_ORAL;
+        break;
+    }
+
+    switch (temp.doseUnits) {
+      case "Milligram per square meter":
+        temp.doseUnits = MG_PER_SQ_M;
+        break;
+      case "Milligram":
+        temp.doseUnits = MG;
+        break;
+      case "Milliliter":
+        temp.doseUnits = ML;
+        break;
+      default:
+        temp.doseUnits = ROUTE_ORAL;
+        break;
+    }
+
     // add stuff to the order object
     temp.careSetting = OUTPATIENT_CARE_SETTING;
     temp.orderer = currentProvider.uuid;
@@ -106,11 +151,8 @@ function filterOrders(medArray, orderSetMembers, encounter, currentProvider) {
     delete temp.category;
     delete temp.drugConcept;
     delete temp.drugName;
-    delete temp.route;
     delete temp.relativeStartDay;
     delete temp.orderTemplateType;
-
-    // delete temp.dosingInstructions;
 
     return temp;
   });
@@ -133,7 +175,6 @@ function* submitOrderGroup(action) {
     const {orderSetMembers} = (yield select(makeSelectRegimenList())).results[selected];
 
     const currentProvider = (yield select(makeSelectEncounterProvider()));
-
 
     const filteredPremedications = filterOrders(premedications, orderSetMembers, action.encounter, currentProvider);
     const filteredChemomedications = filterOrders(chemomedications, orderSetMembers, action.encounter, currentProvider);
