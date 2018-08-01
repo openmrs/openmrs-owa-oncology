@@ -99,7 +99,7 @@ class NaviList extends React.Component {
                 secondaryTypographyProps={{
                   style: {
                     overflow: 'hidden',
-                    'text-overflow': 'ellipsis',
+                    textOverflow: 'ellipsis',
                   },
                 }}
               />
@@ -137,7 +137,7 @@ class NaviList extends React.Component {
                       primaryTypographyProps={{
                         style: {
                           overflow: 'hidden',
-                          'text-overflow': 'ellipsis',
+                          textOverflow: 'ellipsis',
                         },
                       }}
                     />

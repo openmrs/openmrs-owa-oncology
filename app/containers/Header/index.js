@@ -81,6 +81,7 @@ export class Header extends React.Component {
     this.props.loadPatient(patientUuid);
     this.props.fetchOrderGroups({
       patient: patientUuid,
+      v: 'full',
     });
     this.props.loadEncounters({
       patient: patientUuid,

@@ -11,6 +11,7 @@ import encounterTypeReducer from './encounterTypeReducer';
 import encounterRoleReducer from './encounterRoleReducer';
 import encounterReducer from './encounterReducer';
 import patientReducer from './patientReducer';
+import orderGroupReducer from './orderGroupReducer';
 
 export default combineReducers({
   // locationReducer,
@@ -25,4 +26,5 @@ export default combineReducers({
   encounterRoleReducer,
   encounterReducer,
   patientReducer,
+  orderGroupReducer,
 });

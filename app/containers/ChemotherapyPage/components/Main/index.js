@@ -16,6 +16,12 @@ import MedicationTable from 'components/MedicationTable';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
+import {
+  OGR_PREMEDICATION,
+  OGR_CHEMOTHERAPY,
+  OGR_POSTMEDICATION,
+} from '../../../../conceptMapping.json';
+
 const Head = styled.div`
   overflow: hidden;
   margin-bottom: 1em;
@@ -24,8 +30,32 @@ const HeadActions = styled.div`
   float: right;
 `;
 
+function getMedicationsByReason(orderGroups, reasonUuid) {
+  const orderGroup = orderGroups.find(orderGr =>
+    orderGr.orderGroupReason.uuid === reasonUuid
+  );
+  return (orderGroup && orderGroup.orders) || [];
+
+}
+
 function Main(props) {
   const { params } = props.match;
+  const { orderGroup } = props;
+  const subOrders = (orderGroup && orderGroup.nestedOrderGroups) || [];
+
+  const tables = [{
+    name: 'Premedications',
+    reasonUuid: OGR_PREMEDICATION,
+  }, {
+    name: 'Chemotherapy',
+    reasonUuid: OGR_CHEMOTHERAPY,
+  }, {
+    name: 'Postmedications',
+    reasonUuid: OGR_POSTMEDICATION,
+  }];
+  console.log(orderGroup);
+
+
 
   return (
     <div>
@@ -51,34 +81,14 @@ function Main(props) {
           Cycle 3 of 6
         </Typography>
       </Head>
-      <MedicationTable
-        readOnly
-        name="Premedications"
-        medications={[{
-          uuid: 1,
-          drugConcept: '0.9% Normal',
-          dose: 1000,
-          doseUnits: 'mg',
-          route: 'Oral',
-          dosingInstructions: {
-            dosingTiming: 'Once 1 hour prior to chemotherapy',
-          },
-        }]}
-      />
-      <MedicationTable
-        readOnly
-        name="Chemotherapy"
-        medications={[{
-          uuid: 2,
-          drugConcept: '0.9% Normal',
-          dose: 1000,
-          doseUnits: 'mg',
-          route: 'Oral',
-          dosingInstructions: {
-            dosingTiming: 'Once 1 hour prior to chemotherapy',
-          },
-        }]}
-      />
+      {tables.map(({ name, reasonUuid }) =>
+        <MedicationTable
+          key={reasonUuid}
+          readOnly
+          name={name}
+          medications={getMedicationsByReason(subOrders, reasonUuid)}
+        />
+      )}
       <Typography variant="subheading">
         Cycle summary
       </Typography>
@@ -91,6 +101,7 @@ function Main(props) {
 
 Main.propTypes = {
   match: PropTypes.object.isRequired,
+  orderGroup: PropTypes.object,
 };
 
 export default Main;
