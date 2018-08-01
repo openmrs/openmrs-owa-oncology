@@ -52,7 +52,12 @@ function MedicationTableToolbar(props) {
               {numSelected} selected
             </Typography>
           ) : (
-            <Typography variant="subheading">{props.title}</Typography>
+            <Typography
+              variant="subheading"
+              style={{ textTransform: 'uppercase' }}
+            >
+              {props.title}
+            </Typography>
           )}
         </ToolbarTitle>
 

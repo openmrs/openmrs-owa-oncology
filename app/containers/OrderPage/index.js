@@ -96,6 +96,7 @@ export class OrderPage extends React.Component {
       regimenList,
       match,
     } = this.props;
+
     const { template } = match.params;
 
     if (!patient) {
