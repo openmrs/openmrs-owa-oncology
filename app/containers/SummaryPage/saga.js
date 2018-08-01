@@ -96,9 +96,10 @@ function filterOrders(medArray, orderSetMembers, encounter, currentProvider) {
     temp.careSetting = OUTPATIENT_CARE_SETTING;
     temp.orderer = currentProvider.uuid;
     temp.patient = encounter.patient.uuid;
-    temp.dateActivated = dateActivated;
-    temp.autoExpireDate = autoExpireDate;
+    temp.dateActivated = "2018-07-01T08:42:51.229-0000"
+    temp.autoExpireDate = "2018-07-01T10:42:51.229-0000"
     temp.dosingType = "org.openmrs.ChemoAdminDosingInstructions";
+    temp.dosingInstructions = JSON.stringify(temp.dosingInstructions);
 
     // remove stuff order object
     delete temp.uuid;
@@ -106,11 +107,10 @@ function filterOrders(medArray, orderSetMembers, encounter, currentProvider) {
     delete temp.drugConcept;
     delete temp.drugName;
     delete temp.route;
-    delete temp.dose;
-    delete temp.doseUnits;
     delete temp.relativeStartDay;
-    delete temp.dosingInstructions;
     delete temp.orderTemplateType;
+
+    // delete temp.dosingInstructions;
 
     return temp;
   });

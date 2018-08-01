@@ -141,7 +141,7 @@ class EditMedicationDialog extends React.PureComponent {
                 rows="3"
                 multiid="medication"
                 type="text"
-                defaultValue={medication.dosingInstructions.dosingTiming}
+                defaultValue={medication.dosingInstructions.dosingTimingInstructions}
                 fullWidth
               />
             </Grid>

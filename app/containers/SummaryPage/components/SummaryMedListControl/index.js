@@ -32,12 +32,12 @@ class SummaryMedListControl extends React.PureComponent {
             <ListItem >
               <ListItemText
                 primary={drugConcept}
-                secondary={`${dosingInstructions.dosingTiming} ${dosingInstructions.dosingDilution ? dosingInstructions.dosingDilution : ''}`}
+                secondary={`${dosingInstructions.dosingTimingInstructions} ${dosingInstructions.dosingDilutionInstructions ? dosingInstructions.dosingDilutionInstructions : ''}`}
               />
-              {!!dosingInstructions.dosingAdjustment &&
+              {!!dosingInstructions.dosingAdjustmentPercentage &&
                 <Tag
-                  value={`${Math.abs(dosingInstructions.dosingAdjustment)}%`}
-                  sign={dosingInstructions.dosingAdjustment >= 0 ? <span>&#43;</span> : <span>&#8722;</span>}
+                  value={`${Math.abs(dosingInstructions.dosingAdjustmentPercentage)}%`}
+                  sign={dosingInstructions.dosingAdjustmentPercentage >= 0 ? <span>&#43;</span> : <span>&#8722;</span>}
                 />
               }
             </ListItem>

@@ -55,8 +55,6 @@ function Main(props) {
   }];
   console.log(orderGroup);
 
-
-
   return (
     <div>
       <Head>
