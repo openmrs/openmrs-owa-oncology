@@ -4,7 +4,7 @@ import request from 'utils/request';
 
 import {
   OGR_CHEMO_PARENT_SET, 
-  OGR_PREMEDICATION, 
+  OGR_PREMEDICATION,
   OGR_CHEMOTHERAPY, 
   OGR_POSTMEDICATION,
   OGAT_CYCLE_NUMBER, 
@@ -13,6 +13,7 @@ import {
   OGAT_CYCLE_LENGTH_UNIT, 
   OGAT_CYCLE_LENGTH_UNIT_WEEK, 
   OGAT_CYCLE_LENGTH_UNIT_DAY,
+  OUTPATIENT_CARE_SETTING,
 } from '../../conceptMapping.json';
 
 import {
@@ -32,12 +33,16 @@ import {
 } from '../../utils/config';
 
 import { 
-  makeSelectOrders, 
+  // makeSelectOrders, 
   makeSelectRegimenList, 
   makeSelectPremedications, 
   makeSelectChemotherapy, 
   makeSelectPostmedications,
 } from '../OrderPage/selectors';
+
+import {
+  makeSelectEncounterProvider,
+} from '../Header/selectors';
 
 import { 
   makeSelectEncounter,
@@ -72,8 +77,47 @@ function* submitEncounter(encounter) {
   }
 }
 
+function filterOrders(medArray, orderSetMembers, encounter, currentProvider) {
+  return medArray.map(obj => {
+    // create a new copy of the object
+    const temp = JSON.parse(JSON.stringify(obj));
+    const dateActivated = new Date();
+    const autoExpireDate = new Date();
+    autoExpireDate.setHours(autoExpireDate.getHours() - 2);
+    dateActivated.setHours(dateActivated.getHours() - 4);
+
+    // get the uuid of the concept from the regimenList -> orderSetMember corresponding to this order
+    orderSetMembers.forEach(osMember => {
+      if (osMember.uuid === temp.uuid)
+        temp.concept = osMember.concept.uuid
+    })
+
+    // add stuff to the order object
+    temp.careSetting = OUTPATIENT_CARE_SETTING;
+    temp.orderer = currentProvider.uuid;
+    temp.patient = encounter.patient.uuid;
+    temp.dateActivated = dateActivated;
+    temp.autoExpireDate = autoExpireDate;
+    temp.dosingType = "org.openmrs.ChemoAdminDosingInstructions";
+
+    // remove stuff order object
+    delete temp.uuid;
+    delete temp.category;
+    delete temp.drugConcept;
+    delete temp.drugName;
+    delete temp.route;
+    delete temp.dose;
+    delete temp.doseUnits;
+    delete temp.relativeStartDay;
+    delete temp.dosingInstructions;
+    delete temp.orderTemplateType;
+
+    return temp;
+  });
+}
+
 function* submitOrderGroup(action) {
-  const requestUrlOrderGroup = `${baseUrl}/orderGroup`;
+  const requestUrlOrderGroup = `${baseUrl}/ordergroup`;
 
   try {
     const encounterUuid = action.encounter.uuid;
@@ -82,40 +126,56 @@ function* submitOrderGroup(action) {
     const premedications = (yield select(makeSelectPremedications()))[selected];
     const chemomedications = (yield select(makeSelectChemotherapy()))[selected];
     const postmedications = (yield select(makeSelectPostmedications()))[selected];
-    const order = (yield select(makeSelectOrders()))[selected];
+
+    // const order = (yield select(makeSelectOrders()))[selected];
+    
     const orderSetUuid = (yield select(makeSelectRegimenList())).results[selected].uuid;
+    const {orderSetMembers} = (yield select(makeSelectRegimenList())).results[selected];
+
+    const currentProvider = (yield select(makeSelectEncounterProvider()));
+
+
+    const filteredPremedications = filterOrders(premedications, orderSetMembers, action.encounter, currentProvider);
+    const filteredChemomedications = filterOrders(chemomedications, orderSetMembers, action.encounter, currentProvider);
+    const filteredPostmedications = filterOrders(postmedications, orderSetMembers, action.encounter, currentProvider);
 
     // construct the order group
     const orderGroup = {
+      orders:[],
       encounter: encounterUuid,
       orderSet: orderSetUuid,
       orderGroupReason: OGR_CHEMO_PARENT_SET,
       nestedOrderGroups: [
         {
+          encounter: encounterUuid,
           orderGroupReason: OGR_PREMEDICATION,
-          orders: premedications,
+          orders: filteredPremedications,
         },
         {
+          encounter: encounterUuid,
           orderGroupReason: OGR_CHEMOTHERAPY,
-          orders: chemomedications,
+          patient: action.encounter.patient.uuid,
+          orders: filteredChemomedications,
         },
         {
+          encounter: encounterUuid,
           orderGroupReason: OGR_POSTMEDICATION,
-          orders: postmedications,
-        },     
+          patient: action.encounter.patient.uuid,
+          orders: filteredPostmedications,
+        },
       ],
       attributes: [
         {
           attributeType: OGAT_CYCLE_NUMBER,
-          value: 1,
+          value: '1',
         },
         {
           attributeType: OGAT_NUM_CYCLES,
-          value: order.cyclesDescription.cycles,
+          value: '6',
         },
         {
           attributeType: OGAT_CYCLE_LENGTH,
-          value: order.cyclesDescription.cycleDuration,
+          value: '28',
         },
         {
           attributeType: OGAT_CYCLE_LENGTH_UNIT,
@@ -124,12 +184,13 @@ function* submitOrderGroup(action) {
       ],
     };  
 
-    // const orderGroupToPost = JSON.stringify(orderGroup);
+    const orderGroupToPost = JSON.stringify(orderGroup);
+    console.log(orderGroupToPost);
 
     const orderGroupResponse = yield call(request, requestUrlOrderGroup, {
       headers,
       method: 'POST',
-      body: JSON.stringify(orderGroup),
+      body: orderGroupToPost,
     });
     yield put(postOrderGroupSuccessAction(orderGroupResponse));
   } catch (err) {

@@ -19,7 +19,7 @@ export function getHost() {
 
 export function getHeaders() {
   return {
-    Authorization: `Basic ${btoa('admin:Admin123')}`,
+    Authorization: `Basic ${btoa('pravesh:admin123')}`,
     'Content-Type': 'application/json',
   }
 }

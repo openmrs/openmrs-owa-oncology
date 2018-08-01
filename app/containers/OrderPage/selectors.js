@@ -25,18 +25,20 @@ const makeSelectOrders = () =>
     substate.get('orders').toJS(),
   );
 
-const makeSelectMedications = () =>
-  createSelector(makeSelectRegimenList(), regimenList =>
-    (regimenList.results || []).map(regimen =>
-      (regimen.orderSetMembers || []).map(order => {
-        try {
-          return JSON.parse(order.orderTemplate);
-        } catch (e) {
-          return null;
-        }
-      }),
-    ),
-  );
+// const makeSelectMedications = () =>
+//   createSelector(makeSelectRegimenList(), regimenList =>
+//     (regimenList.results || []).map(regimen =>
+//       (regimen.orderSetMembers || []).map(order => {
+//         try {
+//           const orderObj = JSON.parse(order.orderTemplate);
+//           orderObj.type="drugorder";
+//           return orderObj;
+//         } catch (e) {
+//           return null;
+//         }
+//       }),
+//     ),
+//   );
 
 const makeSelectPremedications = () =>
   createSelector(makeSelectOrders(), orders =>
@@ -61,7 +63,7 @@ const makeSelectPostmedications = () =>
 
 export {
   makeSelectRegimenList,
-  makeSelectMedications,
+  // makeSelectMedications,
   makeSelectPremedications,
   makeSelectChemotherapy,
   makeSelectPostmedications,
