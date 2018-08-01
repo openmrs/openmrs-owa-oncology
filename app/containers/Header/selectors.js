@@ -72,7 +72,7 @@ const makeSelectEncounterRole = () =>
     substate.get('encounterRole')
   );
 
-const makeSelectEncounterProvider = () =>
+const makeSelectCurrentProvider = () =>
   createSelector(selectSessionReducer(), substate =>
     substate.get('currentProvider')
   );
@@ -124,7 +124,7 @@ export {
   makeSelectDefaultEncounterRole,
   makeSelectDefaultEncounterType,
   makeSelectEncounterRole,
-  makeSelectEncounterProvider,
+  makeSelectCurrentProvider,
   makeSelectEncounterType,
   makeSelectEncounterLocation,
   makeSelectEncounters,
