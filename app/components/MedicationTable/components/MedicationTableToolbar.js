@@ -38,7 +38,7 @@ const ToolbarActions = styled.div`
 `;
 
 function MedicationTableToolbar(props) {
-  const { numSelected, classes, readOnly } = props;
+  const { numSelected, classes, readOnly, enableChangeDosage } = props;
 
   return (
     <Wrapper>
@@ -58,15 +58,17 @@ function MedicationTableToolbar(props) {
 
         {!readOnly &&
           <ToolbarActions>
-            <Button
-              className={classes.button}
-              variant="outlined"
-              onClick={props.onChangeDosage}
-              disabled={numSelected === 0}
-              size="small"
-            >
-              <FormattedMessage {...messages.changeDosage} />
-            </Button>
+            {enableChangeDosage &&
+              <Button
+                className={classes.button}
+                variant="outlined"
+                onClick={props.onChangeDosage}
+                disabled={numSelected === 0}
+                size="small"
+              >
+                <FormattedMessage {...messages.changeDosage} />
+              </Button>
+            }
             <Button
               className={classes.button}
               variant="outlined"
@@ -101,6 +103,7 @@ MedicationTableToolbar.propTypes = {
   onDelete: PropTypes.func.isRequired,
   onChangeDosage: PropTypes.func.isRequired,
   readOnly: PropTypes.bool.isRequired,
+  enableChangeDosage: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(MedicationTableToolbar);

@@ -177,6 +177,7 @@ export class OrderPage extends React.Component {
                 {chemotherapy && chemotherapy[template].length > 0 &&
                   <MedicationTable
                     name="Chemotherapy"
+                    enableChangeDosage
                     medications={chemotherapy[template]}
                     onMedicationsChange={(meds) => this.handleMedicationsChange(meds, 'Chemotherapy')}
                   />

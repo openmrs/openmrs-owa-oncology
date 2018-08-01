@@ -113,7 +113,7 @@ class MedicationTable extends React.Component {
   }
 
   render() {
-    const { medications, intl, readOnly } = this.props;
+    const { medications, intl, readOnly, enableChangeDosage } = this.props;
     const { selected } = this.state;
     const selectedMedications = this.getSelectedMedications();
 
@@ -123,6 +123,7 @@ class MedicationTable extends React.Component {
           title={this.props.name}
           numSelected={selected.length}
           readOnly={readOnly}
+          enableChangeDosage={enableChangeDosage}
           onEdit={() => this.setState({ openDialog: 'edit' })}
           onDelete={() => this.setState({ openDialog: 'delete' })}
           onChangeDosage={() => this.setState({ openDialog: 'change-dosage' })}
@@ -156,7 +157,7 @@ class MedicationTable extends React.Component {
                     <Typography noWrap>
                       {medication.dose} {medication.doseUnits}
                       &nbsp;&nbsp;
-                      {medication.dosingInstructions.dosingAdjustment !== 0 &&
+                      {!!medication.dosingInstructions.dosingAdjustment &&
                         <Tag
                           value={`${Math.abs(medication.dosingInstructions.dosingAdjustment)}%`}
                           sign={medication.dosingInstructions.dosingAdjustment >= 0 ? <span>&#43;</span> : <span>&#8722;</span>}
@@ -186,7 +187,7 @@ class MedicationTable extends React.Component {
           title={intl.formatMessage({...messages.deleteDialogTitle})}
           description={this.getDeleteDialogDescription(selectedMedications)}
         />
-        {selectedMedications.length >= 1 &&
+        {enableChangeDosage && selectedMedications.length >= 1 &&
           <ChangeDosageDialog
             medications={selectedMedications}
             open={this.state.openDialog === 'change-dosage'}
@@ -205,10 +206,12 @@ MedicationTable.propTypes = {
   onMedicationsChange: PropTypes.func,
   intl: intlShape.isRequired,
   readOnly: PropTypes.bool,
+  enableChangeDosage: PropTypes.bool,
 };
 
 MedicationTable.defaultProps = {
   readOnly: false,
+  enableChangeDosage: false,
 }
 
 export default injectIntl(MedicationTable);
