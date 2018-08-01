@@ -116,6 +116,7 @@ class MedicationTable extends React.Component {
     const { medications, intl, readOnly, enableChangeDosage } = this.props;
     const { selected } = this.state;
     const selectedMedications = this.getSelectedMedications();
+
     if (!medications.length) {
       return <div />;
     }
@@ -158,7 +159,7 @@ class MedicationTable extends React.Component {
                   </TableCell>
                   <TableCell>
                     <Typography noWrap>
-                      {medication.dose} {medication.doseUnits}
+                      {medication.dose} {medication.doseUnits && medication.doseUnits.display}
                       &nbsp;&nbsp;
                       {medication.dosingInstructions && !!medication.dosingInstructions.dosingAdjustmentPercentage &&
                         <Tag
@@ -168,7 +169,7 @@ class MedicationTable extends React.Component {
                       }
                     </Typography>
                   </TableCell>
-                  <TableCell>{medication.route}</TableCell>
+                  <TableCell>{medication.route && medication.route.display}</TableCell>
                   <TableCell>
                     {medication.dosingInstructions &&
                     medication.dosingInstructions.dosingTimingInstructions}

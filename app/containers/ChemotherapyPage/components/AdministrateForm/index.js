@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import { Link } from 'react-router-dom'
@@ -22,6 +22,10 @@ import Textarea from 'components/Textarea';
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
+import {
+  OGR_CHEMOTHERAPY,
+} from '../../../../conceptMapping.json';
+
 const Head = styled.div`
   margin-bottom: 1em;
 `;
@@ -35,90 +39,145 @@ const Actions = styled.div`
   margin: 2em 0;
 `;
 
-const items = [{
-  title: 'Prednisone',
-  dose: '100mg',
-}, {
-  title: 'Doxorubicin',
-  dose: '50 mg/m2',
-}, {
-  title: 'Vincristine',
-  dose: '1.4mg/m2',
-}];
+export class AdministrateForm extends React.Component {
 
-function AdministrateForm() {
-  return (
-    <div>
-      <Head>
-        <Typography variant="headline">
-          CHOP: Protocol for Non Hodgkin Lymphome
-        </Typography>
-        <Typography variant="subheading">
-          Cycle 3 of 6
-        </Typography>
-      </Head>
-      <Grid container spacing={16}>
-        <Grid item md={10} sm={12} lg={8}>
-          <Typography variant="subheading">Please record the dosage given to the patient.</Typography>
-          <ListWrapper>
-            <List>
-              {items.map(item =>
-                <ListItem button divider>
-                  <ListItemText primary={item.title} secondary={item.dose} />
-                  <TextField
-                    id="mg"
-                    label="mg"
-                    style={{ width: 60 }}
-                    placeholder="-"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                  &nbsp;
-                  &nbsp;
-                  <TextField
-                    id="ml"
-                    label="ml"
-                    style={{ width: 60 }}
-                    placeholder="-"
-                    InputLabelProps={{
-                      shrink: true,
-                    }}
-                  />
-                </ListItem>
-              )}
-            </List>
-          </ListWrapper>
-          <Typography variant="subheading">Cycle summary notes</Typography>
-          <Textarea
-            rows="3"
-            fullWidth
-            placeholder="Typo your summary here..."
-          />
-          <Actions>
-            <Button
-              variant="outlined"
-              component={Link}
-              to="/chemotherapy"
-            >
-              Cancel
-            </Button>
-            &nbsp;&nbsp;
-            <Button
-              variant="contained"
-              color="primary"
-              component={Link}
-              to="/chemotherapy"
-            >
-              Submit
-            </Button>
-          </Actions>
+  constructor(props) {
+    super(props);
+
+    const orders = this.getOrders(props.orderGroup);
+    const ordersObj = {};
+    orders.forEach(order => {
+      ordersObj[order.uuid] = {
+        ml: '',
+        mg: '',
+      };
+    });
+    this.state = {
+      notes: '',
+      orders: ordersObj,
+    };
+  }
+
+  getOrders(orderGroup) {
+    const subOrders = (orderGroup && orderGroup.nestedOrderGroups) || [];
+    const chemoOrder = subOrders.find(orderGr =>
+      orderGr.orderGroupReason.uuid === OGR_CHEMOTHERAPY
+    );
+    return (chemoOrder && chemoOrder.orders) || [];
+  }
+
+  handleDoseChange(e, uuid, name) {
+    const { orders } = this.state;
+    this.setState({
+      orders: {
+        ...orders,
+        [uuid]: {
+          ...orders[uuid],
+          [name]: e.target.value,
+        },
+      },
+    })
+  }
+
+  handleSubmit = () => {
+    const { onFormSubmit } = this.props;
+    if (onFormSubmit) {
+      onFormSubmit(this.state);
+    }
+  }
+
+  render() {
+    const { match, orderGroup } = this.props;
+    const orders = this.getOrders(orderGroup);
+
+    return (
+      <div>
+        <Head>
+          <Typography variant="headline">
+            CHOP: Protocol for Non Hodgkin Lymphome
+          </Typography>
+          <Typography variant="subheading">
+            Cycle 3 of 6
+          </Typography>
+        </Head>
+        <Grid container spacing={16}>
+          <Grid item md={10} sm={12} lg={8}>
+            <Typography variant="subheading">Please record the dosage given to the patient.</Typography>
+            <ListWrapper>
+              <List>
+                {orders.map(order =>
+                  <ListItem
+                    divider
+                    key={order.uuid}
+                  >
+                    <ListItemText
+                      primary={order.concept && order.concept.display}
+                      secondary={`${order.dose}${order.doseUnits && order.doseUnits.display}`}
+                    />
+                    <TextField
+                      id="mg"
+                      label="mg"
+                      style={{ width: 60 }}
+                      placeholder="-"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      value={this.state.orders[order.uuid].mg}
+                      onChange={(e) => this.handleDoseChange(e, order.uuid, 'mg')}
+                    />
+                    &nbsp;
+                    &nbsp;
+                    <TextField
+                      id="ml"
+                      label="ml"
+                      style={{ width: 60 }}
+                      placeholder="-"
+                      InputLabelProps={{
+                        shrink: true,
+                      }}
+                      value={this.state.orders[order.uuid].ml}
+                      onChange={(e) => this.handleDoseChange(e, order.uuid, 'ml')}
+                    />
+                  </ListItem>
+                )}
+              </List>
+            </ListWrapper>
+            <Typography variant="subheading">Cycle summary notes</Typography>
+            <Textarea
+              rows="3"
+              fullWidth
+              placeholder="Typo your summary here..."
+              value={this.state.notes}
+              onChange={e => this.setState({ notes: e.target.value })}
+            />
+            <Actions>
+              <Button
+                variant="outlined"
+                component={Link}
+                to={`/chemotherapy/${match.params.cycleUuid}`}
+              >
+                Cancel
+              </Button>
+              &nbsp;&nbsp;
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={this.handleSubmit}
+              >
+                Submit
+              </Button>
+            </Actions>
+          </Grid>
         </Grid>
-      </Grid>
-    </div>
-  );
+      </div>
+    );
+  }
 }
 
-AdministrateForm.propTypes = {};
+AdministrateForm.propTypes = {
+  orderGroup: PropTypes.object,
+  match: PropTypes.object.isRequired,
+  onFormSubmit: PropTypes.func,
+};
 
 export default AdministrateForm;
