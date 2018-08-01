@@ -37,7 +37,7 @@ function Main(props) {
             component={Link}
             to={`/chemotherapy/${params.cycleUuid}/administrate`}
           >
-            Administrate
+            Administer
           </Button>
           &nbsp;&nbsp;
           <Button variant="outlined">

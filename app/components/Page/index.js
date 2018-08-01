@@ -12,28 +12,26 @@ import grey from '@material-ui/core/colors/grey';
 
 const PageWrapper = styled.div`
   background: #FFFFFF;
-  min-height: 100%;
+  min-height: calc(100vh - 160px);
 `;
 
 const Sidebar = styled.aside`
-  position: fixed;
+  position: sticky;
+  float: left;
+  top: 55px;
   left: 0;
-  top: 155px;
-  bottom: 0;
   background: ${grey[100]};
   width: 300px;
+  height: calc(100vh - 55px);
   overflow: auto;
 `;
 
 const Content = styled.div`
   background: #FFFFFF;
-  position: absolute;
-  top: 155px;
-  right: 0;
-  bottom: 0;
-  left: 310px;
+  margin-left: 310px;
   padding: 2rem;
   overflow: auto;
+  min-height: calc(100vh - 55px);
 `;
 
 const Center = styled.div`
