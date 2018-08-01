@@ -88,6 +88,13 @@ const makeSelectOrderGroups = () =>
     substate.get('orderGroups').toJS(),
   );
 
+const makeSelectParentOrderGroups = () =>
+  createSelector(makeSelectOrderGroups(), orderGroups =>
+    (orderGroups.results || []).filter(orderGroup =>
+      orderGroup.nestedOrderGroups && orderGroup.nestedOrderGroups.length > 0
+    )
+  );
+
 export default makeSelectCurrentSession;
 export {
   makeSelectCurrentSession,
@@ -100,4 +107,5 @@ export {
   makeSelectEncounters,
   makeSelectPatient,
   makeSelectOrderGroups,
+  makeSelectParentOrderGroups,
 };

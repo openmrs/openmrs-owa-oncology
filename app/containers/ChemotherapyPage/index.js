@@ -36,9 +36,11 @@ import {
   makeSelectEncounters,
   makeSelectEncounterRole,
   makeSelectEncounterProvider,
+  // makeSelectOrderGroups,
+  makeSelectParentOrderGroups,
 } from '../Header/selectors';
 
-import { ENC_CHEMO_SESSION, ENC_ONC_CONSULT } from '../../conceptMapping.json';
+// import { ENC_CHEMO_SESSION, ENC_ONC_CONSULT } from '../../conceptMapping.json';
 
 const SidebarTitle = styled.div`
   padding: 1em 1em 0.5em;
@@ -94,7 +96,15 @@ export class ChemotherapyPage extends React.Component {
     // const observation = encounter.obs.map(enc)
   }
 
+  getCurrentOrderGroup(orderGroups/* , uuid */) {
+    return orderGroups[0];
+  }
+
   render() {
+    const { orderGroups, match } = this.props;
+    const { cycleUuid } = match.params;
+
+    /*
     const { encounters } = this.props;
 
     const oncEncounters = (encounters.results || []).filter(encounter =>
@@ -104,8 +114,6 @@ export class ChemotherapyPage extends React.Component {
       encounter.encounterType.uuid === ENC_CHEMO_SESSION
     );
     console.log(oncSessionEncounters);
-
-    /*
     const observation = (observations.results || [])
       .find(obs => obs.concept.uuid === CYCLE_STATUS_CONCEPT);
     */
@@ -123,13 +131,13 @@ export class ChemotherapyPage extends React.Component {
             </Typography>
           </SidebarTitle>
           <NaviList
-            selectedItem={this.props.match.params.cycleUuid}
-            items={oncEncounters.map(encounter => ({
-              id: encounter.uuid,
-              title: 'CHOP Protocol for Non Hodgkin Lymphome',
+            selectedItem={cycleUuid}
+            items={orderGroups.map(orderGroup => ({
+              id: orderGroup.uuid,
+              title: orderGroup.orderSet.display,
               status: 'completed',
               children: [{
-                id: encounter.uuid,
+                id: orderGroup.uuid,
                 cycle: 1,
                 title: 'Cycle 1 of 6',
                 date: '08/01/18',
@@ -140,7 +148,13 @@ export class ChemotherapyPage extends React.Component {
         </Sidebar>
         <Content>
           <Switch>
-            <Route exact path="/chemotherapy/:cycleUuid?" component={Main} />
+            <Route
+              exact
+              path="/chemotherapy/:cycleUuid?"
+              render={props =>
+                <Main {...props} orderGroup={this.getCurrentOrderGroup(orderGroups, cycleUuid)} />
+              }
+            />
             <Route exact path="/chemotherapy/:cycleUuid/administrate" component={AdministrateForm} />
           </Switch>
         </Content>
@@ -158,6 +172,7 @@ ChemotherapyPage.propTypes = {
   createEncounter: PropTypes.func.isRequired,
   encounterRole: PropTypes.object.isRequired,
   encounterProvider: PropTypes.object,
+  orderGroups: PropTypes.array.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -165,6 +180,7 @@ const mapStateToProps = createStructuredSelector({
   encounters: makeSelectEncounters(),
   encounterRole: makeSelectEncounterRole(),
   encounterProvider: makeSelectEncounterProvider(),
+  orderGroups: makeSelectParentOrderGroups(),
 });
 
 function mapDispatchToProps(dispatch) {

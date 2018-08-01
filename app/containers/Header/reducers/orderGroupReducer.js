@@ -1,3 +1,4 @@
+import { fromJS } from "immutable";
 import {
   FETCH_ORDER_GROUP_SUCCESS,
   FETCH_ORDER_GROUP_LOADING,
@@ -12,7 +13,7 @@ const encounter = (state = initialState.get('orderGroupReducer'), action) => {
         .set('loading', true);
     case FETCH_ORDER_GROUP_SUCCESS:
       return state
-        .set('orderGroups', action.encounters)
+        .set('orderGroups', fromJS(action.orderGroups))
         .set('error', null)
         .set('loading', false);
     case FETCH_ORDER_GROUP_FAILURE:
