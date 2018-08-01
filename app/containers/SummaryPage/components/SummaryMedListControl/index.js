@@ -21,24 +21,25 @@ class SummaryMedListControl extends React.PureComponent {
 
   render() {
     const { medications, orderIndex, label } = this.props
-
     return (
       <List>
         <SytledListHeader>
           <ListItemText primary={label} />
         </SytledListHeader>
-        {medications && medications[orderIndex].length > 0 && medications[orderIndex].map(({uuid, drugConcept, administrationInstructions, dosingModifications}) => (
+        {medications && medications[orderIndex].length > 0 &&
+        medications[orderIndex].map(({uuid, drugConcept, dosingInstructions }) => (
           <div key={`drug-${uuid}`}>
             <ListItem >
               <ListItemText
                 primary={drugConcept}
-                secondary={administrationInstructions}
+                secondary={`${dosingInstructions.dosingTiming} ${dosingInstructions.dosingDilution ? dosingInstructions.dosingDilution : ''}`}
               />
-              {dosingModifications &&
-              <Tag
-                value={`${dosingModifications.value}${dosingModifications.units}`}
-                sign={dosingModifications.sign === 1 ? <span>&plus;</span> : <span>&minus;</span>}
-              />}
+              {!!dosingInstructions.dosingAdjustment &&
+                <Tag
+                  value={`${Math.abs(dosingInstructions.dosingAdjustment)}%`}
+                  sign={dosingInstructions.dosingAdjustment >= 0 ? <span>&#43;</span> : <span>&#8722;</span>}
+                />
+              }
             </ListItem>
             <Divider/>
           </div>

@@ -40,7 +40,7 @@ const SliderLabel = styled.div`
   margin: 1em 0 0.5em;
 `
 const SliderWrapper = styled.div`
-  margin: 0 0.4em;
+  margin: 0 1.5em 0 0.4em;
 `
 
 const OptionalButton = styled.button`
@@ -64,10 +64,9 @@ class ChangeDosageDialog extends React.PureComponent {
     this.props.onSave(
       this.props.medications.map(medication => ({
         ...medication,
-        dosingModifications: {
-          sign: this.state.reduce ? -1 : 1,
-          value: this.state.percentage,
-          units: '%',
+        dosingInstructions: {
+          ...medication.dosingInstructions,
+          dosingAdjustment: (this.state.reduce ? -1 : 1) * this.state.percentage,
         },
       })),
     );
@@ -76,8 +75,8 @@ class ChangeDosageDialog extends React.PureComponent {
   renderDosingModifications(medication) {
     return (
       <span>
-        {medication.dosingModifications.sign === 1 ? <span>&plus;</span> : <span>&minus;</span>}
-        {medication.dosingModifications.value}{medication.dosingModifications.units}
+        {medication.dosingInstructions.dosingAdjustment >= 0 ? <span>&plus;</span> : <span>&minus;</span>}
+        {medication.dosingInstructions.value}%
       </span>
     );
   }

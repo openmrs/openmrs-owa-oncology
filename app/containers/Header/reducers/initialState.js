@@ -115,4 +115,9 @@ export default fromJS({
     dateFormat: '',
     error: null,
   },
+  orderGroupReducer: {
+    loading: false,
+    orderGroups: {},
+    error: null,
+  },
 });

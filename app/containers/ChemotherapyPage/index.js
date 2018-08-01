@@ -55,6 +55,7 @@ export class ChemotherapyPage extends React.Component {
       v: 'default',
       patient: patientUuid,
     });
+    /*
     setTimeout(() => {
       this.props.createEncounter({
         encounterType: ENC_CHEMO_SESSION,
@@ -67,6 +68,7 @@ export class ChemotherapyPage extends React.Component {
         ],
       });
     }, 1000);
+    */
     /*
     setTimeout(() => {
       this.props.createObservation({
@@ -95,7 +97,6 @@ export class ChemotherapyPage extends React.Component {
   render() {
     const { encounters } = this.props;
 
-
     const oncEncounters = (encounters.results || []).filter(encounter =>
       encounter.encounterType.uuid === ENC_ONC_CONSULT
     );
@@ -104,12 +105,10 @@ export class ChemotherapyPage extends React.Component {
     );
     console.log(oncSessionEncounters);
 
-
     /*
     const observation = (observations.results || [])
       .find(obs => obs.concept.uuid === CYCLE_STATUS_CONCEPT);
     */
-
 
     return (
       <div>
@@ -117,36 +116,34 @@ export class ChemotherapyPage extends React.Component {
           <title>ChemotherapyPage</title>
           <meta name="description" content="Description of ChemotherapyPage" />
         </Helmet>
-        <div>
-          <Sidebar>
-            <SidebarTitle>
-              <Typography variant="title">
-                <FormattedMessage {...messages.header} />
-              </Typography>
-            </SidebarTitle>
-            <NaviList
-              selectedItem={this.props.match.params.cycleUuid}
-              items={oncEncounters.map(encounter => ({
+        <Sidebar>
+          <SidebarTitle>
+            <Typography variant="title">
+              <FormattedMessage {...messages.header} />
+            </Typography>
+          </SidebarTitle>
+          <NaviList
+            selectedItem={this.props.match.params.cycleUuid}
+            items={oncEncounters.map(encounter => ({
+              id: encounter.uuid,
+              title: 'CHOP Protocol for Non Hodgkin Lymphome',
+              status: 'completed',
+              children: [{
                 id: encounter.uuid,
-                title: 'CHOP Protocol for Non Hodgkin Lymphome',
+                cycle: 1,
+                title: 'Cycle 1 of 6',
+                date: '08/01/18',
                 status: 'completed',
-                children: [{
-                  id: encounter.uuid,
-                  cycle: 1,
-                  title: 'Cycle 1 of 6',
-                  date: '08/01/18',
-                  status: 'completed',
-                }],
-              }))}
-            />
-          </Sidebar>
-          <Content>
-            <Switch>
-              <Route exact path="/chemotherapy/:cycleUuid?" component={Main} />
-              <Route exact path="/chemotherapy/:cycleUuid/administrate" component={AdministrateForm} />
-            </Switch>
-          </Content>
-        </div>
+              }],
+            }))}
+          />
+        </Sidebar>
+        <Content>
+          <Switch>
+            <Route exact path="/chemotherapy/:cycleUuid?" component={Main} />
+            <Route exact path="/chemotherapy/:cycleUuid/administrate" component={AdministrateForm} />
+          </Switch>
+        </Content>
       </div>
     );
   }

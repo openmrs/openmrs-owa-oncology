@@ -29,6 +29,9 @@ const selectSessionReducer = () =>
 
 const selectPatientReducer = () =>
   createSelector(selectHeaderDomain, substate => substate.patientReducer)
+
+const selectOrderGroupReducer = () =>
+  createSelector(selectHeaderDomain, substate => substate.orderGroupReducer)
 /**
  * Other specific selectors
  */
@@ -80,6 +83,10 @@ const makeSelectPatient = () =>
     substate.get('patient').toJS(),
   );
 
+const makeSelectOrderGroups = () =>
+  createSelector(selectOrderGroupReducer(), substate =>
+    substate.get('orderGroups').toJS(),
+  );
 
 export default makeSelectCurrentSession;
 export {
@@ -92,4 +99,5 @@ export {
   makeSelectEncounterLocation,
   makeSelectEncounters,
   makeSelectPatient,
+  makeSelectOrderGroups,
 };

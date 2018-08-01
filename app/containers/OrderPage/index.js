@@ -62,13 +62,13 @@ export class OrderPage extends React.Component {
     this.props.history.push(`/order/${e.target.value}`);
   };
 
-  handleMedicationsChange = (updatedMedications, orderReason) => {
+  handleMedicationsChange = (updatedMedications, category) => {
     const { orders, match } = this.props;
     const { template }  = match.params;
     const newOrder = {
       ...orders[template],
       medications: orders[template].medications.map(medication =>
-        (medication.orderReason !== orderReason && medication) ||
+        (medication.category !== category && medication) ||
           updatedMedications.find(m => m.uuid === medication.uuid)
       ).filter(m => m),
     }
@@ -96,6 +96,7 @@ export class OrderPage extends React.Component {
       regimenList,
       match,
     } = this.props;
+
     const { template } = match.params;
 
     if (!patient) {
@@ -148,8 +149,8 @@ export class OrderPage extends React.Component {
         </Grid>
 
         {/* Regimen Cycles Header */}
-        {template >= 0 && orders.length > 0 &&
-          <Grid container>
+        {template >= 0 && orders.length > 0 && [
+          <Grid container key="grid1">
             <Grid item xs={12}>
               <Section>
                 <Typography variant="headline" gutterBottom>
@@ -162,7 +163,7 @@ export class OrderPage extends React.Component {
               </Section>
             </Grid>
 
-            <Grid item xs={12}>
+            <Grid item xs={12} zeroMinWidth>
               <Section>
                 <Typography variant="headline" gutterBottom>
                   <FormattedMessage {...messages.medications} />
@@ -177,6 +178,7 @@ export class OrderPage extends React.Component {
                 {chemotherapy && chemotherapy[template].length > 0 &&
                   <MedicationTable
                     name="Chemotherapy"
+                    enableChangeDosage
                     medications={chemotherapy[template]}
                     onMedicationsChange={(meds) => this.handleMedicationsChange(meds, 'Chemotherapy')}
                   />
@@ -195,28 +197,30 @@ export class OrderPage extends React.Component {
                 />
               </Section>
             </Grid>
-          </Grid>
-        }
-        <Grid
-          container
-          alignItems="center"
-          direction="row"
-          justify="center"
-        >
-          <Route
-            render={({ history }) => (
-              <Button
-                variant="contained"
-                disabled={template === ""}
-                onClick={() => {
-                  history.push(`/order/${template}/summary`);
-                }}
-              >
-                <FormattedMessage {...messages.next} />
-              </Button>
-            )}
-          />
-        </Grid>
+          </Grid>,
+          <Grid
+            key="grid2"
+            container
+            alignItems="center"
+            direction="row"
+            justify="center"
+          >
+            <Route
+              render={({ history }) => (
+                <Button
+                  variant="contained"
+                  disabled={template === ""}
+                  onClick={() => {
+                    history.push(`/order/${template}/summary`);
+                  }}
+                >
+                  <FormattedMessage {...messages.next} />
+                </Button>
+              )}
+            />
+          </Grid>,
+        ]}
+
       </Page>
     );
   }

@@ -236,16 +236,18 @@ export class SummaryPage extends React.Component {
               </Grid>
             </Section>
 
-            <Section>
-              <Grid item xs={12}>
-                <Typography variant="headline" gutterBottom>
-                  <FormattedMessage {...messages.notes} />
-                </Typography>
-                <Typography variant="body1" gutterBottom>
-                  {orders[orderIndex].notes}
-                </Typography>
-              </Grid>
-            </Section>
+            {orders[orderIndex].notes &&
+              <Section>
+                <Grid item xs={12}>
+                  <Typography variant="headline" gutterBottom>
+                    <FormattedMessage {...messages.notes} />
+                  </Typography>
+                  <Typography variant="body1" gutterBottom>
+                    {orders[orderIndex].notes}
+                  </Typography>
+                </Grid>
+              </Section>
+            }
 
             <Grid item xs={12}>
               <Grid

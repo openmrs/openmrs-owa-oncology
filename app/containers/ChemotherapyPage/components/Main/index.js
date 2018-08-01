@@ -37,7 +37,7 @@ function Main(props) {
             component={Link}
             to={`/chemotherapy/${params.cycleUuid}/administrate`}
           >
-            Administrate
+            Administer
           </Button>
           &nbsp;&nbsp;
           <Button variant="outlined">
@@ -56,15 +56,13 @@ function Main(props) {
         name="Premedications"
         medications={[{
           uuid: 1,
-          drug: {
-            name: '0.9% Normal',
-          },
+          drugConcept: '0.9% Normal',
+          dose: 1000,
+          doseUnits: 'mg',
+          route: 'Oral',
           dosingInstructions: {
-            dose: 1000,
-            doseUnits: 'mg',
-            route: 'Oral',
+            dosingTiming: 'Once 1 hour prior to chemotherapy',
           },
-          administrationInstructions: 'Once 1 hour prior to chemotherapy',
         }]}
       />
       <MedicationTable
@@ -72,15 +70,13 @@ function Main(props) {
         name="Chemotherapy"
         medications={[{
           uuid: 2,
-          drug: {
-            name: '0.9% Normal',
-          },
+          drugConcept: '0.9% Normal',
+          dose: 1000,
+          doseUnits: 'mg',
+          route: 'Oral',
           dosingInstructions: {
-            dose: 1000,
-            doseUnits: 'mg',
-            route: 'Oral',
+            dosingTiming: 'Once 1 hour prior to chemotherapy',
           },
-          administrationInstructions: 'Once 1 hour prior to chemotherapy',
         }]}
       />
       <Typography variant="subheading">

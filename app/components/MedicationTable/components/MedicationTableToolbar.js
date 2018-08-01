@@ -26,6 +26,11 @@ const styles = theme => ({
   },
 });
 
+const Wrapper = styled.div`
+  position: sticky;
+  left: 0;
+`;
+
 const ToolbarTitle = styled.div`
 `;
 
@@ -33,50 +38,65 @@ const ToolbarActions = styled.div`
 `;
 
 function MedicationTableToolbar(props) {
-  const { numSelected, classes, readOnly } = props;
+  const { numSelected, classes, readOnly, enableChangeDosage } = props;
 
   return (
-    <Toolbar className={classes.root}>
-      <ToolbarTitle>
-        {numSelected > 0 ? (
-          <Typography color="inherit" variant="subheading">
-            {numSelected} selected
-          </Typography>
-        ) : (
-          <Typography variant="subheading">{props.title}</Typography>
-        )}
-      </ToolbarTitle>
+    <Wrapper>
+      <Toolbar
+        className={classes.root}
+        variant="dense"
+      >
+        <ToolbarTitle>
+          {numSelected > 0 ? (
+            <Typography color="inherit" variant="subheading">
+              {numSelected} selected
+            </Typography>
+          ) : (
+            <Typography
+              variant="subheading"
+              style={{ textTransform: 'uppercase' }}
+            >
+              {props.title}
+            </Typography>
+          )}
+        </ToolbarTitle>
 
-      {!readOnly &&
-        <ToolbarActions>
-          <Button
-            className={classes.button}
-            variant="outlined"
-            onClick={props.onChangeDosage}
-            disabled={numSelected === 0}
-          >
-            <FormattedMessage {...messages.changeDosage} />
-          </Button>
-          <Button
-            className={classes.button}
-            variant="outlined"
-            onClick={props.onEdit}
-            disabled={numSelected !== 1}
-          >
-            <FormattedMessage {...messages.edit} />
-          </Button>
-          <Button
-            className={classes.button}
-            variant="outlined"
-            color="secondary"
-            onClick={props.onDelete}
-            disabled={numSelected === 0}
-          >
-            <FormattedMessage {...messages.delete} />
-          </Button>
-        </ToolbarActions>
-      }
-    </Toolbar>
+        {!readOnly &&
+          <ToolbarActions>
+            {enableChangeDosage &&
+              <Button
+                className={classes.button}
+                variant="outlined"
+                onClick={props.onChangeDosage}
+                disabled={numSelected === 0}
+                size="small"
+              >
+                <FormattedMessage {...messages.changeDosage} />
+              </Button>
+            }
+            <Button
+              className={classes.button}
+              variant="outlined"
+              onClick={props.onEdit}
+              disabled={numSelected !== 1}
+              size="small"
+            >
+              <FormattedMessage {...messages.edit} />
+            </Button>
+            <Button
+              className={classes.button}
+              variant="outlined"
+              color="secondary"
+              onClick={props.onDelete}
+              disabled={numSelected === 0}
+              size="small"
+            >
+              <FormattedMessage {...messages.delete} />
+            </Button>
+          </ToolbarActions>
+        }
+      </Toolbar>
+    </Wrapper>
   );
 }
 
@@ -88,6 +108,7 @@ MedicationTableToolbar.propTypes = {
   onDelete: PropTypes.func.isRequired,
   onChangeDosage: PropTypes.func.isRequired,
   readOnly: PropTypes.bool.isRequired,
+  enableChangeDosage: PropTypes.bool.isRequired,
 };
 
 export default withStyles(styles)(MedicationTableToolbar);

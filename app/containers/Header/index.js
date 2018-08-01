@@ -44,6 +44,7 @@ import {
   fetchEncounterTypeAction,
   fetchEncountersAction,
   loadPatient,
+  fetchOrderGroupsAction,
 } from './actions';
 
 import logoImg from './resources/partners_in_health_logo.png';
@@ -78,6 +79,9 @@ export class Header extends React.Component {
     this.props.loadEncounterRole();
     this.props.loadEncounterType();
     this.props.loadPatient(patientUuid);
+    this.props.fetchOrderGroups({
+      patient: patientUuid,
+    });
     this.props.loadEncounters({
       patient: patientUuid,
       s: 'default',
@@ -111,7 +115,7 @@ export class Header extends React.Component {
     return (
       <Wrapper>
         <AppBar color="primary">
-          <Toolbar variant="dense" style={{ justifyContent: 'space-between' }}>
+          <Toolbar variant="dense" position="static" style={{ justifyContent: 'space-between' }}>
             <Logo src={logoImg} alt="openMRS logo"/>
             <Navigation>
               <Button
@@ -191,6 +195,7 @@ Header.propTypes = {
   loadEncounterType: PropTypes.func.isRequired,
   loadPatient: PropTypes.func.isRequired,
   loadEncounters: PropTypes.func.isRequired,
+  fetchOrderGroups: PropTypes.func.isRequired,
   patient: PropTypes.object,
 };
 
@@ -209,6 +214,7 @@ function mapDispatchToProps(dispatch) {
     loadEncounterType: () => dispatch(fetchEncounterTypeAction()),
     loadEncounters: (params) => dispatch(fetchEncountersAction(params)),
     loadPatient: (patientUuid) => dispatch(loadPatient(patientUuid)),
+    fetchOrderGroups: (params) => dispatch(fetchOrderGroupsAction(params)),
   };
 }
 
