@@ -125,22 +125,6 @@ export class ChemotherapyPage extends React.Component {
     const { orderGroups, match } = this.props;
     const { cycleUuid } = match.params;
     const selectedOrderGroup = this.getCurrentOrderGroup(orderGroups, cycleUuid);
-    console.log(orderGroups);
-
-
-    /*
-    const { encounters } = this.props;
-
-    const oncEncounters = (encounters.results || []).filter(encounter =>
-      encounter.encounterType.uuid === ENC_ONC_CONSULT
-    );
-    const oncSessionEncounters = (encounters.results || []).filter(encounter =>
-      encounter.encounterType.uuid === ENC_CHEMO_SESSION
-    );
-    console.log(oncSessionEncounters);
-    const observation = (observations.results || [])
-      .find(obs => obs.concept.uuid === CYCLE_STATUS_CONCEPT);
-    */
 
     return (
       <div>

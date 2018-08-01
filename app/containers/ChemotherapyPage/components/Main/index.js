@@ -20,6 +20,9 @@ import {
   OGR_PREMEDICATION,
   OGR_CHEMOTHERAPY,
   OGR_POSTMEDICATION,
+  OG_SCL_COMPLETE,
+  OGAT_CYCLE_NUMBER,
+  NOTES,
 } from '../../../../conceptMapping.json';
 
 const Head = styled.div`
@@ -30,19 +33,8 @@ const HeadActions = styled.div`
   float: right;
 `;
 
-function getMedicationsByReason(orderGroups, reasonUuid) {
-  const orderGroup = orderGroups.find(orderGr =>
-    orderGr.orderGroupReason.uuid === reasonUuid
-  );
-  return (orderGroup && orderGroup.orders) || [];
-}
-
-function Main(props) {
-  const { params } = props.match;
-  const { orderGroup } = props;
-  const subOrders = (orderGroup && orderGroup.nestedOrderGroups) || [];
-
-  const tables = [{
+export class Main extends React.Component {
+  tables = [{
     name: 'Premedications',
     reasonUuid: OGR_PREMEDICATION,
   }, {
@@ -53,46 +45,105 @@ function Main(props) {
     reasonUuid: OGR_POSTMEDICATION,
   }];
 
-  return (
-    <div>
-      <Head>
-        <HeadActions>
-          <Button
-            variant="contained"
-            color="primary"
-            component={Link}
-            to={`/chemotherapy/${params.cycleUuid}/administrate`}
-          >
-            Administer
-          </Button>
-          &nbsp;&nbsp;
-          <Button variant="outlined">
-            Modify order
-          </Button>
-        </HeadActions>
-        <Typography variant="headline">
-          CHOP: Protocol for Non Hodgkin Lymphome
-        </Typography>
+  getMedicationsByReason(orderGroups, reasonUuid) {
+    const orderGroup = orderGroups.find(orderGr =>
+      orderGr.orderGroupReason.uuid === reasonUuid
+    );
+    return (orderGroup && orderGroup.orders) || [];
+  }
+
+  isOrderComplete(orderGroup) {
+    let result = false;
+    if (orderGroup &&
+      orderGroup.treatmentSessionEncounter &&
+      orderGroup.treatmentSessionEncounter.obs.length > 0) {
+      const obs = orderGroup.treatmentSessionEncounter.obs.find(o =>
+        o.value && o.value.uuid === OG_SCL_COMPLETE
+      )
+      if (obs) {
+        result = true;
+      }
+    }
+    return result;
+  }
+  getNotes(orderGroup) {
+    let result = '';
+    if (orderGroup &&
+      orderGroup.treatmentSessionEncounter &&
+      orderGroup.treatmentSessionEncounter.obs.length > 0) {
+      const obs = orderGroup.treatmentSessionEncounter.obs.find(o =>
+        o.concept && o.concept.uuid === NOTES
+      )
+      if (obs) {
+        result = obs.value;
+      }
+    }
+    return result;
+  }
+
+  getAttrValue(orderGroup, type) {
+    let result = '-';
+    if (orderGroup) {
+      const attr = orderGroup.attributes.find(a =>
+        a.attributeType.uuid === type
+      );
+      if (attr) {
+        result = attr.value;
+      }
+    }
+    return result;
+  }
+
+  render() {
+    const { params } = this.props.match;
+    const { orderGroup } = this.props;
+    const isOrderComplete = this.isOrderComplete(orderGroup);
+    const notes = this.getNotes(orderGroup);
+    const subOrders = (orderGroup && orderGroup.nestedOrderGroups) || [];
+
+    return (
+      <div>
+        <Head>
+          <HeadActions>
+            {!isOrderComplete &&
+              <Button
+                variant="contained"
+                color="primary"
+                component={Link}
+                to={`/chemotherapy/${params.cycleUuid}/administrate`}
+              >
+                Administer
+              </Button>
+            }
+            &nbsp;&nbsp;
+            <Button variant="outlined">
+              Modify order
+            </Button>
+          </HeadActions>
+          <Typography variant="headline">
+            {orderGroup && orderGroup.orderSet.display}
+          </Typography>
+          <Typography variant="subheading">
+            Cycle {this.getAttrValue(orderGroup, OGAT_CYCLE_NUMBER)} of {this.getAttrValue(orderGroup, OGAT_CYCLE_NUMBER)}
+          </Typography>
+        </Head>
+        {this.tables.map(({ name, reasonUuid }) =>
+          <MedicationTable
+            key={reasonUuid}
+            readOnly
+            name={name}
+            medications={this.getMedicationsByReason(subOrders, reasonUuid)}
+          />
+        )}
         <Typography variant="subheading">
-          Cycle 3 of 6
+          Cycle summary
         </Typography>
-      </Head>
-      {tables.map(({ name, reasonUuid }) =>
-        <MedicationTable
-          key={reasonUuid}
-          readOnly
-          name={name}
-          medications={getMedicationsByReason(subOrders, reasonUuid)}
-        />
-      )}
-      <Typography variant="subheading">
-        Cycle summary
-      </Typography>
-      <Typography variant="body1">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore e
-      </Typography>
-    </div>
-  );
+        <Typography variant="body1">
+          {notes}
+        </Typography>
+      </div>
+    );
+  }
 }
 
 Main.propTypes = {
