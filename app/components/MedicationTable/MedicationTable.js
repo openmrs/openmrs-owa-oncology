@@ -157,16 +157,16 @@ class MedicationTable extends React.Component {
                     <Typography noWrap>
                       {medication.dose} {medication.doseUnits}
                       &nbsp;&nbsp;
-                      {!!medication.dosingInstructions.dosingAdjustment &&
+                      {!!medication.dosingInstructions.dosingAdjustmentPercentage &&
                         <Tag
-                          value={`${Math.abs(medication.dosingInstructions.dosingAdjustment)}%`}
-                          sign={medication.dosingInstructions.dosingAdjustment >= 0 ? <span>&#43;</span> : <span>&#8722;</span>}
+                          value={`${Math.abs(medication.dosingInstructions.dosingAdjustmentPercentage)}%`}
+                          sign={medication.dosingInstructions.dosingAdjustmentPercentage >= 0 ? <span>&#43;</span> : <span>&#8722;</span>}
                         />
                       }
                     </Typography>
                   </TableCell>
                   <TableCell>{medication.route}</TableCell>
-                  <TableCell>{medication.dosingInstructions.dosingTiming}</TableCell>
+                  <TableCell>{medication.dosingInstructions.dosingTimingInstructions}</TableCell>
                 </TableRow>
               )}
             </TableBody>

@@ -61,7 +61,7 @@ function Main(props) {
           doseUnits: 'mg',
           route: 'Oral',
           dosingInstructions: {
-            dosingTiming: 'Once 1 hour prior to chemotherapy',
+            dosingTimingInstructions: 'Once 1 hour prior to chemotherapy',
           },
         }]}
       />
@@ -75,7 +75,7 @@ function Main(props) {
           doseUnits: 'mg',
           route: 'Oral',
           dosingInstructions: {
-            dosingTiming: 'Once 1 hour prior to chemotherapy',
+            dosingTimingInstructions: 'Once 1 hour prior to chemotherapy',
           },
         }]}
       />

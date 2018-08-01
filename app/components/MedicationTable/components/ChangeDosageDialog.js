@@ -66,7 +66,7 @@ class ChangeDosageDialog extends React.PureComponent {
         ...medication,
         dosingInstructions: {
           ...medication.dosingInstructions,
-          dosingAdjustment: (this.state.reduce ? -1 : 1) * this.state.percentage,
+          dosingAdjustmentPercentage: (this.state.reduce ? -1 : 1) * this.state.percentage,
         },
       })),
     );
@@ -75,7 +75,7 @@ class ChangeDosageDialog extends React.PureComponent {
   renderDosingModifications(medication) {
     return (
       <span>
-        {medication.dosingInstructions.dosingAdjustment >= 0 ? <span>&plus;</span> : <span>&minus;</span>}
+        {medication.dosingInstructions.dosingAdjustmentPercentage >= 0 ? <span>&plus;</span> : <span>&minus;</span>}
         {medication.dosingInstructions.value}%
       </span>
     );
@@ -99,7 +99,7 @@ class ChangeDosageDialog extends React.PureComponent {
                 <ListItem key={`medication-${medication.uuid}`}>
                   <ListItemText
                     primary={medication.drugConcept}
-                    secondary={medication.dosingInstructions.dosingTiming}
+                    secondary={medication.dosingInstructions.dosingTimingInstructions}
                   />
                   <ListItemInfo>
                     {this.state.percentage !== 0 &&
