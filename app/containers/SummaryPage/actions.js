@@ -10,10 +10,11 @@ import {
   POST_CHEMO_ORDER_ERROR,
 } from "./constants";
 
-export function postEncounterAction(encounter) {
+export function postEncounterAction(encounter, order) {
   return {
     type: POST_ENCOUNTER,
     encounter,
+    order,
   }
 }
 
@@ -30,11 +31,13 @@ export function postEncounterFailureAction() {
   }
 }
 
-export function postOrderGroupAction(action,encounter) {
+export function postOrderGroupAction(encounter, order, regimen, currentProvider) {
   return {
     type: POST_ORDERGROUP,
-    action,
     encounter,
+    order,
+    regimen,
+    currentProvider,
   }
 }
 

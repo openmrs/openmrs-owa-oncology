@@ -23,7 +23,7 @@ import {
 import {
   makeSelectEncounterType,
   makeSelectEncounterRole,
-  makeSelectEncounterProvider,
+  makeSelectCurrentProvider,
   makeSelectEncounterLocation,
   makeSelectPatient,
 } from '../Header/selectors';
@@ -164,7 +164,7 @@ export class SummaryPage extends React.Component {
     return {
       encounterProviders:[{
         encounterRole: this.props.encounterRole.results[0].uuid,
-        provider: this.props.encounterProvider.uuid,
+        provider: this.props.currentProvider.uuid,
       }],
       encounterType: drEncounterType,
       location: this.props.encounterlocation || dummyLocation,
@@ -297,7 +297,7 @@ SummaryPage.propTypes = {
   patient: PropTypes.object,
   encounterType: PropTypes.object.isRequired,
   encounterRole: PropTypes.object.isRequired,
-  encounterProvider: PropTypes.object,
+  currentProvider: PropTypes.object,
   encounterlocation: PropTypes.object,
 };
 
@@ -309,7 +309,7 @@ const mapStateToProps = createStructuredSelector({
   patient: makeSelectPatient(),
   encounterType: makeSelectEncounterType(),
   encounterRole: makeSelectEncounterRole(),
-  encounterProvider: makeSelectEncounterProvider(),
+  currentProvider: makeSelectCurrentProvider(),
   encounterlocation: makeSelectEncounterLocation(),
 });
 

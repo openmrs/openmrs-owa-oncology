@@ -19,6 +19,7 @@ import {
   MG,
   ML,
   MG_PER_SQ_M,
+  NOTES,
 } from '../../conceptMapping.json';
 
 import {
@@ -38,15 +39,12 @@ import {
 } from '../../utils/config';
 
 import { 
-  // makeSelectOrders, 
+  makeSelectOrders, 
   makeSelectRegimenList, 
-  makeSelectPremedications, 
-  makeSelectChemotherapy, 
-  makeSelectPostmedications,
 } from '../OrderPage/selectors';
 
 import {
-  makeSelectEncounterProvider,
+  makeSelectCurrentProvider,
 } from '../Header/selectors';
 
 import { 
@@ -55,6 +53,8 @@ import {
 
 import {
   POST_CHEMO_ORDER,
+  POST_CHEMO_ORDER_SUCCESS,
+  POST_CHEMO_ORDER_ERROR,
   POST_ENCOUNTER_SUCCESS,
   POST_ENCOUNTER,
   POST_ORDERGROUP,
@@ -64,23 +64,25 @@ import {
 const baseUrl = getHost();
 const headers = getHeaders();
 
-function* submitEncounter(encounter) {
+function* submitEncounter({ encounter, order }) {
   const requestUrlEncounter = `${baseUrl}/encounter`;
 
   try {
-    const temp = JSON.parse(JSON.stringify(encounter.encounter));
+    const temp = JSON.parse(JSON.stringify(encounter));
 
-
-    // ADD PATIENT NOTES AS OBS TO ENCOUNTER
-    // temp.obs = [];
-    // temp.obs.push()
-    //   {
-    //     "concept": "5d1bc5de-6a35-4195-8631-7322941fe528",
-    //     "value": 1,
-    //   },
-    // ],
+    // TODO: add notes from order to temp encounter object
+    if (order.notes && order.notes.trim().length > 0) {
+      temp.obs = [];
+      temp.obs.push(
+        {
+          "concept": NOTES,
+          "value": order.notes,
+        }
+      )
+    }
 
     const encToPost = JSON.stringify(temp);
+    console.log(encToPost);
   
     const encounterResponse = yield call(request, requestUrlEncounter, {
       headers,
@@ -94,7 +96,8 @@ function* submitEncounter(encounter) {
   }
 }
 
-function filterOrders(medArray, orderSetMembers, encounter, currentProvider) {
+function prepOrdersForAPI(medArray, regimen, encounter, currentProvider) {
+
   return medArray.map(obj => {
     // create a new copy of the object
     const temp = JSON.parse(JSON.stringify(obj));
@@ -104,7 +107,7 @@ function filterOrders(medArray, orderSetMembers, encounter, currentProvider) {
     dateActivated.setHours(dateActivated.getHours() - 4);
 
     // get the uuid of the concept from the regimenList -> orderSetMember corresponding to this order
-    orderSetMembers.forEach(osMember => {
+    regimen.orderSetMembers.forEach(osMember => {
       if (osMember.uuid === temp.uuid)
         temp.concept = osMember.concept.uuid
     })
@@ -158,33 +161,41 @@ function filterOrders(medArray, orderSetMembers, encounter, currentProvider) {
   });
 }
 
-function* submitOrderGroup(action) {
+function* submitOrderGroup({ encounter, order, regimen, currentProvider }) {
   const requestUrlOrderGroup = `${baseUrl}/ordergroup`;
 
   try {
-    const encounterUuid = action.encounter.uuid;
-    const selected = action.action.orderInfo.orderIndex;
+    const encounterUuid = encounter.uuid;
 
-    const premedications = (yield select(makeSelectPremedications()))[selected];
-    const chemomedications = (yield select(makeSelectChemotherapy()))[selected];
-    const postmedications = (yield select(makeSelectPostmedications()))[selected];
+    const premedications = [];
+    const chemomedications = [];
+    const postmedications = [];
 
-    // const order = (yield select(makeSelectOrders()))[selected];
-    
-    const orderSetUuid = (yield select(makeSelectRegimenList())).results[selected].uuid;
-    const {orderSetMembers} = (yield select(makeSelectRegimenList())).results[selected];
+    order.medications.forEach((drug)=>{
+      switch (drug.category) {
+        case "Premedication":
+          premedications.push(drug);
+          break;
+        case "Chemotherapy":
+          chemomedications.push(drug);
+          break;
+        case "Postmedication":
+          postmedications.push(drug);
+          break;
+        default:
+          break;
+      }
+    })
 
-    const currentProvider = (yield select(makeSelectEncounterProvider()));
-
-    const filteredPremedications = filterOrders(premedications, orderSetMembers, action.encounter, currentProvider);
-    const filteredChemomedications = filterOrders(chemomedications, orderSetMembers, action.encounter, currentProvider);
-    const filteredPostmedications = filterOrders(postmedications, orderSetMembers, action.encounter, currentProvider);
+    const filteredPremedications = prepOrdersForAPI(premedications, regimen, encounter, currentProvider) ;
+    const filteredChemomedications = prepOrdersForAPI(chemomedications, regimen, encounter, currentProvider);
+    const filteredPostmedications = prepOrdersForAPI(postmedications, regimen, encounter, currentProvider);
 
     // construct the order group
     const orderGroup = {
       orders:[],
       encounter: encounterUuid,
-      orderSet: orderSetUuid,
+      orderSet: regimen.uuid,
       orderGroupReason: OGR_CHEMO_PARENT_SET,
       nestedOrderGroups: [
         {
@@ -195,28 +206,28 @@ function* submitOrderGroup(action) {
         {
           encounter: encounterUuid,
           orderGroupReason: OGR_CHEMOTHERAPY,
-          patient: action.encounter.patient.uuid,
+          patient: encounter.patient.uuid,
           orders: filteredChemomedications,
         },
         {
           encounter: encounterUuid,
           orderGroupReason: OGR_POSTMEDICATION,
-          patient: action.encounter.patient.uuid,
+          patient: encounter.patient.uuid,
           orders: filteredPostmedications,
         },
       ],
       attributes: [
         {
           attributeType: OGAT_CYCLE_NUMBER,
-          value: '1',
+          value: '1',     // create the initial cycle
         },
         {
           attributeType: OGAT_NUM_CYCLES,
-          value: '6',
+          value: order.cyclesDescription.cycles.toString(),
         },
         {
           attributeType: OGAT_CYCLE_LENGTH,
-          value: '28',
+          value: order.cyclesDescription.cycleDuration.toString(),
         },
         {
           attributeType: OGAT_CYCLE_LENGTH_UNIT,
@@ -241,14 +252,36 @@ function* submitOrderGroup(action) {
 
 export function* postChemoOrder(action) {
   try{
-    yield put(postEncounterAction(action.orderInfo.encounterObj));
+    const selected = action.orderInfo.orderIndex;
+    const order = (yield select(makeSelectOrders()))[selected];
+
+    // create an encounter
+    yield put(postEncounterAction(action.orderInfo.encounterObj, order));
+
+    // successfully created encounter
     yield take(POST_ENCOUNTER_SUCCESS);
     const encounter = yield select(makeSelectEncounter());
-    yield put(postOrderGroupAction(action, encounter));
+    const regimen = (yield select(makeSelectRegimenList())).results[action.orderInfo.orderIndex];
+    const currentProvider = yield select(makeSelectCurrentProvider());
+
+    // create and order group
+    yield put(postOrderGroupAction(encounter, order, regimen, currentProvider));
+
+    // successfully created order group
     yield take(POST_ORDERGROUP_SUCCESS);
-    yield put(postOrderSuccessAction());    // SUCCESS
+
+    // overall success
+    yield put(postOrderSuccessAction()); 
+    yield take(POST_CHEMO_ORDER_SUCCESS);
+
+    // TODO: route back to dashboard - notify user of success
+
   } catch (error) {
     yield put(postOrderFailureAction());    // FAILURE
+    yield take(POST_CHEMO_ORDER_ERROR);
+
+    // TODO: notify user of error
+
   }
 }
 

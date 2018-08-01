@@ -35,7 +35,7 @@ import messages from './messages';
 import {
   makeSelectEncounters,
   makeSelectEncounterRole,
-  makeSelectEncounterProvider,
+  makeSelectCurrentProvider,
   // makeSelectOrderGroups,
   makeSelectParentOrderGroups,
 } from '../Header/selectors';
@@ -173,7 +173,7 @@ ChemotherapyPage.propTypes = {
   createObservation: PropTypes.func.isRequired,
   createEncounter: PropTypes.func.isRequired,
   encounterRole: PropTypes.object.isRequired,
-  encounterProvider: PropTypes.object,
+  currentProvider: PropTypes.object,
   orderGroups: PropTypes.array.isRequired,
 };
 
@@ -181,7 +181,7 @@ const mapStateToProps = createStructuredSelector({
   observations: makeSelectObservations(),
   encounters: makeSelectEncounters(),
   encounterRole: makeSelectEncounterRole(),
-  encounterProvider: makeSelectEncounterProvider(),
+  currentProvider: makeSelectCurrentProvider(),
   orderGroups: makeSelectParentOrderGroups(),
 });
 
