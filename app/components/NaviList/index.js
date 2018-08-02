@@ -171,7 +171,7 @@ class NaviList extends React.Component {
                 )}
               </MenuList>
             </Collapse>,
-            i === 0 ? (
+            i === 0 && items.length > 1 ? (
               <MenuItem
                 classes={{
                   root: classes.disabledMenuItem,
