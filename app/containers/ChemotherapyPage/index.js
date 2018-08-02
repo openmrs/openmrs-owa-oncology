@@ -35,6 +35,7 @@ import {
   makeSelectEncounters,
   makeSelectEncounterRole,
   makeSelectExtendedOrderGroups,
+  makeSelectPatientRegimens,
 } from '../Header/selectors';
 
 import {
@@ -58,8 +59,18 @@ const SidebarTitle = styled.div`
 /* eslint-disable react/prefer-stateless-function */
 export class ChemotherapyPage extends React.Component {
 
-  getEncounterStatus() {
-    // const observation = encounter.obs.map(enc)
+  componentDidUpdate(prevProps) {
+    const { regimens } = this.props;
+    if (prevProps.regimens.length === 0 && regimens.length > 0) {
+      this.props.history.push(`/chemotherapy/${regimens[0][0].uuid}`);
+    }
+  }
+
+  componentDidMount() {
+    const { regimens } = this.props;
+    if (regimens.length > 0) {
+      this.props.history.push(`/chemotherapy/${regimens[0][0].uuid}`);
+    }
   }
 
   getCurrentOrderGroup(orderGroups , uuid) {
@@ -166,28 +177,9 @@ export class ChemotherapyPage extends React.Component {
   }
 
   render() {
-    const { orderGroups, match } = this.props;
+    const { orderGroups, match, regimens } = this.props;
     const { cycleUuid } = match.params;
     const selectedOrderGroup = this.getCurrentOrderGroup(orderGroups, cycleUuid);
-
-    orderGroups.forEach(orderGroup => {
-      if (orderGroup.previousOrderGroup) {
-        const previousOrderGroup = orderGroups.find(oG => oG.uuid === orderGroup.previousOrderGroup.uuid);
-        previousOrderGroup.nextOrderGroup = orderGroup;
-      }
-    });
-
-    const regimens = orderGroups
-      .filter(orderGroup => !orderGroup.previousOrderGroup)
-      .map(orderGroup => {
-        const regimen = [orderGroup];
-        let next = orderGroup.nextOrderGroup;
-        while(next) {
-          regimen.push(next);
-          next = next.nextOrderGroup;
-        }
-        return regimen.reverse();
-      });
 
     return (
       <div>
@@ -253,12 +245,15 @@ ChemotherapyPage.propTypes = {
   createOrderGroup: PropTypes.func.isRequired,
   encounterRole: PropTypes.object.isRequired,
   orderGroups: PropTypes.array.isRequired,
+  history: PropTypes.object.isRequired,
+  regimens: PropTypes.array,
 };
 
 const mapStateToProps = createStructuredSelector({
   encounters: makeSelectEncounters(),
   encounterRole: makeSelectEncounterRole(),
   orderGroups: makeSelectExtendedOrderGroups(),
+  regimens: makeSelectPatientRegimens(),
 });
 
 function mapDispatchToProps(dispatch) {

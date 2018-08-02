@@ -118,6 +118,31 @@ const makeSelectExtendedOrderGroups = () =>
     substate.get('extendedOrderGroups').toJS(),
   );
 
+const makeSelectPatientRegimens = () =>
+  createSelector(makeSelectExtendedOrderGroups(), orderGroups => {
+    orderGroups.forEach(orderGroup => {
+      if (orderGroup.previousOrderGroup) {
+        const previousOrderGroup = orderGroups.find(oG =>
+          oG.uuid === orderGroup.previousOrderGroup.uuid
+        );
+        previousOrderGroup.nextOrderGroup = orderGroup;
+      }
+    });
+
+    return orderGroups
+      .filter(orderGroup => !orderGroup.previousOrderGroup)
+      .map(orderGroup => {
+        const regimen = [orderGroup];
+        let next = orderGroup.nextOrderGroup;
+        while(next) {
+          regimen.push(next);
+          next = next.nextOrderGroup;
+        }
+        return regimen.reverse();
+      });
+
+  });
+
 export default makeSelectCurrentSession;
 export {
   makeSelectCurrentSession,
@@ -133,4 +158,5 @@ export {
   makeSelectParentOrderGroups,
   makeSelectObservations,
   makeSelectExtendedOrderGroups,
+  makeSelectPatientRegimens,
 };
