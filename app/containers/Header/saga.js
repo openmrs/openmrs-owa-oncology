@@ -1,4 +1,5 @@
 import { take, select, takeLatest, call, put, all } from 'redux-saga/effects';
+import { push } from 'react-router-redux';
 import {
   SET_CURRENT_SESSION_LOADING,
   SETTING_ENCOUNTER_TYPE_LOADING,
@@ -14,6 +15,7 @@ import {
   FETCH_ORDER_GROUP_SUCCESS,
   FETCH_OBSERVATIONS_LOADING,
   LOAD_EXTENDED_ORDER_GROUPS,
+  CREATE_ORDER_GROUP_LOADING,
 } from './constants';
 import {
   fetchCurrentSessionSuccessAction,
@@ -48,6 +50,9 @@ import {
   fetchObservationsErrorAction,
   extendedOrderGroupsLoaded,
   extendedOrderGroupsLoadingError,
+  createOrderGroupSuccessAction,
+  createOrderGroupErrorAction,
+  loadExtendedOrderGroups,
 } from './actions';
 import request from '../../utils/request';
 
@@ -180,6 +185,37 @@ export function* fetchOrderGroups({ params }) {
   }
 }
 
+export function* postOrderGroups({ orderGroup, encounter }) {
+  try {
+    const encounterResponse = yield call(request, `${baseUrl}/encounter`, {
+      headers,
+      method: 'POST',
+      body: JSON.stringify(encounter),
+    });
+
+    const orderGroupBody = {
+      ...orderGroup,
+      nestedOrderGroups: orderGroup.nestedOrderGroups.map(nestedOrderGroup => ({
+        ...nestedOrderGroup,
+        encounter: encounterResponse.uuid,
+      })),
+      encounter: encounterResponse.uuid,
+    };
+
+    const response = yield call(request, `${baseUrl}/ordergroup`, {
+      headers,
+      method: 'POST',
+      body: JSON.stringify(orderGroupBody),
+    });
+
+    yield put(createOrderGroupSuccessAction(response));
+    yield put(loadExtendedOrderGroups(response.patient.uuid));
+    yield put(push(`/chemotherapy/${response.uuid}`));
+  } catch (err) {
+    yield put(createOrderGroupErrorAction(err));
+  }
+}
+
 export function* getExtendedOrderGroups({ patientUuid }) {
   yield put(fetchOrderGroupsAction({
     patient: patientUuid,
@@ -248,4 +284,5 @@ export default function* defaultSaga() {
   yield takeLatest(FETCH_ORDER_GROUP_LOADING, fetchOrderGroups);
   yield takeLatest(FETCH_OBSERVATIONS_LOADING, fetchObservations);
   yield takeLatest(LOAD_EXTENDED_ORDER_GROUPS, getExtendedOrderGroups);
+  yield takeLatest(CREATE_ORDER_GROUP_LOADING, postOrderGroups);
 }

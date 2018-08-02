@@ -23,6 +23,7 @@ import {
   OG_SCL_COMPLETE,
   OGAT_CYCLE_NUMBER,
   NOTES,
+  OGAT_NUM_CYCLES,
 } from '../../../../conceptMapping.json';
 
 const Head = styled.div`
@@ -124,7 +125,7 @@ export class Main extends React.Component {
             {orderGroup && orderGroup.orderSet.display}
           </Typography>
           <Typography variant="subheading">
-            Cycle {this.getAttrValue(orderGroup, OGAT_CYCLE_NUMBER)} of {this.getAttrValue(orderGroup, OGAT_CYCLE_NUMBER)}
+            Cycle {this.getAttrValue(orderGroup, OGAT_CYCLE_NUMBER)} of {this.getAttrValue(orderGroup, OGAT_NUM_CYCLES)}
           </Typography>
         </Head>
         {this.tables.map(({ name, reasonUuid }) =>
