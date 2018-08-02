@@ -23,7 +23,7 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import { getParam } from 'utils/helpers';
 import { createObservation } from './actions';
-import { createOrderGroupAction } from '../Header/actions';
+import { createOrderGroupAction, loadExtendedOrderGroups } from '../Header/actions';
 
 import Main from './components/Main';
 import AdministrateForm from './components/AdministrateForm';
@@ -67,6 +67,8 @@ export class ChemotherapyPage extends React.Component {
   }
 
   componentDidMount() {
+    const patientUuid = getParam('patientId');
+    this.props.loadExtendedOrderGroups(patientUuid);
     const { regimens } = this.props;
     if (regimens.length > 0) {
       this.props.history.push(`/chemotherapy/${regimens[0][0].uuid}`);
@@ -250,6 +252,7 @@ ChemotherapyPage.propTypes = {
   orderGroups: PropTypes.array.isRequired,
   history: PropTypes.object.isRequired,
   regimens: PropTypes.array,
+  loadExtendedOrderGroups: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = createStructuredSelector({
@@ -263,6 +266,7 @@ function mapDispatchToProps(dispatch) {
   return {
     createObservation: (observation) => dispatch(createObservation(observation)),
     createOrderGroup: (orderGroup, encounter) => dispatch(createOrderGroupAction(orderGroup, encounter)),
+    loadExtendedOrderGroups: (patientUuid) => dispatch(loadExtendedOrderGroups(patientUuid)),
   };
 }
 
