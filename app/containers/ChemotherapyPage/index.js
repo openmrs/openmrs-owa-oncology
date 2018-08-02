@@ -23,7 +23,7 @@ import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import { getParam } from 'utils/helpers';
 import { createObservation } from './actions';
-import { createEncounterAction } from '../Header/actions';
+import { createOrderGroupAction } from '../Header/actions';
 
 import Main from './components/Main';
 import AdministrateForm from './components/AdministrateForm';
@@ -47,6 +47,8 @@ import {
   MG,
   QUANTITY_OF_MEDICATION,
   DOSING_UNIT_QUESTION,
+  OGAT_NUM_CYCLES,
+  OGAT_CYCLE_NUMBER,
 } from '../../conceptMapping.json';
 
 const SidebarTitle = styled.div`
@@ -66,7 +68,6 @@ export class ChemotherapyPage extends React.Component {
 
   handleAdministrateFormSubmit = (data) => {
     const patientUuid = getParam('patientId');
-    console.log('SUBMIT');
     const encounter = {
       encounterType: ENC_CHEMO_SESSION,
       patient: patientUuid,
@@ -117,14 +118,76 @@ export class ChemotherapyPage extends React.Component {
         },
       ],
     };
+    const orderGroup = this.prepareOrderGroup(data.orderGroup);
+    this.props.createOrderGroup(orderGroup, encounter);
+  }
 
-    this.props.createEncounter(encounter);
+  prepareOrderGroup(orderGroup) {
+    return {
+      orderSet: orderGroup.orderSet.uuid,
+      orderGroupReason: orderGroup.orderGroupReason.uuid,
+      orders: [],
+      previousOrderGroup: orderGroup.uuid,
+      attributes: orderGroup.attributes.map(attr => {
+        const attrObj = {
+          attributeType: attr.attributeType.uuid,
+          value: attr.value.uuid || attr.value.toString(),
+        };
+        if (attr.attributeType.uuid === OGAT_CYCLE_NUMBER) {
+          attrObj.value = (attr.value + 1).toString();
+        }
+        return attrObj;
+      }),
+      nestedOrderGroups: orderGroup.nestedOrderGroups.map(orderG => ({
+        orderGroupReason: orderG.orderGroupReason.uuid,
+        orders: orderG.orders.map(order => ({
+          type: order.type,
+          route: order.route.uuid,
+          dose: order.dose,
+          doseUnits: order.doseUnits.uuid,
+          dosingInstructions: JSON.stringify(order.dosingInstructions),
+          concept: order.concept.uuid,
+          careSetting: order.careSetting.uuid,
+          orderer: order.orderer.uuid,
+          patient: order.patient.uuid,
+          dateActivated: order.dateActivated,
+          autoExpireDate: order.autoExpireDate,
+          dosingType: order.dosingType,
+        })),
+      })),
+    }
+  }
+
+  getAttrValue(orderGroup, attrTypeUuid) {
+    const attr = orderGroup.attributes.find(attribute =>
+      attribute.attributeType.uuid === attrTypeUuid
+    );
+    return attr.value;
   }
 
   render() {
     const { orderGroups, match } = this.props;
     const { cycleUuid } = match.params;
     const selectedOrderGroup = this.getCurrentOrderGroup(orderGroups, cycleUuid);
+
+    orderGroups.forEach(orderGroup => {
+      if (orderGroup.previousOrderGroup) {
+        const previousOrderGroup = orderGroups.find(oG => oG.uuid === orderGroup.previousOrderGroup.uuid);
+        previousOrderGroup.nextOrderGroup = orderGroup;
+      }
+    });
+
+    const regimens = orderGroups
+      .filter(orderGroup => !orderGroup.previousOrderGroup)
+      .map(orderGroup => {
+        const regimen = [orderGroup];
+        let next = orderGroup.nextOrderGroup;
+        while(next) {
+          regimen.push(next);
+          next = next.nextOrderGroup;
+        }
+        return regimen.reverse();
+      });
 
     return (
       <div>
@@ -141,17 +204,16 @@ export class ChemotherapyPage extends React.Component {
           {orderGroups.length > 0 &&
             <NaviList
               selectedItem={cycleUuid}
-              items={orderGroups.map(orderGroup => ({
-                id: orderGroup.uuid,
-                title: orderGroup.orderSet.display,
-                status: 'completed',
-                children: [{
+              items={regimens.map((regimen, i) => ({
+                id: regimen[0].uuid,
+                title: regimen[0].orderSet.display,
+                children: regimen.map((orderGroup, j) => ({
                   id: orderGroup.uuid,
-                  cycle: 1,
-                  title: 'Cycle 1 of 6',
+                  cycle: this.getAttrValue(orderGroup, OGAT_CYCLE_NUMBER),
+                  title: `Cycle ${this.getAttrValue(orderGroup, OGAT_CYCLE_NUMBER)} of ${this.getAttrValue(orderGroup, OGAT_NUM_CYCLES)}`,
                   date: '08/01/18',
-                  status: 'completed',
-                }],
+                  status: i === 0 && j === 0 ? 'active' : 'completed',
+                })),
               }))}
             />
           }
@@ -188,7 +250,7 @@ ChemotherapyPage.propTypes = {
   encounters: PropTypes.object.isRequired,
   match: PropTypes.object.isRequired,
   createObservation: PropTypes.func.isRequired,
-  createEncounter: PropTypes.func.isRequired,
+  createOrderGroup: PropTypes.func.isRequired,
   encounterRole: PropTypes.object.isRequired,
   orderGroups: PropTypes.array.isRequired,
 };
@@ -202,7 +264,7 @@ const mapStateToProps = createStructuredSelector({
 function mapDispatchToProps(dispatch) {
   return {
     createObservation: (observation) => dispatch(createObservation(observation)),
-    createEncounter: (encounter) => dispatch(createEncounterAction(encounter)),
+    createOrderGroup: (orderGroup, encounter) => dispatch(createOrderGroupAction(orderGroup, encounter)),
   };
 }
 

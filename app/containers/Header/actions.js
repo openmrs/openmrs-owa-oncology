@@ -48,6 +48,9 @@ import {
   LOAD_EXTENDED_ORDER_GROUPS,
   LOAD_EXTENDED_ORDER_GROUPS_SUCCESS,
   LOAD_EXTENDED_ORDER_GROUPS_ERROR,
+  CREATE_ORDER_GROUP_LOADING,
+  CREATE_ORDER_GROUP_FAILURE,
+  CREATE_ORDER_GROUP_SUCCESS,
 } from './constants';
 
 export function fetchCurrentSessionAction() {
@@ -273,6 +276,28 @@ export function extendedOrderGroupsLoaded(orderGroups) {
 export function extendedOrderGroupsLoadingError(error) {
   return {
     type: LOAD_EXTENDED_ORDER_GROUPS_ERROR,
+    error,
+  };
+}
+
+export function createOrderGroupAction(orderGroup, encounter) {
+  return {
+    type: CREATE_ORDER_GROUP_LOADING,
+    orderGroup,
+    encounter,
+  };
+}
+
+export function createOrderGroupSuccessAction(orderGroup) {
+  return {
+    type: CREATE_ORDER_GROUP_SUCCESS,
+    orderGroup,
+  };
+}
+
+export function createOrderGroupErrorAction(error) {
+  return {
+    type: CREATE_ORDER_GROUP_FAILURE,
     error,
   };
 }

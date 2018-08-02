@@ -82,7 +82,10 @@ export class AdministrateForm extends React.Component {
   handleSubmit = () => {
     const { onFormSubmit } = this.props;
     if (onFormSubmit) {
-      onFormSubmit(this.state);
+      onFormSubmit({
+        ...this.state,
+        orderGroup: this.props.orderGroup,
+      });
     }
   }
 
