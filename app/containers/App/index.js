@@ -16,7 +16,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import OrderPage from 'containers/OrderPage/Loadable';
 import DashboardPage from 'containers/DashboardPage/Loadable';
-import NurseDashboardPage from 'containers/NurseDashboardPage/Loadable';
+// import NurseDashboardPage from 'containers/NurseDashboardPage/Loadable';
 import PhysicianDashboardPage from 'containers/PhysicianDashboardPage/Loadable';
 import ChemotherapyPage from 'containers/ChemotherapyPage/Loadable';
 import SummaryPage from 'containers/SummaryPage/Loadable';
@@ -42,7 +42,7 @@ export default function App() {
       <Header/>
       <Switch>
         <Route exact path="/" component={DashboardPage} />
-        <Route exact path="/nurseDashboard" component={NurseDashboardPage} />
+        <Route exact path="/nurseDashboard" component={PhysicianDashboardPage} />
         <Route exact path="/physicianDashboard" component={PhysicianDashboardPage} />
         <Route path="/chemotherapy/:cycleUuid?" component={ChemotherapyPage} />
         <Route exact path="/order/:template?" component={OrderPage} />

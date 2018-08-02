@@ -21,7 +21,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 // import ListItemText from '@material-ui/core/ListItemText';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeartbeat, faStethoscope, faFileMedical, faVial, faCalendarAlt  } from '@fortawesome/free-solid-svg-icons'
+import { faHeartbeat, faFileMedical, faVial, faCalendarAlt, faClipboardList  } from '@fortawesome/free-solid-svg-icons'
 
 import DashboardCard from 'components/DashboardCard';
 
@@ -95,7 +95,7 @@ export class DashboardPage extends React.Component {
 
               <Grid item xs={4}>
 
-                <DashboardCard title="CANCER OVERVIEW" icon={<StyledFontAwesomeIcon icon={faCalendarAlt} />}>
+                <DashboardCard title="CANCER OVERVIEW" icon={<StyledFontAwesomeIcon icon={faFileMedical} />}>
                   <List>
                     <ListItem divider>
                       <ListKey>
@@ -118,7 +118,7 @@ export class DashboardPage extends React.Component {
                         <Typography variant="body2">Note:</Typography>
                       </ListKey>
                       <ListValue>
-                        <Typography variant="body1">Patient has a weak heart so be careful when giving XX</Typography>
+                        <Typography variant="body1">Patient has a weak heart so be careful when giving NSAIDs</Typography>
                       </ListValue>
                     </ListItem>
                   </List>
@@ -126,28 +126,76 @@ export class DashboardPage extends React.Component {
 
                 <DashboardCard title="VITAL SIGNS" icon={<StyledFontAwesomeIcon icon={faHeartbeat} />}>
                   <List>
-                    <ListItem divider>
+                    <ListItem>
                       <ListKey>
-                        <Typography variant="body2">Diagnosis:</Typography>
+                        <Typography variant="body2">Height:</Typography>
                       </ListKey>
                       <ListValue>
-                        <Typography variant="body1">Non-Hodgkin&apos;s malignant lymphoma</Typography>
-                      </ListValue>
-                    </ListItem>
-                    <ListItem divider>
-                      <ListKey>
-                        <Typography variant="body2">Staging:</Typography>
-                      </ListKey>
-                      <ListValue>
-                        <Typography variant="body1">Stage II T2 N1 M0</Typography>
+                        <Typography variant="body1">176.784 cm</Typography>
                       </ListValue>
                     </ListItem>
                     <ListItem>
                       <ListKey>
-                        <Typography variant="body2">Note:</Typography>
+                        <Typography variant="body2">Weight:</Typography>
                       </ListKey>
                       <ListValue>
-                        <Typography variant="body1">Patient has a weak heart so be careful when giving XX</Typography>
+                        <Typography variant="body1">58.967 kg</Typography>
+                      </ListValue>
+                    </ListItem>
+                    <ListItem>
+                      <ListKey>
+                        <Typography variant="body2">(Calculated) BMI:</Typography>
+                      </ListKey>
+                      <ListValue>
+                        <Typography variant="body1">19.8</Typography>
+                      </ListValue>
+                    </ListItem>
+                    <ListItem>
+                      <ListKey>
+                        <Typography variant="body2">Temperature:</Typography>
+                      </ListKey>
+                      <ListValue>
+                        <Typography variant="body1">37.9 °C</Typography>
+                      </ListValue>
+                    </ListItem>
+                    <ListItem>
+                      <ListKey>
+                        <Typography variant="body2">Heart Rate:</Typography>
+                      </ListKey>
+                      <ListValue>
+                        <Typography variant="body1">60 /min</Typography>
+                      </ListValue>
+                    </ListItem>
+                    <ListItem>
+                      <ListKey>
+                        <Typography variant="body2">Respiratory Rate:</Typography>
+                      </ListKey>
+                      <ListValue>
+                        <Typography variant="body1">15 /min</Typography>
+                      </ListValue>
+                    </ListItem>
+                    <ListItem>
+                      <ListKey>
+                        <Typography variant="body2">Blood Pressure:</Typography>
+                      </ListKey>
+                      <ListValue>
+                        <Typography variant="body1">140 /80</Typography>
+                      </ListValue>
+                    </ListItem>
+                    <ListItem>
+                      <ListKey>
+                        <Typography variant="body2">O₂ Sat:</Typography>
+                      </ListKey>
+                      <ListValue>
+                        <Typography variant="body1">95 %</Typography>
+                      </ListValue>
+                    </ListItem>
+                    <ListItem>
+                      <ListKey>
+                        <Typography variant="body2">Chief Complaint:</Typography>
+                      </ListKey>
+                      <ListValue>
+                        <Typography variant="body1">Shortness of breath</Typography>
                       </ListValue>
                     </ListItem>
                   </List>
@@ -157,7 +205,7 @@ export class DashboardPage extends React.Component {
               <Grid item xs={4}>
                 <DashboardCard
                   title="PATHOLOGY"
-                  icon={<StyledFontAwesomeIcon icon={faHeartbeat} />}
+                  icon={<StyledFontAwesomeIcon icon={faCalendarAlt} />}
                   footer={
                     <Button
                       component={Link}
@@ -225,7 +273,7 @@ export class DashboardPage extends React.Component {
                 </DashboardCard> 
               </Grid>
 
-              <Grid item xs={4}>
+              <Grid item xs={3}>
                 <ActionNav>
                   <List>
                     <StyledActionHeader divider>
@@ -235,11 +283,11 @@ export class DashboardPage extends React.Component {
                       onClick={() => {
                         history.push(`/chemotherapy`);
                       }}>
-                      <StyledFontAwesomeIcon icon={faHeartbeat} />
+                      <StyledFontAwesomeIcon icon={faClipboardList} />
                       <FormattedMessage {...messages.administerChemo} />
                     </StyledListItem>
                     <ListItem>
-                      <StyledFontAwesomeIcon icon={faStethoscope} />
+                      <StyledFontAwesomeIcon icon={faHeartbeat} />
                       <FormattedMessage {...messages.takeVitals} />
                     </ListItem>
                     <ListItem>

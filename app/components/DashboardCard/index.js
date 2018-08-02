@@ -15,6 +15,7 @@ import { withTheme } from '@material-ui/core/styles';
 const Wrapper = styled.div`
 `;
 const Head = styled.div`
+padding-top: 20px;
 >svg{
   color: #501D3D;
 }
@@ -28,6 +29,10 @@ const Title = styled.div`
 const TopActions = styled.div`
 `;
 const Content = styled.div`
+  ul > li{
+    padding-top:2px;
+    padding-bottom: 2px;
+  }
   padding: 1em;
   background: #eee;
 `;
