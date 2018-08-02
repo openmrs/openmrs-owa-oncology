@@ -24,6 +24,9 @@ import {
   OGAT_CYCLE_NUMBER,
   NOTES,
   OGAT_NUM_CYCLES,
+  ADMIN_DOSE,
+  DOSING_UNIT_QUESTION,
+  QUANTITY_OF_MEDICATION,
 } from '../../../../conceptMapping.json';
 
 const Head = styled.div`
@@ -47,10 +50,39 @@ export class Main extends React.Component {
   }];
 
   getMedicationsByReason(orderGroups, reasonUuid) {
+    if (!this.props.orderGroup) {
+      return []
+    }
+    const { treatmentSessionEncounter } = this.props.orderGroup;
     const orderGroup = orderGroups.find(orderGr =>
       orderGr.orderGroupReason.uuid === reasonUuid
     );
-    const orders = (orderGroup && orderGroup.orders) || [];
+    let orders = (orderGroup && orderGroup.orders) || [];
+    if (reasonUuid === OGR_CHEMOTHERAPY && treatmentSessionEncounter) {
+      const { obs } = treatmentSessionEncounter;
+      orders = orders.map(order => {
+        const administeredDose = [];
+        obs.filter(o =>
+          o.concept.uuid === ADMIN_DOSE && o.order.uuid === order.uuid
+        ).forEach(o => {
+          const unit = o.groupMembers.find(groupMember =>
+            groupMember.concept.uuid === DOSING_UNIT_QUESTION
+          );
+          const value = o.groupMembers.find(groupMember =>
+            groupMember.concept.uuid === QUANTITY_OF_MEDICATION
+          );
+          administeredDose.push({
+            units: unit.value.display,
+            value: value.value,
+            uuid: o.uuid,
+          });
+        });
+        return {
+          ...order,
+          administeredDose,
+        };
+      });
+    }
     return orders;
   }
 
@@ -134,6 +166,7 @@ export class Main extends React.Component {
             key={reasonUuid}
             readOnly
             name={name}
+            includeAdministeredDose={reasonUuid === OGR_CHEMOTHERAPY}
             medications={this.getMedicationsByReason(subOrders, reasonUuid)}
           />
         )}

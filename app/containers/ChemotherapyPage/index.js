@@ -218,7 +218,10 @@ export class ChemotherapyPage extends React.Component {
               exact
               path="/chemotherapy/:cycleUuid?"
               render={props =>
-                <Main {...props} orderGroup={selectedOrderGroup} />
+                <Main
+                  {...props}
+                  orderGroup={selectedOrderGroup}
+                />
               }
             />
             <Route

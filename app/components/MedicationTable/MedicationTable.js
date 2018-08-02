@@ -30,6 +30,30 @@ const Wrapper = styled.div`
   overflow: auto;
 `;
 
+const columnData = [
+  {
+    id: 'medication',
+    numeric: false,
+    disablePadding: false,
+    label: 'MEDICATION',
+  },
+  { id: 'dose', numeric: false, disablePadding: false, label: 'DOSE' },
+  { id: 'route', numeric: false, disablePadding: false, label: 'ROUTE' },
+  {
+    id: 'instructions',
+    numeric: false,
+    disablePadding: false,
+    label: 'INSTRUCTIONS',
+  },
+];
+
+const administeredDoseColumn = {
+  id: 'administeredDose',
+  numeric: false,
+  disablePadding: false,
+  label: 'ADMINISTERED DOSE',
+};
+
 class MedicationTable extends React.Component {
   constructor(props) {
     super(props);
@@ -112,14 +136,23 @@ class MedicationTable extends React.Component {
     this.setState({ openDialog: '', selected: [] });
   }
 
+  getMedicatonName(medication) {
+    return medication.drugConcept || (medication.concept && medication.concept.display);
+  }
+
   render() {
-    const { medications, intl, readOnly, enableChangeDosage } = this.props;
+    const { includeAdministeredDose, medications, intl, readOnly, enableChangeDosage } = this.props;
     const { selected } = this.state;
     const selectedMedications = this.getSelectedMedications();
 
     if (!medications.length) {
       return <div />;
     }
+
+    const meds = medications.sort((a, b) =>
+      (this.getMedicatonName(a) > this.getMedicatonName(b)) ? // eslint-disable-line
+        1 : ((this.getMedicatonName(b) > this.getMedicatonName(a)) ? -1 : 0)
+    );
 
     return (
       <Wrapper>
@@ -139,9 +172,12 @@ class MedicationTable extends React.Component {
               numSelected={selected.length}
               onSelectAllClick={this.handleSelectAllClick}
               rowCount={medications.length}
+              columnData={
+                includeAdministeredDose ? [...columnData, administeredDoseColumn] : columnData
+              }
             />
             <TableBody>
-              {medications.map(medication =>
+              {meds.map(medication =>
                 <TableRow
                   onClick={e => !readOnly && this.handleClick(e, medication.uuid)}
                   role="checkbox"
@@ -174,6 +210,15 @@ class MedicationTable extends React.Component {
                     {medication.dosingInstructions &&
                     medication.dosingInstructions.dosingTimingInstructions}
                   </TableCell>
+                  {includeAdministeredDose &&
+                    <TableCell>
+                      {medication.administeredDose && medication.administeredDose.map(dose =>
+                        <Typography key={dose.uuid} variant="body1">
+                          {dose.value} {dose.units}
+                        </Typography>
+                      )}
+                    </TableCell>
+                  }
                 </TableRow>
               )}
             </TableBody>
@@ -214,11 +259,13 @@ MedicationTable.propTypes = {
   intl: intlShape.isRequired,
   readOnly: PropTypes.bool,
   enableChangeDosage: PropTypes.bool,
+  includeAdministeredDose: PropTypes.bool,
 };
 
 MedicationTable.defaultProps = {
   readOnly: false,
   enableChangeDosage: false,
+  includeAdministeredDose: false,
 }
 
 export default injectIntl(MedicationTable);

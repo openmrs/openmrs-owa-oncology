@@ -11,25 +11,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Checkbox from '@material-ui/core/Checkbox';
 
-const columnData = [
-  {
-    id: 'medication',
-    numeric: false,
-    disablePadding: false,
-    label: 'MEDICATION',
-  },
-  { id: 'dose', numeric: false, disablePadding: false, label: 'DOSE' },
-  { id: 'route', numeric: false, disablePadding: false, label: 'ROUTE' },
-  {
-    id: 'instructions',
-    numeric: false,
-    disablePadding: false,
-    label: 'INSTRUCTIONS',
-  },
-];
-
 function MedicationTableHead(props) {
-  const { onSelectAllClick, numSelected, rowCount, readOnly } = props;
+  const { onSelectAllClick, numSelected, rowCount, readOnly, columnData } = props;
 
   return (
     <TableHead>
@@ -65,6 +48,7 @@ MedicationTableHead.propTypes = {
   onSelectAllClick: PropTypes.func.isRequired,
   rowCount: PropTypes.number.isRequired,
   readOnly: PropTypes.bool.isRequired,
+  columnData: PropTypes.array.isRequired,
 };
 
 
