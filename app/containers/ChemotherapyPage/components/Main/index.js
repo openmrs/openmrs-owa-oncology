@@ -50,7 +50,8 @@ export class Main extends React.Component {
     const orderGroup = orderGroups.find(orderGr =>
       orderGr.orderGroupReason.uuid === reasonUuid
     );
-    return (orderGroup && orderGroup.orders) || [];
+    const orders = (orderGroup && orderGroup.orders) || [];
+    return orders;
   }
 
   isOrderComplete(orderGroup) {

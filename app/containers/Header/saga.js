@@ -62,6 +62,10 @@ import {
   makeSelectParentOrderGroups,
 } from './selectors'
 
+import {
+  OGR_CHEMOTHERAPY,
+} from '../../conceptMapping.json';
+
 import { getHost, getHeaders } from '../../utils/config';
 const baseUrl = getHost();
 const headers = getHeaders();
@@ -226,9 +230,13 @@ export function* getExtendedOrderGroups({ patientUuid }) {
 
   try {
     const obs = yield all(orders.map(order => {
+      const chemoOrderGroup = order.nestedOrderGroups.find(orderGroup =>
+        orderGroup.orderGroupReason.uuid === OGR_CHEMOTHERAPY
+      );
+
       const params = {
         patient: patientUuid,
-        order: order.nestedOrderGroups[0].orders[0] && order.nestedOrderGroups[0].orders[0].uuid,
+        order: chemoOrderGroup.orders[0] && chemoOrderGroup.orders[0].uuid,
         v: 'full',
       };
       const query = Object.keys(params).map(k => `${k}=${params[k]}`).join('&');
