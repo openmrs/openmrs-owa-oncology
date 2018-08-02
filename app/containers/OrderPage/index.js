@@ -117,7 +117,7 @@ export class OrderPage extends React.Component {
         </Helmet>
         <Grid container>
           {/* Regimen Selection */}
-          <Grid item xs={6}>
+          <Grid item xs={8}>
             <Section>
               <Typography variant="headline" gutterBottom>
                 <FormattedMessage {...messages.selectRegimen} />
