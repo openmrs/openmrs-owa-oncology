@@ -169,7 +169,7 @@ class MedicationTable extends React.Component {
                       }
                     </Typography>
                   </TableCell>
-                  <TableCell>{medication.route && medication.route.display}</TableCell>
+                  <TableCell>{medication.route && medication.route.display ? medication.route.display : medication.route}</TableCell>
                   <TableCell>
                     {medication.dosingInstructions &&
                     medication.dosingInstructions.dosingTimingInstructions}
