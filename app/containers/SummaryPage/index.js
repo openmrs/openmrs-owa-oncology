@@ -203,6 +203,7 @@ SummaryPage.propTypes = {
   encounterRole: PropTypes.object.isRequired,
   currentProvider: PropTypes.object,
   encounterlocation: PropTypes.object,
+  history: PropTypes.object,
 };
 
 const mapStateToProps = createStructuredSelector({
