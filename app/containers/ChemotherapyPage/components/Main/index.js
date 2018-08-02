@@ -136,12 +136,16 @@ export class Main extends React.Component {
             medications={this.getMedicationsByReason(subOrders, reasonUuid)}
           />
         )}
-        <Typography variant="subheading">
-          Cycle summary
-        </Typography>
-        <Typography variant="body1">
-          {notes}
-        </Typography>
+        {notes &&
+          <div>
+            <Typography variant="subheading">
+              Cycle summary
+            </Typography>
+            <Typography variant="body1">
+              {notes}
+            </Typography>
+          </div>
+        }
       </div>
     );
   }

@@ -226,6 +226,9 @@ export class ChemotherapyPage extends React.Component {
                 orderGroups.length > 0 &&
                   <AdministrateForm
                     {...props}
+                    title={selectedOrderGroup.orderSet.display}
+                    currentCycle={this.getAttrValue(selectedOrderGroup, OGAT_CYCLE_NUMBER)}
+                    numOfCycles={this.getAttrValue(selectedOrderGroup, OGAT_NUM_CYCLES)}
                     orderGroup={selectedOrderGroup}
                     onFormSubmit={this.handleAdministrateFormSubmit}
                   />

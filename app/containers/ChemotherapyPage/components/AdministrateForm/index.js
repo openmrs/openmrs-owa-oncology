@@ -90,17 +90,17 @@ export class AdministrateForm extends React.Component {
   }
 
   render() {
-    const { match, orderGroup } = this.props;
+    const { match, orderGroup, title, currentCycle, numOfCycles } = this.props;
     const orders = this.getOrders(orderGroup);
 
     return (
       <div>
         <Head>
           <Typography variant="headline">
-            CHOP: Protocol for Non Hodgkin Lymphome
+            {title}
           </Typography>
           <Typography variant="subheading">
-            Cycle 3 of 6
+            Cycle {currentCycle} of {numOfCycles}
           </Typography>
         </Head>
         <Grid container spacing={16}>
@@ -181,6 +181,9 @@ AdministrateForm.propTypes = {
   orderGroup: PropTypes.object,
   match: PropTypes.object.isRequired,
   onFormSubmit: PropTypes.func,
+  title: PropTypes.string,
+  numOfCycles: PropTypes.number,
+  currentCycle: PropTypes.number,
 };
 
 export default AdministrateForm;
