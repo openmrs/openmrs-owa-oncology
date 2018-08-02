@@ -1,4 +1,4 @@
-import { take, select, takeLatest, call, put } from 'redux-saga/effects';
+import { take, select, takeLatest, call, put, all } from 'redux-saga/effects';
 import {
   SET_CURRENT_SESSION_LOADING,
   SETTING_ENCOUNTER_TYPE_LOADING,
@@ -11,6 +11,9 @@ import {
   FETCH_ENCOUNTERS_LOADING,
   CREATE_ENCOUNTER_LOADING,
   FETCH_ORDER_GROUP_LOADING,
+  FETCH_ORDER_GROUP_SUCCESS,
+  FETCH_OBSERVATIONS_LOADING,
+  LOAD_EXTENDED_ORDER_GROUPS,
 } from './constants';
 import {
   fetchCurrentSessionSuccessAction,
@@ -40,10 +43,19 @@ import {
   createEncounterErrorAction,
   fetchOrderGroupsErrorAction,
   fetchOrderGroupsSuccessAction,
+  fetchOrderGroupsAction,
+  fetchObservationsSuccessAction,
+  fetchObservationsErrorAction,
+  extendedOrderGroupsLoaded,
+  extendedOrderGroupsLoadingError,
 } from './actions';
 import request from '../../utils/request';
 
-import { makeSelectDefaultEncounterType, makeSelectDefaultEncounterRole } from './selectors'
+import {
+  makeSelectDefaultEncounterType,
+  makeSelectDefaultEncounterRole,
+  makeSelectParentOrderGroups,
+} from './selectors'
 
 import { getHost, getHeaders } from '../../utils/config';
 const baseUrl = getHost();
@@ -168,6 +180,62 @@ export function* fetchOrderGroups({ params }) {
   }
 }
 
+export function* getExtendedOrderGroups({ patientUuid }) {
+  yield put(fetchOrderGroupsAction({
+    patient: patientUuid,
+    v: 'full',
+  }));
+  yield take(FETCH_ORDER_GROUP_SUCCESS);
+  const orders = yield select(makeSelectParentOrderGroups());
+
+  try {
+    const obs = yield all(orders.map(order => {
+      const params = {
+        patient: patientUuid,
+        order: order.nestedOrderGroups[0].orders[0] && order.nestedOrderGroups[0].orders[0].uuid,
+        v: 'full',
+      };
+      const query = Object.keys(params).map(k => `${k}=${params[k]}`).join('&');
+      const requestURL = `${baseUrl}/obs?${query}`;
+      return call(request, requestURL, { headers })
+    }));
+
+    const encounterUuidsByOrders = {};
+    obs.forEach((o, i) => {
+      if (o.results.length > 0) {
+        encounterUuidsByOrders[orders[i].uuid] = o.results[0].encounter.uuid;
+      }
+    });
+
+    const encounters = yield all(Object.values(encounterUuidsByOrders).map(uuid => {
+      const requestURL = `${baseUrl}/encounter/${uuid}?v=full`;
+      return call(request, requestURL, { headers });
+    }));
+
+    const extendedOrderGroups = orders.map(order => ({
+      ...order,
+      treatmentSessionEncounter: encounters
+        .find(encounter => encounter.uuid === encounterUuidsByOrders[order.uuid]),
+    }));
+
+    yield put(extendedOrderGroupsLoaded(extendedOrderGroups));
+  } catch (err) {
+    yield put(extendedOrderGroupsLoadingError(err));
+  }
+}
+
+export function* fetchObservations({ params }) {
+  const query = Object.keys(params).map(k => `${k}=${params[k]}`).join('&');
+  const requestURL = `${baseUrl}/obs?${query}`;
+
+  try {
+    const response = yield call(request, requestURL, {headers});
+    yield put(fetchObservationsSuccessAction(response));
+  } catch (err) {
+    yield put(fetchObservationsErrorAction(err));
+  }
+}
+
 export default function* defaultSaga() {
   yield takeLatest(SET_CURRENT_SESSION_LOADING, fetchCurrentSession);
   yield takeLatest(SETTING_ENCOUNTER_TYPE_LOADING, fetchDefaultEncounterType);
@@ -178,4 +246,6 @@ export default function* defaultSaga() {
   yield takeLatest(LOAD_PATIENT, fetchPatient);
   yield takeLatest(CREATE_ENCOUNTER_LOADING, postEncounter);
   yield takeLatest(FETCH_ORDER_GROUP_LOADING, fetchOrderGroups);
+  yield takeLatest(FETCH_OBSERVATIONS_LOADING, fetchObservations);
+  yield takeLatest(LOAD_EXTENDED_ORDER_GROUPS, getExtendedOrderGroups);
 }

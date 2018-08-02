@@ -1,5 +1,9 @@
 import { fromJS } from "immutable";
-import { LOAD_PATIENT, LOAD_PATIENT_SUCCESS, LOAD_PATIENT_ERROR } from '../constants';
+import {
+  LOAD_PATIENT,
+  LOAD_PATIENT_SUCCESS,
+  LOAD_PATIENT_ERROR,
+} from '../constants';
 import initialState from './initialState';
 
 export default (state = initialState.get('defaultPatient'), action) => {
