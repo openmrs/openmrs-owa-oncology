@@ -112,7 +112,7 @@ export class Main extends React.Component {
                 component={Link}
                 to={`/chemotherapy/${params.cycleUuid}/administrate`}
               >
-                Administer
+                Document
               </Button>
             }
             &nbsp;&nbsp;

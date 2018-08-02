@@ -120,7 +120,7 @@ export class Header extends React.Component {
               >
                 <FontAwesomeIcon icon={faUser} />
                 <ButtonText>
-                  demo1
+                  Dr. Jones
                 </ButtonText>
                 <FontAwesomeIcon icon={faCaretDown} />
               </Button>
@@ -144,7 +144,7 @@ export class Header extends React.Component {
               <Button color="inherit">
                 <FontAwesomeIcon icon={faMapMarkerAlt} />
                 <ButtonText>
-                  Biwo Resepsyon
+                  Chimyoterapi
                 </ButtonText>
                 <FontAwesomeIcon icon={faCaretDown} />
               </Button>
