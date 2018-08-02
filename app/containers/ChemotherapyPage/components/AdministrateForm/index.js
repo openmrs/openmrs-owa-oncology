@@ -149,7 +149,7 @@ export class AdministrateForm extends React.Component {
             <Textarea
               rows="3"
               fullWidth
-              placeholder="Typo your summary here..."
+              placeholder="Type your summary here..."
               value={this.state.notes}
               onChange={e => this.setState({ notes: e.target.value })}
             />
