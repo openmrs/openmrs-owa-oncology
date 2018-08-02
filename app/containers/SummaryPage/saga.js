@@ -11,7 +11,6 @@ import {
   OGAT_NUM_CYCLES, 
   OGAT_CYCLE_LENGTH, 
   OGAT_CYCLE_LENGTH_UNIT, 
-  OGAT_CYCLE_LENGTH_UNIT_WEEK, 
   OGAT_CYCLE_LENGTH_UNIT_DAY,
   OUTPATIENT_CARE_SETTING,
   ROUTE_IV,
@@ -29,7 +28,6 @@ import {
   postOrderGroupAction,
   postOrderGroupSuccessAction,
   postOrderGroupFailureAction,
-  postOrderSuccessAction,
   postOrderFailureAction,
 } from './actions';
 
@@ -53,13 +51,14 @@ import {
 
 import {
   POST_CHEMO_ORDER,
-  POST_CHEMO_ORDER_SUCCESS,
   POST_CHEMO_ORDER_ERROR,
   POST_ENCOUNTER_SUCCESS,
   POST_ENCOUNTER,
   POST_ORDERGROUP,
   POST_ORDERGROUP_SUCCESS,
 } from './constants';
+
+import history from '../../history';
 
 const baseUrl = getHost();
 const headers = getHeaders();
@@ -70,7 +69,6 @@ function* submitEncounter({ encounter, order }) {
   try {
     const temp = JSON.parse(JSON.stringify(encounter));
 
-    // TODO: add notes from order to temp encounter object
     if (order.notes && order.notes.trim().length > 0) {
       temp.obs = [];
       temp.obs.push(
@@ -231,7 +229,7 @@ function* submitOrderGroup({ encounter, order, regimen, currentProvider }) {
         },
         {
           attributeType: OGAT_CYCLE_LENGTH_UNIT,
-          value: OGAT_CYCLE_LENGTH_UNIT_WEEK || OGAT_CYCLE_LENGTH_UNIT_DAY,
+          value: OGAT_CYCLE_LENGTH_UNIT_DAY,
         },
       ],
     };  
@@ -264,25 +262,22 @@ export function* postChemoOrder(action) {
     const regimen = (yield select(makeSelectRegimenList())).results[action.orderInfo.orderIndex];
     const currentProvider = yield select(makeSelectCurrentProvider());
 
-    // create and order group
+    // success - created and order group
     yield put(postOrderGroupAction(encounter, order, regimen, currentProvider));
 
-    // successfully created order group
-    yield take(POST_ORDERGROUP_SUCCESS);
-
-    // overall success
-    yield put(postOrderSuccessAction()); 
-    yield take(POST_CHEMO_ORDER_SUCCESS);
-
-    // TODO: route back to dashboard - notify user of success
-
   } catch (error) {
-    yield put(postOrderFailureAction());    // FAILURE
-    yield take(POST_CHEMO_ORDER_ERROR);
-
-    // TODO: notify user of error
-
+    // failed - no ordergroup created
+    yield put(postOrderFailureAction());
   }
+}
+
+export function success() {
+  history.push(`/physicianDashboard`);
+}
+
+export function fail() {
+  // TODO: Handle this better
+  history.push(`/failed`);   
 }
 
 /**
@@ -292,4 +287,6 @@ export default function* summary() {
   yield takeLatest(POST_CHEMO_ORDER, postChemoOrder);
   yield takeLatest(POST_ENCOUNTER, submitEncounter);
   yield takeLatest(POST_ORDERGROUP, submitOrderGroup);
+  yield takeLatest(POST_ORDERGROUP_SUCCESS, success);
+  yield takeLatest(POST_CHEMO_ORDER_ERROR, fail);
 }

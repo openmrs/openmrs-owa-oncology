@@ -13,7 +13,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'react-router-redux';
-import createHistory from 'history/createHashHistory';
 import 'sanitize.css/sanitize.css';
 
 // Import root app
@@ -30,6 +29,8 @@ import 'file-loader?name=[name].[ext]!./.htaccess';
 
 import configureStore from './configureStore';
 
+import history from './history' 
+
 // Import i18n messages
 import { translationMessages } from './i18n';
 
@@ -38,7 +39,6 @@ import './global-styles';
 
 // Create redux store with history
 const initialState = {};
-const history = createHistory();
 const store = configureStore(initialState, history);
 const MOUNT_NODE = document.getElementById('app');
 
