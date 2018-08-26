@@ -15,10 +15,10 @@ import { withTheme } from '@material-ui/core/styles';
 const Wrapper = styled.div`
 `;
 const Head = styled.div`
-padding-top: 20px;
->svg{
-  color: #501D3D;
-}
+  padding-top: 20px;
+  >svg{
+    color: #501D3D;
+  }
   display: flex;
   border-bottom: 4px solid ${props => props.borderColor};
 `;
@@ -40,10 +40,6 @@ const Footer = styled.div`
   text-align: center;
   padding: 1em 0;
 `;
-
-// const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
-//   margin-right: 10px;
-// `;
 
 function DashboardCard(props) {
   const { children, title, footer, theme, icon} = props;

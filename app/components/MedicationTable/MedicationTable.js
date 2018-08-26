@@ -195,7 +195,7 @@ class MedicationTable extends React.Component {
                   </TableCell>
                   <TableCell>
                     <Typography noWrap>
-                      {medication.dose} {medication.doseUnits && medication.doseUnits.display}
+                      {medication.dose} {medication.doseUnits}
                       &nbsp;&nbsp;
                       {medication.dosingInstructions && !!medication.dosingInstructions.dosingAdjustmentPercentage &&
                         <Tag
