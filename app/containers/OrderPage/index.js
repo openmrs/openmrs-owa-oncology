@@ -6,7 +6,7 @@
 
 import React from 'react';
 import styled from 'styled-components';
-import { Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -28,7 +28,7 @@ import Page from 'components/Page';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 
-import { loadRegimenList, updateOrder } from './actions';
+import { loadRegimenList, updateOrder, resetOrder } from './actions';
 
 import {
   makeSelectRegimenList,
@@ -205,22 +205,23 @@ export class OrderPage extends React.Component {
             direction="row"
             justify="center"
           >
-            <Route
-              render={({ history }) => (
-                <Button
-                  variant="contained"
-                  disabled={template === ""}
-                  onClick={() => {
-                    history.push(`/order/${template}/summary`);
-                  }}
-                >
-                  <FormattedMessage {...messages.next} />
-                </Button>
-              )}
-            />
+            <Button
+              onClick={() => { this.props.resetOrder(template) }}
+            >
+              <FormattedMessage {...messages.reset} />
+            </Button>
+            &nbsp;&nbsp;
+            <Button
+              color="primary"
+              variant="contained"
+              disabled={template === ""}
+              component={Link}
+              to={`/order/${template}/summary`}
+            >
+              <FormattedMessage {...messages.next} />
+            </Button>
           </Grid>,
         ]}
-
       </Page>
     );
   }
@@ -230,6 +231,7 @@ OrderPage.propTypes = {
   location: PropTypes.shape({search: PropTypes.string}).isRequired,
   loadRegimenList: PropTypes.func.isRequired,
   updateOrder: PropTypes.func.isRequired,
+  resetOrder: PropTypes.func.isRequired,
   regimenList: PropTypes.object,
   patient: PropTypes.object,
   premedications: PropTypes.array.isRequired,
@@ -251,6 +253,7 @@ function mapDispatchToProps(dispatch) {
   return {
     loadRegimenList: () => dispatch(loadRegimenList()),
     updateOrder: (index, order) => dispatch(updateOrder(index, order)),
+    resetOrder: (index) => dispatch(resetOrder(index)),
   };
 }
 

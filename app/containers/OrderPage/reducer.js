@@ -10,6 +10,7 @@ import {
   LOAD_REGIMEN_LIST_SUCCESS,
   LOAD_REGIMEN_LIST_ERROR,
   UPDATE_ORDER,
+  RESET_ORDER,
 } from './constants';
 
 export const initialState = fromJS({
@@ -21,6 +22,28 @@ export const initialState = fromJS({
   orders: [],
 });
 
+function regimenToOrder(regimen) {
+  return {
+    notes: '',
+    cyclesDescription: {
+      cycles: 6,
+      cycleDuration: 21,
+      days: [1, 8, 15],
+    },
+    regimenName: regimen.display,
+    medications: (regimen.orderSetMembers || []).map(order => {
+      try {
+        return {
+          uuid: order.uuid,
+          ...JSON.parse(order.orderTemplate),
+        }
+      } catch (e) {
+        return null;
+      }
+    }),
+  };
+}
+
 function orderPageReducer(state = initialState, action) {
   switch (action.type) {
     // RegimenList
@@ -29,27 +52,18 @@ function orderPageReducer(state = initialState, action) {
     case LOAD_REGIMEN_LIST_SUCCESS:
       return state
         .set('regimenList', action.regimenList)
-        .set('orders', List((action.regimenList.results || []).map(regimen => ({
-          notes: '',
-          cyclesDescription: {
-            cycles: 6,
-            cycleDuration: 21,
-            days: [1, 8, 15],
-          },
-          regimenName: regimen.display,
-          medications: (regimen.orderSetMembers || []).map(order => {
-            try {
-              return {
-                uuid: order.uuid,
-                ...JSON.parse(order.orderTemplate),
-              }
-            } catch (e) {
-              return null;
-            }
-          }),
-        }))));
+        .set('orders', List((action.regimenList.results || []).map(regimenToOrder)));
     case LOAD_REGIMEN_LIST_ERROR:
       return state.set('error', action.error);
+    case RESET_ORDER:
+      return state.set(
+        'orders',
+        state
+          .get('orders')
+          .update(action.index, () =>
+            regimenToOrder(state.get('regimenList').results[action.index])
+          )
+      );
     case UPDATE_ORDER:
       return state.set(
         'orders',

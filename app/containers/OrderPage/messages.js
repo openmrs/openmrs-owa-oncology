@@ -35,4 +35,8 @@ export default defineMessages({
     id: 'app.containers.OrderPage.noPatient',
     defaultMessage: 'No Patient!!',
   },
+  reset: {
+    id: 'app.containers.OrderPage.reset',
+    defaultMessage: 'Reset',
+  },
 });

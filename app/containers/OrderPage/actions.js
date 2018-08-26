@@ -9,6 +9,7 @@ import {
   LOAD_REGIMEN_LIST_SUCCESS,
   LOAD_REGIMEN_LIST_ERROR,
   UPDATE_ORDER,
+  RESET_ORDER,
 } from './constants';
 
 export function loadRegimenList() {
@@ -36,6 +37,13 @@ export function updateOrder(index, order) {
     type: UPDATE_ORDER,
     index,
     order,
+  };
+}
+
+export function resetOrder(index) {
+  return {
+    type: RESET_ORDER,
+    index,
   };
 }
 

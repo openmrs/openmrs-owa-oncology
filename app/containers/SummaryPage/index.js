@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Route, Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
@@ -44,12 +44,6 @@ import SummaryMedListControl from './components/SummaryMedListControl';
 const Section = styled.div`
   margin: 0 0 2rem;
   width: 100%;
-`;
-
-const ButtonContainer = styled.div`
-  >button {
-    margin: 0px 20px;
-  }
 `;
 
 /* eslint-disable react/prefer-stateless-function */
@@ -160,27 +154,21 @@ export class SummaryPage extends React.Component {
                 direction="row"
                 justify="center"
               >
-                <ButtonContainer>
-                  <Route
-                    render={({ history }) => (
-                      <Button
-                        variant="contained"
-                        onClick={() => {
-                          history.push(`/order/${orderIndex}`);
-                        }}
-                      >
-                        <FormattedMessage {...messages.back} />
-                      </Button>
-                    )}
-                  />
-                  <Button
-                    color="primary"
-                    variant="contained"
-                    onClick={() => this.submitOrder(orderIndex)}
-                  >
-                    <FormattedMessage {...messages.submit} />
-                  </Button>
-                </ButtonContainer>
+                <Button
+                  variant="contained"
+                  component={Link}
+                  to={`/order/${orderIndex}`}
+                >
+                  <FormattedMessage {...messages.back} />
+                </Button>
+                &nbsp;&nbsp;
+                <Button
+                  color="primary"
+                  variant="contained"
+                  onClick={() => this.submitOrder(orderIndex)}
+                >
+                  <FormattedMessage {...messages.submit} />
+                </Button>
               </Grid>
             </Grid>
           </Grid>

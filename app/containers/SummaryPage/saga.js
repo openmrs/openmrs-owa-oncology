@@ -3,14 +3,14 @@ import { put, call, select, take, takeLatest } from 'redux-saga/effects';
 import request from 'utils/request';
 
 import {
-  OGR_CHEMO_PARENT_SET, 
+  OGR_CHEMO_PARENT_SET,
   OGR_PREMEDICATION,
-  OGR_CHEMOTHERAPY, 
+  OGR_CHEMOTHERAPY,
   OGR_POSTMEDICATION,
-  OGAT_CYCLE_NUMBER, 
-  OGAT_NUM_CYCLES, 
-  OGAT_CYCLE_LENGTH, 
-  OGAT_CYCLE_LENGTH_UNIT, 
+  OGAT_CYCLE_NUMBER,
+  OGAT_NUM_CYCLES,
+  OGAT_CYCLE_LENGTH,
+  OGAT_CYCLE_LENGTH_UNIT,
   OGAT_CYCLE_LENGTH_UNIT_DAY,
   OUTPATIENT_CARE_SETTING,
   ROUTE_IV,
@@ -31,21 +31,21 @@ import {
   postOrderFailureAction,
 } from './actions';
 
-import { 
-  getHost, 
+import {
+  getHost,
   getHeaders,
 } from '../../utils/config';
 
-import { 
-  makeSelectOrders, 
-  makeSelectRegimenList, 
+import {
+  makeSelectOrders,
+  makeSelectRegimenList,
 } from '../OrderPage/selectors';
 
 import {
   makeSelectCurrentProvider,
 } from '../Header/selectors';
 
-import { 
+import {
   makeSelectEncounter,
 } from './selectors';
 
@@ -81,7 +81,7 @@ function* submitEncounter({ encounter, order }) {
 
     const encToPost = JSON.stringify(temp);
     console.log(encToPost);
-  
+
     const encounterResponse = yield call(request, requestUrlEncounter, {
       headers,
       method: 'POST',
@@ -232,10 +232,9 @@ function* submitOrderGroup({ encounter, order, regimen, currentProvider }) {
           value: OGAT_CYCLE_LENGTH_UNIT_DAY,
         },
       ],
-    };  
+    };
 
     const orderGroupToPost = JSON.stringify(orderGroup);
-    console.log(orderGroupToPost);
 
     const orderGroupResponse = yield call(request, requestUrlOrderGroup, {
       headers,
@@ -277,7 +276,7 @@ export function success() {
 
 export function fail() {
   // TODO: Handle this better
-  history.push(`/failed`);   
+  history.push(`/failed`);
 }
 
 /**
