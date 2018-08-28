@@ -15,9 +15,43 @@ const SytledListHeader = styled(ListItem)`
   background: #f5f5f5;
 `;
 
+const Details = styled.ul`
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+`;
+
+const DetailsKey = styled.dt`
+  font-weight: bold;
+  flex: 1 0 20%;
+  margin-bottom: 0.25em;
+`;
+
+const DetailsItem = styled.dd`
+  flex: 1 0 80%;
+  margin: 0 0 0.25em;
+`;
+
 /* eslint-disable react/prefer-stateless-function */
 class SummaryMedListControl extends React.PureComponent {
 
+  renderDetails(medication) {
+    const { dosingInstructions, dose, doseUnits } = medication;
+    const { dosingTimingInstructions, dosingDilutionInstructions } = dosingInstructions;
+
+    return (
+      <Details>
+        <DetailsKey>Instructions:</DetailsKey>
+        <DetailsItem>
+          {dosingTimingInstructions} {dosingDilutionInstructions || ''}
+        </DetailsItem>
+        <DetailsKey>Dose:</DetailsKey>
+        <DetailsItem>
+          {dose} {doseUnits}
+        </DetailsItem>
+      </Details>
+    );
+  }
 
   render() {
     const { medications, orderIndex, label } = this.props
@@ -27,17 +61,17 @@ class SummaryMedListControl extends React.PureComponent {
           <ListItemText primary={label} />
         </SytledListHeader>
         {medications && medications[orderIndex].length > 0 &&
-        medications[orderIndex].map(({uuid, drugConcept, dosingInstructions }) => (
-          <div key={`drug-${uuid}`}>
+        medications[orderIndex].map((med) => (
+          <div key={`drug-${med.uuid}`}>
             <ListItem >
               <ListItemText
-                primary={drugConcept}
-                secondary={`${dosingInstructions.dosingTimingInstructions} ${dosingInstructions.dosingDilutionInstructions ? dosingInstructions.dosingDilutionInstructions : ''}`}
+                primary={med.drugConcept}
+                secondary={this.renderDetails(med)}
               />
-              {!!dosingInstructions.dosingAdjustmentPercentage &&
+              {!!med.dosingInstructions.dosingAdjustmentPercentage &&
                 <Tag
-                  value={`${Math.abs(dosingInstructions.dosingAdjustmentPercentage)}%`}
-                  sign={dosingInstructions.dosingAdjustmentPercentage >= 0 ? <span>&#43;</span> : <span>&#8722;</span>}
+                  value={`${Math.abs(med.dosingInstructions.dosingAdjustmentPercentage)}%`}
+                  sign={med.dosingInstructions.dosingAdjustmentPercentage >= 0 ? <span>&#43;</span> : <span>&#8722;</span>}
                 />
               }
             </ListItem>
