@@ -22,6 +22,7 @@ import { Sidebar, Content } from 'components/Page';
 import injectSaga from 'utils/injectSaga';
 import injectReducer from 'utils/injectReducer';
 import { getParam } from 'utils/helpers';
+import concepts from 'concept-mapping';
 import { createObservation } from './actions';
 import { createOrderGroupAction, loadExtendedOrderGroups } from '../Header/actions';
 
@@ -38,10 +39,10 @@ import {
   makeSelectPatientRegimens,
 } from '../Header/selectors';
 
-import {
+const {
   ENC_CHEMO_SESSION,
   OG_SINGLE_CYCLE_STATUS,
-  OG_SCL_COMPLETE,
+  OG_SCS_COMPLETE,
   ADMIN_DOSE,
   NOTES,
   ML,
@@ -50,7 +51,7 @@ import {
   DOSING_UNIT_QUESTION,
   OGAT_NUM_CYCLES,
   OGAT_CYCLE_NUMBER,
-} from '../../conceptMapping.json';
+} = concepts;
 
 const SidebarTitle = styled.div`
   padding: 1em 1em 0.5em;
@@ -127,7 +128,7 @@ export class ChemotherapyPage extends React.Component {
           // Cycle Status
           "display": "Single Cycle Status",
           "concept": OG_SINGLE_CYCLE_STATUS,
-          "value": OG_SCL_COMPLETE,
+          "value": OG_SCS_COMPLETE,
         },
       ],
     };

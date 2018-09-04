@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { Helmet } from 'react-helmet';
 import { FormattedMessage } from 'react-intl';
 import { createStructuredSelector } from 'reselect';
+import concepts from 'concept-mapping';
 import { compose } from 'redux';
 
 import { Grid, Typography, Button } from '@material-ui/core';
@@ -28,10 +29,6 @@ import {
   makeSelectPatient,
 } from '../Header/selectors';
 
-import {
-  ENC_ONC_CONSULT,
-  ENCOUTER_LOCATION,
-} from '../../conceptMapping.json'
 
 import reducer from './reducer';
 import saga from './saga';
@@ -40,6 +37,11 @@ import messages from './messages';
 import { postChemoOrderAction } from './actions';
 
 import SummaryMedListControl from './components/SummaryMedListControl';
+
+const {
+  ENC_ONC_CONSULT,
+  ENCOUTER_LOCATION,
+} = concepts;
 
 const Section = styled.div`
   margin: 0 0 2rem;

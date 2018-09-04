@@ -1,21 +1,28 @@
-{
+export default {
+  // OGR stands for OrderGroupReason, since we are using those particular
+  // concepts in the OrderGroupReason field for OrderGroups.
   "OGR_CHEMO_PARENT_SET": "d6e67b2d-4f47-4513-ae73-76e72da3169d",
   "OGR_PREMEDICATION": "9fb0d07f-e161-461b-a9f5-a401c23e729f",
   "OGR_CHEMOTHERAPY": "10b45c56-f1ef-4fe1-9905-e8c632cdbf84",
   "OGR_POSTMEDICATION": "4141562b-9858-4092-8626-f8985beb8a11",
   "OG_SINGLE_CYCLE_STATUS": "e270e139-f32d-4e86-9f02-175d60c3f4ac",
-  "OG_SCL_COMPLETE": "3cdcecea-26fe-102b-80cb-0017a47871b2",
-  "OG_SCL_INTERRUPTED": "160016AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-  "OG_SCL_CANCELLED": "61fa7b38-759b-4f4b-ab73-98484c07d81c",
+  // OG_SCS stands for Order group - Single Cycle Status
+  "OG_SCS_COMPLETE": "3cdcecea-26fe-102b-80cb-0017a47871b2",
+  "OG_SCS_INTERRUPTED": "160016AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "OG_SCS_CANCELLED": "61fa7b38-759b-4f4b-ab73-98484c07d81c",
+  // OGAT stands for OrderGroup Attribute Type, because those are the uuids
+  // for the different attribute types of cycle length, num cycles, etc.
   "OGAT_CYCLE_NUMBER": "27a271d0-0b71-4128-a163-529e11e6ccac",
   "OGAT_NUM_CYCLES": "47702d5b-48f1-4852-b6e7-542e48f66a00",
   "OGAT_CYCLE_LENGTH": "3fddc18b-65c3-49d4-8b24-956ed490424b",
   "OGAT_CYCLE_LENGTH_UNIT": "3a015ed6-b1bd-4711-a451-8bad2d597114",
   "OGAT_CYCLE_LENGTH_UNIT_DAY": "3cd706b8-26fe-102b-80cb-0017a47871b2",
   "OGAT_CYCLE_LENGTH_UNIT_WEEK": "3cd7091a-26fe-102b-80cb-0017a47871b2",
+  // OSAT stands for OrderSet Attribute Type
   "OSAT_NUM_CYCLES": "b201a3d5-7177-46fd-b28c-95e6ecf32cb8",
   "OSAT_CYCLE_LENGTH": "48082273-dcd8-4791-9e31-404ab70c33e0",
   "OSAT_CYCLE_LENGTH_UNIT": "2647be50-cada-4429-95af-d097af7388fa",
+  // ENC - encounter
   "ENC_ONC_CONSULT": "035fb8da-226a-420b-8d8b-3904f3bedb25",
   "ENC_CHEMO_SESSION": "828964fa-17eb-446e-aba4-e940b0f4be5b",
   "NOTES": "3cd9d956-26fe-102b-80cb-0017a47871b2",
@@ -30,5 +37,5 @@
   "ADMIN_DOSE": "595c4408-b923-4646-8486-48efde871f9e",
   "DOSING_UNIT_QUESTION": "986de2e7-9c9a-473a-8afc-d4b41aa08706",
   "QUANTITY_OF_MEDICATION": "160856AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-  "ENCOUTER_LOCATION": "dc8413be-1075-48b5-9857-9bd4954686ed"
+  "ENCOUTER_LOCATION": "dc8413be-1075-48b5-9857-9bd4954686ed",
 }

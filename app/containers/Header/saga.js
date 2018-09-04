@@ -1,5 +1,6 @@
 import { take, select, takeLatest, call, put, all } from 'redux-saga/effects';
 import { push } from 'react-router-redux';
+import concepts from 'concept-mapping';
 import {
   SET_CURRENT_SESSION_LOADING,
   SETTING_ENCOUNTER_TYPE_LOADING,
@@ -62,13 +63,15 @@ import {
   makeSelectParentOrderGroups,
 } from './selectors'
 
-import {
-  OGR_CHEMOTHERAPY,
-} from '../../conceptMapping.json';
+
 
 import { getHost, getHeaders } from '../../utils/config';
 const baseUrl = getHost();
 const headers = getHeaders();
+
+const {
+  OGR_CHEMOTHERAPY,
+} = concepts;
 
 export function* fetchCurrentSession() {
   const requestURL = `${baseUrl}/appui/session`;

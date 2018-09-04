@@ -12,22 +12,23 @@ import { Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import MedicationTable from 'components/MedicationTable';
+import concepts from 'concept-mapping';
 
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
-import {
+const {
   OGR_PREMEDICATION,
   OGR_CHEMOTHERAPY,
   OGR_POSTMEDICATION,
-  OG_SCL_COMPLETE,
+  OG_SCS_COMPLETE,
   OGAT_CYCLE_NUMBER,
   NOTES,
   OGAT_NUM_CYCLES,
   ADMIN_DOSE,
   DOSING_UNIT_QUESTION,
   QUANTITY_OF_MEDICATION,
-} from '../../../../conceptMapping.json';
+} = concepts;
 
 const Head = styled.div`
   overflow: hidden;
@@ -92,7 +93,7 @@ export class Main extends React.Component {
       orderGroup.treatmentSessionEncounter &&
       orderGroup.treatmentSessionEncounter.obs.length > 0) {
       const obs = orderGroup.treatmentSessionEncounter.obs.find(o =>
-        o.value && o.value.uuid === OG_SCL_COMPLETE
+        o.value && o.value.uuid === OG_SCS_COMPLETE
       )
       if (obs) {
         result = true;

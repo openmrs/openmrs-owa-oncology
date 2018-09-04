@@ -1,25 +1,7 @@
 import { put, call, select, take, takeLatest } from 'redux-saga/effects';
+import concepts from 'concept-mapping';
 
 import request from 'utils/request';
-
-import {
-  OGR_CHEMO_PARENT_SET,
-  OGR_PREMEDICATION,
-  OGR_CHEMOTHERAPY,
-  OGR_POSTMEDICATION,
-  OGAT_CYCLE_NUMBER,
-  OGAT_NUM_CYCLES,
-  OGAT_CYCLE_LENGTH,
-  OGAT_CYCLE_LENGTH_UNIT,
-  OGAT_CYCLE_LENGTH_UNIT_DAY,
-  OUTPATIENT_CARE_SETTING,
-  ROUTE_IV,
-  ROUTE_ORAL,
-  MG,
-  ML,
-  MG_PER_SQ_M,
-  NOTES,
-} from '../../conceptMapping.json';
 
 import {
   postEncounterAction,
@@ -59,6 +41,25 @@ import {
 } from './constants';
 
 import history from '../../history';
+
+const {
+  OGR_CHEMO_PARENT_SET,
+  OGR_PREMEDICATION,
+  OGR_CHEMOTHERAPY,
+  OGR_POSTMEDICATION,
+  OGAT_CYCLE_NUMBER,
+  OGAT_NUM_CYCLES,
+  OGAT_CYCLE_LENGTH,
+  OGAT_CYCLE_LENGTH_UNIT,
+  OGAT_CYCLE_LENGTH_UNIT_DAY,
+  OUTPATIENT_CARE_SETTING,
+  ROUTE_IV,
+  ROUTE_ORAL,
+  MG,
+  ML,
+  MG_PER_SQ_M,
+  NOTES,
+} = concepts;
 
 const baseUrl = getHost();
 const headers = getHeaders();

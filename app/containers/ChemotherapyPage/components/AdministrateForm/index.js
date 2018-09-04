@@ -18,13 +18,14 @@ import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
 import Textarea from 'components/Textarea';
+import concepts from 'concept-mapping';
 
 // import { FormattedMessage } from 'react-intl';
 // import messages from './messages';
 
-import {
+const {
   OGR_CHEMOTHERAPY,
-} from '../../../../conceptMapping.json';
+} = concepts;
 
 const Head = styled.div`
   margin-bottom: 1em;
