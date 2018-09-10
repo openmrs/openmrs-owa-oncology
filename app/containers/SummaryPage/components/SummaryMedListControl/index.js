@@ -7,7 +7,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { ListItem, List, Divider, ListItemText } from '@material-ui/core';
+import { ListItem, List, Divider, ListItemText, Typography } from '@material-ui/core';
 
 import Tag from '../../../../components/Tag';
 
@@ -16,20 +16,24 @@ const SytledListHeader = styled(ListItem)`
 `;
 
 const Details = styled.ul`
+  margin: 0.25em 0 0 0;
   padding: 0;
-  display: flex;
-  flex-wrap: wrap;
+  font-size: 0.825em;
 `;
 
 const DetailsKey = styled.dt`
-  font-weight: bold;
-  flex: 1 0 20%;
+  display: inline-block;
   margin-bottom: 0.25em;
+  min-width: 100px;
 `;
 
 const DetailsItem = styled.dd`
-  flex: 1 0 80%;
-  margin: 0 0 0.25em;
+  margin: 0;
+  display: inline-block;
+`;
+
+const ListItemHead = styled.div`
+  width: 100%;
 `;
 
 /* eslint-disable react/prefer-stateless-function */
@@ -45,6 +49,7 @@ class SummaryMedListControl extends React.PureComponent {
         <DetailsItem>
           {dosingTimingInstructions} {dosingDilutionInstructions || ''}
         </DetailsItem>
+        <br/>
         <DetailsKey>Dose:</DetailsKey>
         <DetailsItem>
           {dose} {doseUnits}
@@ -64,10 +69,12 @@ class SummaryMedListControl extends React.PureComponent {
         medications[orderIndex].map((med) => (
           <div key={`drug-${med.uuid}`}>
             <ListItem >
-              <ListItemText
-                primary={med.drugConcept}
-                secondary={this.renderDetails(med)}
-              />
+              <ListItemHead>
+                <Typography variant="body2">
+                  {med.drugConcept}
+                </Typography>
+                {this.renderDetails(med)}
+              </ListItemHead>
               {!!med.dosingInstructions.dosingAdjustmentPercentage &&
                 <Tag
                   value={`${Math.abs(med.dosingInstructions.dosingAdjustmentPercentage)}%`}
